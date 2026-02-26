@@ -10,13 +10,13 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import WhatsAppFloatButton from "@/components/WhatsAppFloatButton";
-import SEO from "@/components/SEO";
+
 import EventsSection from "@/components/EventosSection";
 
 export default function Home() {
   return (
     <>
-      <SEO />
+    
       <Header />
       <main>
         <HeroSection />
