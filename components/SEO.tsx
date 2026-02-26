@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect } from "react";
 
 interface SEOProps {
@@ -19,7 +21,7 @@ const SEO = ({
       if (!el) {
         el = document.createElement("meta");
         el.setAttribute(attr, key);
-        document.head.appendChild(el);
+        document.head.appendChild(el)
       }
       el.setAttribute("content", content);
     };

@@ -18,7 +18,6 @@ const HeroSection = () => {
       subtitle: "confiabilidade e",
       highlight: "excelência em",
       accent: "metrologia.",
-      description: "Soluções completas em calibração, certificação e serviços metrológicos para garantir a qualidade e conformidade dos seus equipamentos.",
     },
     {
       image: slide2,
@@ -26,7 +25,6 @@ const HeroSection = () => {
       subtitle: "de alta precisão",
       highlight: "com certificação",
       accent: "INMETRO.",
-      description: "Laboratório acreditado oferecendo serviços de calibração com rastreabilidade garantida e certificados reconhecidos nacionalmente.",
     },
     {
       image: slide3,
@@ -34,7 +32,6 @@ const HeroSection = () => {
       subtitle: "e consultoria",
       highlight: "em sistemas de",
       accent: "qualidade.",
-      description: "Assessoria especializada para implementação de normas ISO e sistemas de gestão da qualidade para sua empresa.",
     },
   ];
 
@@ -55,36 +52,44 @@ const HeroSection = () => {
 
   return (
     <section id="home" className="h-[750px] relative overflow-hidden">
+      {/* Slides usando <img> em vez de background-image */}
       <div className="absolute inset-0">
         {slides.map((slide, index) => (
           <div
             key={index}
-            className={`absolute inset-0 hero-bg transition-opacity duration-1000 ${
+            className={`absolute inset-0 transition-opacity duration-1000 ${
               index === currentSlide ? "opacity-100" : "opacity-0"
             }`}
-            style={{ backgroundImage: `url(${slide.image})` }}
-          />
+          >
+            <img
+              src={slide.image}
+              alt=""
+              className="w-full h-full object-cover"
+            />
+            {/* Overlay escuro para legibilidade do texto */}
+            <div className="absolute inset-0 bg-black/50" />
+          </div>
         ))}
       </div>
 
       <button
         onClick={prevSlide}
-        className="absolute left-6 top-1/2 transform -translate-y-1/2 z-30 w-12 h-12 bg-[hsl(var(--brand-white))]/20 backdrop-blur-sm rounded-full flex items-center justify-center text-[hsl(var(--hero-text))] hover:bg-[hsl(var(--brand-red))]/80 transition-all duration-300 hover:scale-110"
+        className="absolute left-6 top-1/2 transform -translate-y-1/2 z-30 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-[hsl(var(--brand-red))]/80 transition-all duration-300 hover:scale-110"
       >
         <ChevronLeft size={24} />
       </button>
 
       <button
         onClick={nextSlide}
-        className="absolute right-6 top-1/2 transform -translate-y-1/2 z-30 w-12 h-12 bg-[hsl(var(--brand-white))]/20 backdrop-blur-sm rounded-full flex items-center justify-center text-[hsl(var(--hero-text))] hover:bg-[hsl(var(--brand-red))]/80 transition-all duration-300 hover:scale-110"
+        className="absolute right-6 top-1/2 transform -translate-y-1/2 z-30 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-[hsl(var(--brand-red))]/80 transition-all duration-300 hover:scale-110"
       >
         <ChevronRight size={24} />
       </button>
 
-      <div className="container mx-auto px-4 py-20 relative z-10 hero-content h-[750px] flex items-center justify-start">
+      <div className="container mx-auto px-4 py-20 relative z-10 h-[750px] flex items-center justify-start">
         <div className="max-w-2xl text-left">
           <div key={currentSlide}>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[hsl(var(--hero-text))] mb-6 leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
               {slides[currentSlide].title}
               <br />
               {slides[currentSlide].subtitle}
@@ -99,7 +104,7 @@ const HeroSection = () => {
             <Button
               size="lg"
               onClick={handleServicesClick}
-              className="bg-gradient-to-r from-[hsl(var(--brand-red))] to-[hsl(var(--brand-red-dark))] hover:from-[hsl(var(--brand-red-dark))] hover:to-[hsl(var(--brand-red))] text-[hsl(var(--brand-white))] px-8 py-5 text-base font-semibold shadow-[var(--shadow-red)] transition-all duration-500 hover:scale-105 hover:shadow-[var(--shadow-glow)] rounded-full"
+              className="bg-gradient-to-r from-[hsl(var(--brand-red))] to-[hsl(var(--brand-red-dark))] hover:from-[hsl(var(--brand-red-dark))] hover:to-[hsl(var(--brand-red))] text-white px-8 py-5 text-base font-semibold transition-all duration-500 hover:scale-105 rounded-full"
             >
               AGENDAR SERVIÇOS
               <ChevronRight className="ml-2" size={18} />
@@ -116,7 +121,7 @@ const HeroSection = () => {
             className={`w-3 h-3 rounded-full transition-all duration-300 ${
               index === currentSlide
                 ? "bg-[hsl(var(--brand-red))] scale-125"
-                : "bg-[hsl(var(--brand-white))]/50 hover:bg-[hsl(var(--brand-white))]/80"
+                : "bg-white/50 hover:bg-white/80"
             }`}
           />
         ))}

@@ -1,29 +1,33 @@
-import Header from "@/components/ui/Header";
-import HeroSection from "@/components/ui/HeroSection";
-import AboutSection from "@/components/ui/AboutSection";
-import PurposeSection from "@/components/ui/PurposeSection";
-import ServicesSection from "@/components/ui/ServicesSection";
-import EventsSection from "@/components/ui/EventsSection";
-import TestimonialsSection from "@/components/ui/TestimonialsSection";
-import CareersSection from "@/components/ui/CareersSection";
-import ContactSection from "@/components/ui/ContactSection";
-import Footer from "@/components/ui/Footer";
-import WhatsAppFloatButton from "@/components/ui/WhatsAppFloatButton";
+import Header from "@/components/Header";
+import HeroSection from "@/components/HeroSection";
+import AboutSection from "@/components/AboutSection";
+import PurposeSection from "@/components/PurposeSection";
+import ServicesSection from "@/components/ServicesSection";
+
+import TestimonialsSection from "@/components/TestimonialsSection";
+import CareersSection from "@/components/CareersSection";
+import ContactSection from "@/components/ContactSection";
+import Footer from "@/components/Footer";
+import WhatsAppFloatButton from "@/components/WhatsAppFloatButton";
+import SEO from "@/components/SEO";
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
+    <>
+      <SEO />
       <Header />
-      <HeroSection />
-      <AboutSection />
-      <PurposeSection />
-      <ServicesSection />
-      <EventsSection />
-      <TestimonialsSection />
-      <CareersSection />
-      <ContactSection />
+      <main>
+        <HeroSection />
+        <AboutSection />
+        <PurposeSection />
+        <ServicesSection />
+        
+        <TestimonialsSection />
+        <CareersSection />
+        <ContactSection />
+      </main>
       <Footer />
       <WhatsAppFloatButton />
-    </div>
+    </>
   );
 }
