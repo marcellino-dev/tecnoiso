@@ -105,16 +105,7 @@ const Header = () => {
                   {item.label}
                 </a>
               ))}
-              <a
-                href="https://tecnoiso-shop.vercel.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-[hsl(var(--header-text))] hover:text-[hsl(var(--brand-red))] font-semibold px-4 transition-colors duration-300"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <ShoppingBag size={18} />
-                SHOP
-              </a>
+             
             </nav>
           </div>
         )}
