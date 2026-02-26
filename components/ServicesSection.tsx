@@ -268,10 +268,7 @@ const ServicesSection = () => {
         {/* ── Cabeçalho da seção ── */}
         <header className="text-center mb-16 max-w-3xl mx-auto">
           {/* Pílula de identificação */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[hsl(var(--brand-red))]/20 bg-[hsl(var(--brand-red))]/5 text-[hsl(var(--brand-red))] text-sm font-medium mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--brand-red))] animate-pulse" />
-            O que oferecemos
-          </div>
+       
 
           <h2
             id="services-heading"
