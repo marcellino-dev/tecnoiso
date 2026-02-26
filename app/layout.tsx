@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     // template: usado nas páginas internas (ex.: "Serviços | Tecnoiso")
     template: "%s | Tecnoiso",
     default:
-      "Tecnoiso - Metrologia, Calibração e Certificação Industrial | Joinville SC",
+      "Home- Tecnoiso",
   },
 
   description:
@@ -49,7 +49,6 @@ export const metadata: Metadata = {
       "Laboratório acreditado INMETRO. Calibração, certificação, manutenção e consultoria em metrologia industrial em Joinville/SC.",
     type: "website",
     url: "https://tecnoiso.com.br",
-    // Caminho relativo → Next.js resolve para https://tecnoiso.com.br/og-image.png
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Tecnoiso" }],
     locale: "pt_BR",
     siteName: "Tecnoiso",
@@ -66,15 +65,18 @@ export const metadata: Metadata = {
   },
 
   // ── Favicons ───────────────────────────────────────────────────────────────
-  // Next.js App Router resolve automaticamente se os arquivos existirem em /app:
-  //   /app/icon.png          → favicon padrão
-  //   /app/apple-icon.png    → iOS home screen
-  // Como o logo está em /public, apontamos manualmente:
-  icons: {
-    icon: "/tecnoiso-logo.png",
-    apple: "/tecnoiso-logo.png",
-    shortcut: "/tecnoiso-logo.png",
-  },
+ icons: {
+  icon: [
+    { url: "/favicons/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
+    { url: "/favicons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    { url: "/favicons/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    { url: "/favicons/favicon.ico" },
+  ],
+  apple: "/favicons/apple-touch-icon.png",
+  shortcut: "/favicons/android-chrome-192x192.png",
+},
+  // ── Web Manifest ───────────────────────────────────────────────────────────
+  manifest: "/favicons/site.webmanifest",
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -98,7 +100,7 @@ const orgSchema = {
     postalCode: "89211-493",
     addressCountry: "BR",
   },
-  telephone: "+554734383175",
+  telephone: "+5547989299801",
   sameAs: [
     "https://www.instagram.com/tecnoiso/",
     "https://www.facebook.com/tecnoiso/",
@@ -106,7 +108,7 @@ const orgSchema = {
   ],
   contactPoint: {
     "@type": "ContactPoint",
-    telephone: "+554734383175",
+    telephone: "+5547989299801",
     contactType: "customer service",
     availableLanguage: "Portuguese",
   },
