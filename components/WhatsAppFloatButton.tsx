@@ -5,7 +5,7 @@ import { useState } from "react";
 
 const WhatsAppFloatButton = () => {
   const [isHovered, setIsHovered] = useState(false);
-  const phoneNumber = "5547989299801";
+  const phoneNumber = "5547434383175";
   const message = "Olá! Gostaria de mais informações sobre os serviços da Tecnoiso.";
   
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;

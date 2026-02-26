@@ -68,17 +68,7 @@ const Header = () => {
           </nav>
 
           <div className="hidden lg:flex items-center space-x-6">
-            <a
-              href="https://tecnoiso-shop.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative flex items-center gap-2 px-4 py-2 rounded-lg bg-[hsl(var(--brand-red))] text-[hsl(var(--brand-white))] font-semibold text-sm hover:bg-[hsl(var(--brand-red-dark))] transition-colors duration-300 group"
-            >
-              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[hsl(var(--brand-red-light))] rounded-full animate-ping opacity-75" />
-              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[hsl(var(--brand-red-light))] rounded-full" />
-              <ShoppingBag size={18} className="group-hover:scale-110 transition-transform duration-300" />
-              SHOP
-            </a>
+           
             <div className="flex items-center space-x-4 border-l border-[hsl(var(--hero-text))]/20 pl-6">
               <a href="https://www.instagram.com/tecnoiso/" target="_blank" rel="noopener noreferrer" className="text-[hsl(var(--hero-text))] hover:text-[hsl(var(--brand-red))] transition-colors duration-300 hover:scale-110">
                 <Instagram size={20} />

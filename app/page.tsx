@@ -4,12 +4,14 @@ import AboutSection from "@/components/AboutSection";
 import PurposeSection from "@/components/PurposeSection";
 import ServicesSection from "@/components/ServicesSection";
 
+
 import TestimonialsSection from "@/components/TestimonialsSection";
-import CareersSection from "@/components/CareersSection";
+
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import WhatsAppFloatButton from "@/components/WhatsAppFloatButton";
 import SEO from "@/components/SEO";
+import EventsSection from "@/components/EventosSection";
 
 export default function Home() {
   return (
@@ -21,10 +23,11 @@ export default function Home() {
         <AboutSection />
         <PurposeSection />
         <ServicesSection />
-        
+                <EventsSection />
         <TestimonialsSection />
-        <CareersSection />
+        
         <ContactSection />
+
       </main>
       <Footer />
       <WhatsAppFloatButton />
