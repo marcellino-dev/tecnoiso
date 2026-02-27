@@ -2,10 +2,10 @@ import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
 import PurposeSection from "@/components/PurposeSection";
-import ServicesSection from "@/components/ServicesSection";
 
 
-import TestimonialsSection from "@/components/TestimonialsSection";
+
+
 import PartnersCarousel from "@/components/Partnerscarousel";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
@@ -23,9 +23,9 @@ export default function Home() {
         <PartnersCarousel />
         <AboutSection />
         <PurposeSection />
-        <ServicesSection />
+   
                 <EventsSection />
-        <TestimonialsSection />
+      
         
         <ContactSection />
 
