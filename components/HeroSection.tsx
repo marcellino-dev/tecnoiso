@@ -51,7 +51,7 @@ const HeroSection = () => {
 };
 
   return (
-    <section id="home" className="h-[750px] relative overflow-hidden">
+    <section id="home" className="h-[700px] relative overflow-hidden">
       {/* Slides usando <img> em vez de background-image */}
       <div className="absolute inset-0">
         {slides.map((slide, index) => (
