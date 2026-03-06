@@ -14,7 +14,7 @@ const AboutSection = () => {
     { value: "20+", label: "Anos de experiência" },
     { value: "5000+", label: "Calibrações realizadas" },
     { value: "100%", label: "Satisfação dos clientes" },
-    { value: "24h", label: "Atendimento ágil" },
+    { value: "Atendimento ", label: "Personalizado" },
   ];
 
   return (
