@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 
-const slide1 = "/slide1-precision.jpg";
-const slide2 = "/slide2-calibration.jpg";
-const slide3 = "/slide3-certification.jpg";
+const slide1 = "/banner/slide1-precision.jpg";
+const slide2 = "/banner/slide2-calibration.jpg";
+const slide3 = "/banner/slide3-certification.jpg";
 
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
