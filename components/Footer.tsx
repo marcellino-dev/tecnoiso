@@ -1,75 +1,37 @@
 "use client"
 
-import { Instagram, Facebook, Linkedin, Mail, Phone, MapPin } from "lucide-react";
+import { Instagram, Linkedin, Mail, Phone, MapPin } from "lucide-react";
 
 const Footer = () => {
   return (
     <footer className="bg-[hsl(var(--brand-black))] text-[hsl(var(--brand-white))] py-16">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-1">
-            <p className="text-gray-300 mb-6 max-w-md">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+          {/* ── COLUNA 1: Texto ── */}
+          <div>
+            <p className="text-gray-300 text-sm leading-relaxed">
               A Tecnoiso conta com toda estrutura para atender as necessidades dos clientes, com laboratórios próprios e metodologia certificada pelo INMETRO.
-              Um dos laboratórios é geral e o outro é físico-químico, bem como um laboratório móvel que vai até a sua empresa para realizar serviços de calibração e manutenção.
+              Um dos laboratórios é geral e o outro é físico-químico, bem como um laboratório móvel que vai até a sua empresa.
               Tudo com a mesma qualidade e garantia.
             </p>
-            <div className="flex space-x-3">
-              <a 
-                href="https://www.instagram.com/tecnoiso/" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-[hsl(var(--brand-red))]/80 transition-colors duration-300"
-              >
-                <Instagram size={20} />
-              </a>
-              <a 
-                href="https://www.facebook.com/tecnoiso/?locale=pt_BR" 
-                className="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-[hsl(var(--brand-red))]/80 transition-colors duration-300"
-              >
-                <Facebook size={20} />
-              </a>
-              <a 
-                href="https://www.linkedin.com/company/tecnoso-tecnologia-e-soluções-industriais-ltda/posts/?feedView=all" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-[hsl(var(--brand-red))]/80 transition-colors duration-300"
-              >
-                <Linkedin size={20} />
-              </a>
-            </div>
           </div>
 
+          {/* ── COLUNA 2: Serviços ── */}
           <div>
             <h3 className="text-lg font-bold mb-6">Serviços</h3>
             <ul className="space-y-3">
-              <li>
-                <a href="#servicos" className="text-gray-300 hover:text-[hsl(var(--brand-red))] transition-colors duration-300">
-                  Calibração
-                </a>
-              </li>
-              <li>
-                <a href="#servicos" className="text-gray-300 hover:text-[hsl(var(--brand-red))] transition-colors duration-300">
-                  Certificação
-                </a>
-              </li>
-              <li>
-                <a href="#servicos" className="text-gray-300 hover:text-[hsl(var(--brand-red))] transition-colors duration-300">
-                  Manutenção
-                </a>
-              </li>
-              <li>
-                <a href="#servicos" className="text-gray-300 hover:text-[hsl(var(--brand-red))] transition-colors duration-300">
-                  Consultoria
-                </a>
-              </li>
-              <li>
-                <a href="#servicos" className="text-gray-300 hover:text-[hsl(var(--brand-red))] transition-colors duration-300">
-                  Treinamentos
-                </a>
-              </li>
+              {["Calibração", "Certificação", "Manutenção", "Consultoria", "Treinamentos"].map((s) => (
+                <li key={s}>
+                  <a href="#servicos" className="text-gray-300 hover:text-[hsl(var(--brand-red))] transition-colors duration-300">
+                    {s}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
+          {/* ── COLUNA 3: Contato ── */}
           <div>
             <h3 className="text-lg font-bold mb-6">Contato</h3>
             <div className="space-y-4">
@@ -82,20 +44,49 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-[hsl(var(--brand-red))] flex-shrink-0" />
-                <p className="text-gray-300 text-sm">
-                  (47) 3438-3175
-                </p>
+                <p className="text-gray-300 text-sm">(47) 3438-3175</p>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-[hsl(var(--brand-red))] flex-shrink-0" />
-                <p className="text-gray-300 text-sm">
-                  contato@tecnoiso.com.br
-                </p>
+                <p className="text-gray-300 text-sm">contato@tecnoiso.com.br</p>
               </div>
             </div>
           </div>
+
+          {/* ── COLUNA 4: CEO + redes pessoais ── */}
+          <div className="flex flex-col items-center text-center">
+            <img
+              src="/ceo/Leonardo Rosa Junior.jpg"
+              alt="Leonardo Rosa Junior"
+              className="w-28 h-28 rounded-full object-cover object-top border-2 border-[hsl(var(--brand-red))] mb-4"
+            />
+            <p className="text-white font-semibold text-sm">Leonardo Rosa Junior</p>
+            <p className="text-[hsl(var(--brand-red))] text-xs mt-1 mb-4">CEO & Fundador</p>
+
+            {/* Redes sociais pessoais do CEO */}
+            <div className="flex space-x-3">
+              <a
+                href="https://www.instagram.com/leorosajr/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-[hsl(var(--brand-red))]/80 transition-colors duration-300"
+              >
+                <Instagram size={20} />
+              </a>
+              <a
+                href="https://br.linkedin.com/in/leonardo-rosa-junior-8b68264b"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-[hsl(var(--brand-red))]/80 transition-colors duration-300"
+              >
+                <Linkedin size={20} />
+              </a>
+            </div>
+          </div>
+
         </div>
 
+        {/* ── RODAPÉ INFERIOR ── */}
         <div className="border-t border-gray-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
             © 2026 TECNOISO TECNOLOGIA E SOLUÇÕES INDUSTRIAIS LTDA.

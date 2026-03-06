@@ -9,7 +9,6 @@ import PurposeSection from "@/components/PurposeSection";
 
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
-import WhatsAppFloatButton from "@/components/WhatsAppFloatButton";
 
 import EventsSection from "@/components/EventosSection";
 
@@ -31,7 +30,7 @@ export default function Home() {
 
       </main>
       <Footer />
-      <WhatsAppFloatButton />
+    
     </>
   );
 }

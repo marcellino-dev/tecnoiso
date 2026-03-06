@@ -123,9 +123,7 @@ const EventsSection = () => {
             Eventos &{" "}
             <span className="text-[hsl(var(--brand-red))]">Palestras</span>
           </h2>
-          <p className="text-muted-foreground text-sm max-w-xs text-right hidden md:block">
-            Role para explorar nossos workshops, palestras e treinamentos.
-          </p>
+          
         </div>
       </div>
 
