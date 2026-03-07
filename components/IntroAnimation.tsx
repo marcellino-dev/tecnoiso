@@ -15,27 +15,18 @@ export default function IntroAnimation() {
     Math.round(5 + (i / (word.length - 1)) * 88)
   );
 
-  // ─── Background: Linhas Vivas ───────────────────────────────────────
+  // ─── Background: Linhas Vivas ─────────────────────────────────────────────
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d')!;
     let t = 0, raf: number, running = true;
-
-    const resize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    };
+    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
     resize();
-
     const lines = Array.from({ length: 14 }, (_, i) => ({
-      phase: i * 0.52,
-      amp: 18 + Math.random() * 28,
-      freq: 0.007 + Math.random() * 0.007,
-      speed: 0.006 + Math.random() * 0.007,
-      y: i / 13,
+      phase: i * 0.52, amp: 18 + Math.random() * 28,
+      freq: 0.007 + Math.random() * 0.007, speed: 0.006 + Math.random() * 0.007, y: i / 13,
     }));
-
     const draw = () => {
       if (!running) return;
       const W = canvas.width, H = canvas.height;
@@ -55,53 +46,39 @@ export default function IntroAnimation() {
       raf = requestAnimationFrame(draw);
     };
     draw();
-
     return () => { running = false; cancelAnimationFrame(raf); };
   }, []);
 
-  // ─── Progress + Slice reveal ────────────────────────────────────────
+  // ─── Progress + Slice reveal ──────────────────────────────────────────────
   useEffect(() => {
+    // Se já viu a intro antes, remove o marginTop imediatamente e encerra
     if (sessionStorage.getItem('tecnoiso_intro_done')) {
+      const site = document.getElementById('site-content');
+      if (site) site.style.marginTop = '0';
       setPhase('done');
       return;
     }
 
     document.body.style.overflow = 'hidden';
 
-    const site = document.getElementById('site-content');
-    if (site) {
-      site.style.transition = 'none';
-      site.style.transform = 'translateY(0)';
-    }
-
     const revealed = new Set<number>();
-
     const interval = setInterval(() => {
       if (doneRef.current) return;
-
-      progressRef.current = Math.min(
-        progressRef.current + Math.random() * 2.4 + 0.6,
-        100
-      );
+      progressRef.current = Math.min(progressRef.current + Math.random() * 2.4 + 0.6, 100);
       const p = Math.floor(progressRef.current);
 
       word.split('').forEach((_, i) => {
         if (revealed.has(i) || p < revealAt[i]) return;
         revealed.add(i);
-
         const top = topRef.current[i];
         const bot = botRef.current[i];
         if (!top || !bot) return;
-
-        // Snap to off-screen positions (no transition yet)
         top.style.transition = 'none';
         bot.style.transition = 'none';
         top.style.opacity = '1';
         bot.style.opacity = '1';
         top.style.transform = 'translateY(-100%)';
         bot.style.transform = 'translateY(100%)';
-
-        // Double rAF ensures the "none" transition is painted before we set the real one
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             const delay = `${i * 0.03}s`;
@@ -127,7 +104,7 @@ export default function IntroAnimation() {
     return () => clearInterval(interval);
   }, []);
 
-  // ─── Lifting animation ──────────────────────────────────────────────
+  // ─── Lifting animation ────────────────────────────────────────────────────
   useEffect(() => {
     if (phase !== 'lifting') return;
 
@@ -139,20 +116,21 @@ export default function IntroAnimation() {
     const easing   = 'cubic-bezier(0.65, 0, 0.35, 1)';
 
     requestAnimationFrame(() => {
+      // Intro sobe para fora da tela
       intro.style.transition = `transform ${duration} ${easing}`;
       intro.style.transform  = 'translateY(-100%)';
-      site.style.transition  = `transform ${duration} ${easing}`;
-      site.style.transform   = 'translateY(-100vh)';
+
+      // Site sobe removendo o marginTop com animação
+      site.style.transition  = `margin-top ${duration} ${easing}`;
+      site.style.marginTop   = '0';
     });
 
     setTimeout(() => {
-      setPhase('done');
       document.body.style.overflow = '';
-      if (site) {
-        site.style.transition = 'none';
-        site.style.transform  = '';
-        site.style.marginTop  = '0';
-      }
+      if (site) site.style.transition = 'none';
+      // Esconde o intro-panel imediatamente para não deixar espaço preto
+      if (intro) intro.style.display = 'none';
+      setPhase('done');
     }, 1700);
   }, [phase]);
 
@@ -161,12 +139,9 @@ export default function IntroAnimation() {
   const FONT: React.CSSProperties = {
     fontFamily: "'Rajdhani', sans-serif",
     fontSize: 'clamp(48px, 10vw, 80px)',
-    fontWeight: 700,
-    color: '#fff',
-    letterSpacing: '14px',
-    lineHeight: '1',
-    whiteSpace: 'nowrap',
-    userSelect: 'none',
+    fontWeight: 700, color: '#fff',
+    letterSpacing: '14px', lineHeight: '1',
+    whiteSpace: 'nowrap', userSelect: 'none',
   };
 
   return (
@@ -184,72 +159,26 @@ export default function IntroAnimation() {
         overflow: 'hidden',
       }}
     >
-      {/* Linhas Vivas canvas */}
-      <canvas
-        ref={canvasRef}
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
-      />
+      <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
 
-      {/* Radial vignette */}
       <div style={{
         position: 'absolute', inset: 0,
         background: 'radial-gradient(ellipse at 50% 50%, transparent 25%, rgba(0,0,0,0.65) 100%)',
         pointerEvents: 'none',
       }} />
 
-      {/* Word */}
       <div style={{ position: 'relative', zIndex: 10, display: 'flex' }}>
         {word.split('').map((l, i) => (
-          /*
-           * Each letter wrapper:
-           * - overflow: hidden → clips the halves during slide-in
-           * - position: relative → anchors the absolute children
-           * - The invisible spacer <span> defines the natural width/height
-           */
-          <div
-            key={i}
-            style={{
-              position: 'relative',
-              overflow: 'hidden',
-              display: 'inline-block',
-            }}
-          >
-            {/* Invisible spacer — sets the container size */}
-            <span style={{ ...FONT, visibility: 'hidden', display: 'block' }}>
-              {l}
-            </span>
-
-            {/* Top half — clips bottom 50%, slides in from above */}
-            <span
-              ref={el => { topRef.current[i] = el; }}
-              style={{
-                ...FONT,
-                position: 'absolute',
-                inset: 0,
-                display: 'block',
-                clipPath: 'inset(0 0 50% 0)',
-                opacity: 0,
-                transform: 'translateY(-100%)',
-              }}
-            >
-              {l}
-            </span>
-
-            {/* Bottom half — clips top 50%, slides in from below */}
-            <span
-              ref={el => { botRef.current[i] = el; }}
-              style={{
-                ...FONT,
-                position: 'absolute',
-                inset: 0,
-                display: 'block',
-                clipPath: 'inset(50% 0 0 0)',
-                opacity: 0,
-                transform: 'translateY(100%)',
-              }}
-            >
-              {l}
-            </span>
+          <div key={i} style={{ position: 'relative', overflow: 'hidden', display: 'inline-block' }}>
+            <span style={{ ...FONT, visibility: 'hidden', display: 'block' }}>{l}</span>
+            <span ref={el => { topRef.current[i] = el; }} style={{
+              ...FONT, position: 'absolute', inset: 0, display: 'block',
+              clipPath: 'inset(0 0 50% 0)', opacity: 0, transform: 'translateY(-100%)',
+            }}>{l}</span>
+            <span ref={el => { botRef.current[i] = el; }} style={{
+              ...FONT, position: 'absolute', inset: 0, display: 'block',
+              clipPath: 'inset(50% 0 0 0)', opacity: 0, transform: 'translateY(100%)',
+            }}>{l}</span>
           </div>
         ))}
       </div>
