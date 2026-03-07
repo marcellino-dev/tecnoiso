@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, ChevronLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const slide1 = "/banner/slide1-precision.jpg";
 const slide2 = "/banner/slide2-calibration.jpg";
@@ -10,6 +11,7 @@ const slide3 = "/banner/slide3-certification.jpg";
 
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const router = useRouter();
 
   const slides = [
     {
@@ -46,13 +48,9 @@ const HeroSection = () => {
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   const goToSlide = (index: number) => setCurrentSlide(index);
 
- const handleServicesClick = () => {
-  document.getElementById("servicos")?.scrollIntoView({ behavior: "smooth" });
-};
-
   return (
     <section id="home" className="h-[700px] relative overflow-hidden">
-      {/* Slides usando <img> em vez de background-image */}
+      {/* Slides */}
       <div className="absolute inset-0">
         {slides.map((slide, index) => (
           <div
@@ -66,7 +64,6 @@ const HeroSection = () => {
               alt=""
               className="w-full h-full object-cover"
             />
-            {/* Overlay escuro para legibilidade do texto */}
             <div className="absolute inset-0 bg-black/50" />
           </div>
         ))}
@@ -103,7 +100,7 @@ const HeroSection = () => {
 
             <Button
               size="lg"
-              onClick={handleServicesClick}
+              onClick={() => router.push("/servicos")}
               className="bg-gradient-to-r from-[hsl(var(--brand-red))] to-[hsl(var(--brand-red-dark))] hover:from-[hsl(var(--brand-red-dark))] hover:to-[hsl(var(--brand-red))] text-white px-8 py-5 text-base font-semibold transition-all duration-500 hover:scale-105 rounded-full"
             >
               CONHECER SERVIÇOS
