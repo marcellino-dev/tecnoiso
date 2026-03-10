@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "sonner";
 import IntroAnimation from "@/components/IntroAnimation";
-import Script from "next/script";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tecnoiso.com.br"),
@@ -75,20 +74,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="antialiased">
         {/* Botão flutuante de WhatsApp com integração Goalfy */}
-        <Script
-          src="https://whatsredirect.vercel.app/script"
-          data-webhook="https://flow.goalfy.com.br/automations/v1/cc37d63a-d1ff-424a-a18d-6b81332b4fe9/hooks/catch/"
-          data-numero="4734401719"
-          data-mensagem="Olá, vim do site e gostaria de falar com um consultor"
-          data-campo-integrado-nome="nome"
-          data-campo-integrado-telefone="telefone"
-          data-campo-personalizado-1-nome="Serviço de Interesse"
-          data-campo-personalizado-1-tipo="select"
-          data-campo-personalizado-1-opcoes="Calibração,Certificação,Manutenção,NR13,Automação,Treinamentos,Gerenciamento Metrológico,Locação,Suporte Logístico"
-          data-campo-personalizado-1-placeholder=""
-          data-campo-personalizado-1-obrigatorio="true"
-          strategy="afterInteractive"
-        />
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function() {
+            var s = document.createElement('script');
+            s.src = 'https://whatsredirect.vercel.app/script';
+            s.setAttribute('data-webhook', 'https://flow.goalfy.com.br/automations/v1/cc37d63a-d1ff-424a-a18d-6b81332b4fe9/hooks/catch/');
+            s.setAttribute('data-numero', '4734401719');
+            s.setAttribute('data-mensagem', 'Olá, vim do site e gostaria de falar com um consultor');
+            s.setAttribute('data-campo-integrado-nome', 'nome');
+            s.setAttribute('data-campo-integrado-telefone', 'telefone');
+            s.setAttribute('data-campo-personalizado-1-nome', 'Serviço de Interesse');
+            s.setAttribute('data-campo-personalizado-1-tipo', 'select');
+            s.setAttribute('data-campo-personalizado-1-opcoes', 'Calibração,Certificação,Manutenção,NR13,Automação,Treinamentos,Gerenciamento Metrológico,Locação,Suporte Logístico');
+            s.setAttribute('data-campo-personalizado-1-placeholder', '');
+            s.setAttribute('data-campo-personalizado-1-obrigatorio', 'true');
+            s.onload = function() {
+              document.dispatchEvent(new Event('DOMContentLoaded'));
+            };
+            document.body.appendChild(s);
+          })();
+        ` }} />
 
         <div
           id="stage"
@@ -111,22 +116,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           id="schema-org"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify([orgSchema, websiteSchema, faqSchema]) }}
-        />
-
-        {/* Botão flutuante de WhatsApp com integração Goalfy */}
-        <Script
-          src="https://whatsredirect.vercel.app/script"
-          data-webhook="https://flow.goalfy.com.br/automations/v1/cc37d63a-d1ff-424a-a18d-6b81332b4fe9/hooks/catch/"
-          data-numero="4734401719"
-          data-mensagem="Olá, vim do site e gostaria de falar com um consultor"
-          data-campo-integrado-nome="nome"
-          data-campo-integrado-telefone="telefone"
-          data-campo-personalizado-1-nome="Serviço de Interesse"
-          data-campo-personalizado-1-tipo="select"
-          data-campo-personalizado-1-opcoes="Calibração,Certificação,Manutenção,NR13,Automação,Treinamentos,Gerenciamento Metrológico,Locação,Suporte Logístico"
-          data-campo-personalizado-1-placeholder=""
-          data-campo-personalizado-1-obrigatorio="true"
-          strategy="afterInteractive"
         />
       </body>
     </html>
