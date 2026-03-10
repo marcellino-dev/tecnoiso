@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -40,6 +40,22 @@ const ContactSection = () => {
     name: "", company: "", email: "", phone: "", service: "", message: "",
   });
 
+  // Captura UTMs da URL automaticamente
+  const [utms, setUtms] = useState({
+    utm_source: "", utm_medium: "", utm_campaign: "", utm_term: "", utm_content: "",
+  });
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setUtms({
+      utm_source: params.get("utm_source") || "",
+      utm_medium: params.get("utm_medium") || "",
+      utm_campaign: params.get("utm_campaign") || "",
+      utm_term: params.get("utm_term") || "",
+      utm_content: params.get("utm_content") || "",
+    });
+  }, []);
+
   const contactInfo = [
     { icon: MapPin, title: "Endereço", content: "R. Dona Emma, 1541 - Floresta\nJoinville - SC, 89211-493" },
     { icon: Phone,  title: "Telefone", content: "(47) 3438-3175" },
@@ -77,7 +93,7 @@ const ContactSection = () => {
       const response = await fetch("/api/send-quote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(trimmed),
+        body: JSON.stringify({ ...trimmed, ...utms }),
       });
 
       const data = await response.json();

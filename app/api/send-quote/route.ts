@@ -9,6 +9,12 @@ interface QuoteRequestBody {
   phone: string;
   service?: string;
   message: string;
+  // UTMs de rastreamento
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_term?: string;
+  utm_content?: string;
 }
 
 // Validações
@@ -37,6 +43,11 @@ export async function POST(req: NextRequest) {
       phone: body.phone?.trim(),
       service: body.service?.trim() || "",
       message: body.message?.trim(),
+      utm_source: body.utm_source?.trim() || "",
+      utm_medium: body.utm_medium?.trim() || "",
+      utm_campaign: body.utm_campaign?.trim() || "",
+      utm_term: body.utm_term?.trim() || "",
+      utm_content: body.utm_content?.trim() || "",
     };
 
     // Valida
@@ -174,10 +185,28 @@ export async function POST(req: NextRequest) {
       `,
     };
 
-    // Envia os dois e-mails em paralelo
+    // Envia e-mails + webhook Goalfy em paralelo
     await Promise.all([
       transporter.sendMail(internalMailOptions),
       transporter.sendMail(clientMailOptions),
+      fetch("https://flow.goalfy.com.br/automations/v1/cc37d63a-d1ff-424a-a18d-6b81332b4fe9/hooks/catch/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: trimmed.name,
+          email: trimmed.email,
+          telefone: trimmed.phone,
+          empresa: trimmed.company,
+          "Serviço de Interesse": trimmed.service,
+          mensagem: trimmed.message,
+          utm_source: trimmed.utm_source,
+          utm_medium: trimmed.utm_medium,
+          utm_campaign: trimmed.utm_campaign,
+          utm_term: trimmed.utm_term,
+          utm_content: trimmed.utm_content,
+          origem: "site",
+        }),
+      }),
     ]);
 
     return NextResponse.json({ success: true });

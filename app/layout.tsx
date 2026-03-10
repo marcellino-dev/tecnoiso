@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "sonner";
 import IntroAnimation from "@/components/IntroAnimation";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tecnoiso.com.br"),
@@ -73,14 +74,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&display=swap" rel="stylesheet" />
       </head>
       <body className="antialiased">
-        {/*
-          stage: container com overflow hidden e position relative.
-          - intro-panel (absolute, 100vh) fica em cima
-          - site-content fica logo abaixo no fluxo normal
-          Quando a animação dispara, intro-panel e site-content
-          sobem juntos via translateY(-100%) sincronizado,
-          criando o efeito de puxar o site para cima.
-        */}
+        {/* Botão flutuante de WhatsApp com integração Goalfy */}
+        <Script
+          src="https://whatsredirect.vercel.app/script"
+          data-webhook="https://flow.goalfy.com.br/automations/v1/cc37d63a-d1ff-424a-a18d-6b81332b4fe9/hooks/catch/"
+          data-numero="4734401719"
+          data-mensagem="Olá, vim do site e gostaria de falar com um consultor"
+          data-campo-integrado-nome="nome"
+          data-campo-integrado-telefone="telefone"
+          data-campo-personalizado-1-nome="Serviço de Interesse"
+          data-campo-personalizado-1-tipo="select"
+          data-campo-personalizado-1-opcoes="Calibração,Certificação,Manutenção,NR13,Automação,Treinamentos,Gerenciamento Metrológico,Locação,Suporte Logístico"
+          data-campo-personalizado-1-placeholder=""
+          data-campo-personalizado-1-obrigatorio="true"
+          strategy="afterInteractive"
+        />
+
         <div
           id="stage"
           style={{
@@ -102,6 +111,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           id="schema-org"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify([orgSchema, websiteSchema, faqSchema]) }}
+        />
+
+        {/* Botão flutuante de WhatsApp com integração Goalfy */}
+        <Script
+          src="https://whatsredirect.vercel.app/script"
+          data-webhook="https://flow.goalfy.com.br/automations/v1/cc37d63a-d1ff-424a-a18d-6b81332b4fe9/hooks/catch/"
+          data-numero="4734401719"
+          data-mensagem="Olá, vim do site e gostaria de falar com um consultor"
+          data-campo-integrado-nome="nome"
+          data-campo-integrado-telefone="telefone"
+          data-campo-personalizado-1-nome="Serviço de Interesse"
+          data-campo-personalizado-1-tipo="select"
+          data-campo-personalizado-1-opcoes="Calibração,Certificação,Manutenção,NR13,Automação,Treinamentos,Gerenciamento Metrológico,Locação,Suporte Logístico"
+          data-campo-personalizado-1-placeholder=""
+          data-campo-personalizado-1-obrigatorio="true"
+          strategy="afterInteractive"
         />
       </body>
     </html>
