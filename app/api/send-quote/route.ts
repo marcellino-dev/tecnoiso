@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
     // E-mail enviado para a empresa (notificação interna)
     const internalMailOptions = {
       from: `"Formulário do Site" <${process.env.SMTP_EMAIL}>`,
-      to: `${process.env.RECIPIENT_EMAIL}, maristela@tecnoiso.com.br`, // e-mails que vão receber os orçamentos
+      to: `${process.env.RECIPIENT_EMAIL}, maristela@tecnoiso.com`, // e-mails que vão receber os orçamentos
       replyTo: trimmed.email,     // responder já vai direto pro cliente
       subject: `📋 Novo orçamento de ${trimmed.name}`,
       html: `
