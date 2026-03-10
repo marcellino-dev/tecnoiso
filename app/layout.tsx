@@ -71,27 +71,50 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="pt-BR">
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&display=swap" rel="stylesheet" />
+        {/* Google Tag Manager */}
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-5M69SNRH');
+        ` }} />
       </head>
       <body className="antialiased">
-        {/* Botão flutuante de WhatsApp com integração Goalfy */}
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-5M69SNRH"
+            height="0" width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
+        </noscript>
+
+        {/* Botão WhatsApp — carrega após a intro terminar (~3s) */}
         <script dangerouslySetInnerHTML={{ __html: `
           (function() {
-            var s = document.createElement('script');
-            s.src = 'https://whatsredirect.vercel.app/script';
-            s.setAttribute('data-webhook', 'https://flow.goalfy.com.br/automations/v1/cc37d63a-d1ff-424a-a18d-6b81332b4fe9/hooks/catch/');
-            s.setAttribute('data-numero', '4734401719');
-            s.setAttribute('data-mensagem', 'Olá, vim do site e gostaria de falar com um consultor');
-            s.setAttribute('data-campo-integrado-nome', 'nome');
-            s.setAttribute('data-campo-integrado-telefone', 'telefone');
-            s.setAttribute('data-campo-personalizado-1-nome', 'Serviço de Interesse');
-            s.setAttribute('data-campo-personalizado-1-tipo', 'select');
-            s.setAttribute('data-campo-personalizado-1-opcoes', 'Calibração,Certificação,Manutenção,NR13,Automação,Treinamentos,Gerenciamento Metrológico,Locação,Suporte Logístico');
-            s.setAttribute('data-campo-personalizado-1-placeholder', '');
-            s.setAttribute('data-campo-personalizado-1-obrigatorio', 'true');
-            s.onload = function() {
-              document.dispatchEvent(new Event('DOMContentLoaded'));
-            };
-            document.body.appendChild(s);
+            function carregarWhatsapp() {
+              var s = document.createElement('script');
+              s.src = 'https://whatsredirect.vercel.app/script';
+              s.setAttribute('data-webhook', 'https://flow.goalfy.com.br/automations/v1/cc37d63a-d1ff-424a-a18d-6b81332b4fe9/hooks/catch/');
+              s.setAttribute('data-numero', '4734401719');
+              s.setAttribute('data-mensagem', 'Olá, vim do site e gostaria de falar com um consultor');
+              s.setAttribute('data-campo-integrado-nome', 'nome');
+              s.setAttribute('data-campo-integrado-telefone', 'telefone');
+              s.setAttribute('data-campo-personalizado-1-nome', 'Serviço de Interesse');
+              s.setAttribute('data-campo-personalizado-1-tipo', 'select');
+              s.setAttribute('data-campo-personalizado-1-opcoes', 'Calibração,Certificação,Manutenção,NR13,Automação,Treinamentos,Gerenciamento Metrológico,Locação,Suporte Logístico');
+              s.setAttribute('data-campo-personalizado-1-placeholder', '');
+              s.setAttribute('data-campo-personalizado-1-obrigatorio', 'true');
+              s.onload = function() {
+                document.dispatchEvent(new Event('DOMContentLoaded'));
+              };
+              document.body.appendChild(s);
+            }
+            // Aguarda 4s para a intro terminar antes de carregar o botão
+            window.addEventListener('load', function() {
+              setTimeout(carregarWhatsapp, 4000);
+            });
           })();
         ` }} />
 
