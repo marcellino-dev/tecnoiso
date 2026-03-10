@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MapPin, Phone, Mail, Clock, Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 const fadeUp: Variants = {
@@ -62,6 +61,8 @@ const ContactSection = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = Object.fromEntries(Object.entries(formData).map(([k, v]) => [k, v.trim()]));
+
+    // Validações no cliente
     if (!trimmed.name || !trimmed.email || !trimmed.phone || !trimmed.message) {
       toast.error("Por favor, preencha todos os campos obrigatórios."); return;
     }
@@ -73,12 +74,20 @@ const ContactSection = () => {
 
     setIsSubmitting(true);
     try {
-      const { data, error } = await supabase.functions.invoke("send-quote-request", { body: trimmed });
-      if (error) throw error;
-      if (data?.success) {
+      const response = await fetch("/api/send-quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(trimmed),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
         toast.success("Mensagem enviada! Entraremos em contato em breve.");
         setFormData({ name: "", company: "", email: "", phone: "", service: "", message: "" });
-      } else throw new Error(data?.error || "Erro ao enviar");
+      } else {
+        throw new Error(data.error || "Erro ao enviar");
+      }
     } catch {
       toast.error("Erro ao enviar. Tente novamente ou ligue para nós.");
     } finally {
@@ -158,7 +167,24 @@ const ContactSection = () => {
                   </div>
                   <div>
                     <label className="text-sm font-medium text-foreground mb-2 block">Serviço de Interesse</label>
-                    <Input name="service" value={formData.service} onChange={handleInputChange} placeholder="Ex: Calibração de instrumentos de pressão" disabled={isSubmitting} maxLength={300} />
+                    <select
+                      name="service"
+                      value={formData.service}
+                      onChange={(e) => setFormData(prev => ({ ...prev, service: e.target.value }))}
+                      disabled={isSubmitting}
+                      className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 text-foreground"
+                    >
+                      <option value="">Selecione um serviço...</option>
+                      <option value="Calibração">Calibração</option>
+                      <option value="Certificação">Certificação</option>
+                      <option value="Manutenção">Manutenção</option>
+                      <option value="NR13">NR13</option>
+                      <option value="Automação">Automação</option>
+                      <option value="Treinamentos">Treinamentos</option>
+                      <option value="Gerenciamento Metrológico">Gerenciamento Metrológico</option>
+                      <option value="Locação">Locação</option>
+                      <option value="Suporte Logístico">Suporte Logístico</option>
+                    </select>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-foreground mb-2 block">Mensagem *</label>
