@@ -67,6 +67,25 @@ const ContactSection = () => {
     name: 100, company: 200, email: 254, phone: 20, service: 300, message: 2000,
   };
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const digits = e.target.value.replace(/\D/g, "").slice(0, 11);
+    let masked = "";
+    if (digits.length === 0) {
+      masked = "";
+    } else if (digits.length <= 2) {
+      masked = `(${digits}`;
+    } else if (digits.length <= 6) {
+      masked = `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+    } else if (digits.length <= 10) {
+      // Fixo: (47) 3438-3175
+      masked = `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+    } else {
+      // Celular: (47) 98929-9801
+      masked = `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
+    }
+    setFormData(prev => ({ ...prev, phone: masked }));
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     const max = maxLengths[name] || 500;
@@ -79,14 +98,14 @@ const ContactSection = () => {
     const trimmed = Object.fromEntries(Object.entries(formData).map(([k, v]) => [k, v.trim()]));
 
     // Validações no cliente
-    if (!trimmed.name || !trimmed.email || !trimmed.phone || !trimmed.message) {
+    if (!trimmed.name || !trimmed.email || !trimmed.phone) {
       toast.error("Por favor, preencha todos os campos obrigatórios."); return;
     }
     if (trimmed.name.length < 2) { toast.error("Nome deve ter pelo menos 2 caracteres."); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed.email)) { toast.error("E-mail inválido."); return; }
     const phoneDigits = trimmed.phone.replace(/\D/g, "");
     if (phoneDigits.length < 10 || phoneDigits.length > 15) { toast.error("Telefone inválido."); return; }
-    if (trimmed.message.length < 10) { toast.error("Mensagem deve ter pelo menos 10 caracteres."); return; }
+    if (trimmed.message && trimmed.message.length < 10) { toast.error("Mensagem deve ter pelo menos 10 caracteres."); return; }
 
     setIsSubmitting(true);
     try {
@@ -99,8 +118,8 @@ const ContactSection = () => {
       const data = await response.json();
 
       if (response.ok && data.success) {
-        toast.success("Mensagem enviada! Entraremos em contato em breve.");
         setFormData({ name: "", company: "", email: "", phone: "", service: "", message: "" });
+        window.location.href = "/obrigado";
       } else {
         throw new Error(data.error || "Erro ao enviar");
       }
@@ -178,7 +197,7 @@ const ContactSection = () => {
                     </div>
                     <div>
                       <label className="text-sm font-medium text-foreground mb-2 block">Telefone *</label>
-                      <Input name="phone" value={formData.phone} onChange={handleInputChange} placeholder="(11) 99999-9999" disabled={isSubmitting} maxLength={20} autoComplete="tel" />
+                      <Input name="phone" value={formData.phone} onChange={handlePhoneChange} placeholder="(47) 99999-9999" disabled={isSubmitting} maxLength={15} autoComplete="tel" inputMode="numeric" />
                     </div>
                   </div>
                   <div>
@@ -203,7 +222,7 @@ const ContactSection = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-foreground mb-2 block">Mensagem *</label>
+                    <label className="text-sm font-medium text-foreground mb-2 block">Mensagem</label>
                     <Textarea name="message" value={formData.message} onChange={handleInputChange} placeholder="Descreva suas necessidades..." className="min-h-[120px]" disabled={isSubmitting} maxLength={2000} />
                   </div>
                   <Button type="submit" size="lg" disabled={isSubmitting}

@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import HeroBannerServicos from "@/components/Herobannerservico";
 import ServicosSection from "@/components/ServicosSection";
+import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 
 export const metadata = {
@@ -15,6 +16,7 @@ export default function ServicosPage() {
       <main>
         <HeroBannerServicos />
         <ServicosSection />
+        <ContactSection />
       </main>
       <Footer />
     </>

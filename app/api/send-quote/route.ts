@@ -8,7 +8,7 @@ interface QuoteRequestBody {
   email: string;
   phone: string;
   service?: string;
-  message: string;
+  message?: string;
   // UTMs de rastreamento
   utm_source?: string;
   utm_medium?: string;
@@ -26,8 +26,6 @@ function validateBody(body: QuoteRequestBody): string | null {
   const phoneDigits = (body.phone || "").replace(/\D/g, "");
   if (phoneDigits.length < 10 || phoneDigits.length > 15)
     return "Telefone inválido.";
-  if (!body.message || body.message.trim().length < 10)
-    return "Mensagem deve ter pelo menos 10 caracteres.";
   return null;
 }
 
@@ -42,7 +40,7 @@ export async function POST(req: NextRequest) {
       email: body.email?.trim().toLowerCase(),
       phone: body.phone?.trim(),
       service: body.service?.trim() || "",
-      message: body.message?.trim(),
+      message: body.message?.trim() || "",
       utm_source: body.utm_source?.trim() || "",
       utm_medium: body.utm_medium?.trim() || "",
       utm_campaign: body.utm_campaign?.trim() || "",
@@ -70,7 +68,7 @@ export async function POST(req: NextRequest) {
     // E-mail enviado para a empresa (notificação interna)
     const internalMailOptions = {
       from: `"Formulário do Site" <${process.env.SMTP_EMAIL}>`,
-      to: `${process.env.RECIPIENT_EMAIL}, maristela@tecnoiso.com`, // e-mails que vão receber os orçamentos
+      to: `${process.env.RECIPIENT_EMAIL}, maristela@tecnoiso.com.br`, // e-mails que vão receber os orçamentos
       replyTo: trimmed.email,     // responder já vai direto pro cliente
       subject: `📋 Novo orçamento de ${trimmed.name}`,
       html: `
@@ -126,12 +124,13 @@ export async function POST(req: NextRequest) {
               </tr>` : ""}
             </table>
 
+            ${trimmed.message ? `
             <div style="margin-top: 20px;">
               <strong style="color: #555;">💬 Mensagem:</strong>
               <div style="background: white; border-left: 4px solid #c0392b; padding: 16px; margin-top: 10px; border-radius: 4px; color: #333; line-height: 1.6;">
                 ${trimmed.message.replace(/\n/g, "<br>")}
               </div>
-            </div>
+            </div>` : ""}
 
             <div style="margin-top: 24px; padding: 16px; background: #fff3cd; border-radius: 6px; border: 1px solid #ffc107;">
               <p style="margin: 0; font-size: 13px; color: #856404;">
