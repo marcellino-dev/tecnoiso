@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
       port: 465,
       secure: true, // SSL
       auth: {
-        user: process.env.SMTP_EMAIL,       // seu Gmail
+        user: process.env.SMTP_EMAIL,        // seu Gmail
         pass: process.env.SMTP_APP_PASSWORD, // senha de app do Google
       },
     });
@@ -68,14 +68,14 @@ export async function POST(req: NextRequest) {
     // E-mail enviado para a empresa (notificação interna)
     const internalMailOptions = {
       from: `"Formulário do Site" <${process.env.SMTP_EMAIL}>`,
-      to: `${process.env.RECIPIENT_EMAIL}, maristela@tecnoiso.com.br`, // e-mails que vão receber os orçamentos
-      replyTo: trimmed.email,     // responder já vai direto pro cliente
+      to: `maristela@tecnoiso.com`, // e-mail que vai receber os orçamentos
+      replyTo: trimmed.email,       // responder já vai direto pro cliente
       subject: `📋 Novo orçamento de ${trimmed.name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background: linear-gradient(135deg, #c0392b, #e74c3c); padding: 30px; border-radius: 10px 10px 0 0;">
             <h1 style="color: white; margin: 0; font-size: 24px;">Nova Solicitação de Orçamento</h1>
-            <p style="color: rgba(255,255,255,0.85); margin: 8px 0 0;">Recebido pelo site tecnoiso.com.br</p>
+            <p style="color: rgba(255,255,255,0.85); margin: 8px 0 0;">Recebido pelo site tecnoiso.com</p>
           </div>
           <div style="background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; border: 1px solid #eee;">
             
