@@ -105,7 +105,6 @@ const ContactSection = () => {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed.email)) { toast.error("E-mail inválido."); return; }
     const phoneDigits = trimmed.phone.replace(/\D/g, "");
     if (phoneDigits.length < 10 || phoneDigits.length > 15) { toast.error("Telefone inválido."); return; }
-    if (trimmed.message && trimmed.message.length < 10) { toast.error("Mensagem deve ter pelo menos 10 caracteres."); return; }
 
     setIsSubmitting(true);
     try {
