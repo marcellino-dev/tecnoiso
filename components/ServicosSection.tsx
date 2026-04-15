@@ -140,6 +140,25 @@ export default function ServicosSection() {
   return (
     <section id="servicos" className="bg-white">
 
+      {/* ── Intro ── */}
+      <div className="bg-white border-b border-gray-100 py-16 px-6 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <h1 className="text-4xl md:text-5xl font-semibold text-gray-900 leading-tight tracking-tight max-w-2xl mx-auto">
+            Precisão que{" "}
+            <span className="text-red-600">transforma</span>{" "}
+            processos industriais
+          </h1>
+          <p className="mt-4 text-gray-500 text-base max-w-lg mx-auto leading-relaxed">
+            Soluções completas em metrologia, calibração e automação industrial com certificação INMETRO.
+          </p>
+        </motion.div>
+      </div>
+
       {/* ── Main Services — alternating rows ── */}
       <div className="divide-y divide-gray-100">
         {mainServices.map((svc, i) => {
@@ -168,20 +187,16 @@ export default function ServicosSection() {
                     style={{ backgroundImage: `url(${svc.bgImage})` }}
                   />
 
-                  {/* Big number watermark */}
                   <span className="absolute top-2 right-4 text-[7rem] font-bold text-gray-300/60 group-hover:text-red-400/80 leading-none select-none transition-colors duration-500 pointer-events-none z-10">
                     {svc.num}
                   </span>
 
-                  {/* Icon ring */}
                   <div className="relative z-10 w-20 h-20 rounded-full border-2 border-red-300 group-hover:border-white/50 transition-colors duration-500 flex items-center justify-center backdrop-blur-sm bg-white/10 group-hover:bg-white/10">
                     <Icon className="w-8 h-8 text-red-600 group-hover:text-white transition-colors duration-500 drop-shadow-sm" />
                   </div>
 
-                  {/* Divider */}
                   <div className="w-8 h-0.5 bg-red-200 group-hover:bg-white/40 transition-colors duration-500 relative z-10" />
 
-                  {/* Label */}
                   <span className="relative z-10 text-[11px] font-semibold tracking-widest uppercase text-gray-500 group-hover:text-white/70 transition-colors duration-500">
                     {svc.title.split(" ")[0]}
                   </span>
