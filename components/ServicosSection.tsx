@@ -28,7 +28,6 @@ const mainServices = [
       "Certificado com rastreabilidade RBC/INMETRO",
       "Atendimento in-loco ou em laboratório",
     ],
-    // ── Imagens em /public/servico/ — ajuste a extensão se necessário ──
     bgImage: "/servico/calibracao.jpg",
   },
   {
@@ -122,7 +121,14 @@ const secondaryServices = [
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.55,
+      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+    },
+  },
 };
 
 const stagger = {
@@ -133,26 +139,6 @@ const stagger = {
 export default function ServicosSection() {
   return (
     <section id="servicos" className="bg-white">
-
-      {/* ── Hero ── */}
-      <div className="bg-white border-b border-gray-100 py-16 px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          
-          <h1 className="text-4xl md:text-5xl font-semibold text-gray-900 leading-tight tracking-tight max-w-2xl mx-auto">
-            Precisão que{" "}
-            <span className="text-red-600">transforma</span>{" "}
-            processos industriais
-          </h1>
-          <p className="mt-4 text-gray-500 text-base max-w-lg mx-auto leading-relaxed">
-            Soluções completas em metrologia, calibração e automação industrial com certificação INMETRO.
-          </p>
-        </motion.div>
-      </div>
 
       {/* ── Main Services — alternating rows ── */}
       <div className="divide-y divide-gray-100">
@@ -177,37 +163,25 @@ export default function ServicosSection() {
               >
                 {/* ── Visual panel ── */}
                 <div className="w-full md:w-5/12 relative overflow-hidden flex flex-col items-center justify-center gap-5 p-10 bg-gray-100">
-
-                  {/*
-                    ① Background image
-                    — scale-110 evita bordas brancas do blur nas extremidades
-                    — blur-sm + low opacity no estado normal
-                    — blur-none + higher opacity ao hover
-                  */}
                   <div
-                    className="
-                      absolute inset-0 scale-110
-                      bg-cover bg-center
-                    "
+                    className="absolute inset-0 scale-110 bg-cover bg-center"
                     style={{ backgroundImage: `url(${svc.bgImage})` }}
                   />
 
-
-
-                  {/* ③ Big number watermark */}
+                  {/* Big number watermark */}
                   <span className="absolute top-2 right-4 text-[7rem] font-bold text-gray-300/60 group-hover:text-red-400/80 leading-none select-none transition-colors duration-500 pointer-events-none z-10">
                     {svc.num}
                   </span>
 
-                  {/* ④ Icon ring */}
+                  {/* Icon ring */}
                   <div className="relative z-10 w-20 h-20 rounded-full border-2 border-red-300 group-hover:border-white/50 transition-colors duration-500 flex items-center justify-center backdrop-blur-sm bg-white/10 group-hover:bg-white/10">
                     <Icon className="w-8 h-8 text-red-600 group-hover:text-white transition-colors duration-500 drop-shadow-sm" />
                   </div>
 
-                  {/* ⑤ Divider */}
+                  {/* Divider */}
                   <div className="w-8 h-0.5 bg-red-200 group-hover:bg-white/40 transition-colors duration-500 relative z-10" />
 
-                  {/* ⑥ Label */}
+                  {/* Label */}
                   <span className="relative z-10 text-[11px] font-semibold tracking-widest uppercase text-gray-500 group-hover:text-white/70 transition-colors duration-500">
                     {svc.title.split(" ")[0]}
                   </span>
@@ -268,7 +242,6 @@ export default function ServicosSection() {
                 href={`/servicos/${svc.slug}`}
                 className="group flex flex-col gap-3 p-7 hover:bg-gray-50 transition-colors duration-200 relative overflow-hidden h-full"
               >
-                {/* Accent bar on hover */}
                 <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-red-600 group-hover:w-full transition-all duration-500" />
 
                 <div className="flex items-start justify-between">
