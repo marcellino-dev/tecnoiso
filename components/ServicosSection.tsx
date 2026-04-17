@@ -172,8 +172,7 @@ export default function ServicosSection() {
               viewport={{ once: true, amount: 0.2 }}
               variants={fadeUp}
             >
-              <Link
-                href={`/servicos/${svc.slug}`}
+              <div
                 className={`
                   group flex flex-col md:flex-row
                   ${isEven ? "" : "md:flex-row-reverse"}
@@ -202,7 +201,7 @@ export default function ServicosSection() {
                   </span>
                 </div>
 
-                {/* Content panel */}
+                {/* ── Content panel ── */}
                 <div className="w-full md:w-7/12 flex flex-col justify-center gap-4 p-8 md:p-12">
                   <span className="inline-flex items-center gap-2 text-[11px] font-semibold text-red-600 bg-red-50 px-3 py-1 rounded-sm w-fit uppercase tracking-wider">
                     <span className="w-1.5 h-1.5 rounded-full bg-red-600" />
@@ -222,12 +221,17 @@ export default function ServicosSection() {
                       </li>
                     ))}
                   </ul>
-                  <div className="flex items-center gap-1.5 text-[13px] font-semibold text-red-600 mt-2 group-hover:gap-2.5 transition-all duration-200">
+
+                  {/*  Botão individual por serviço */}
+                  <Link
+                    href={`/servicos/${svc.slug}`}
+                    className="flex items-center gap-1.5 text-[13px] font-semibold text-red-600 mt-2 hover:gap-2.5 transition-all duration-200 w-fit"
+                  >
                     Saiba mais
                     <ArrowUpRight className="w-4 h-4" />
-                  </div>
+                  </Link>
                 </div>
-              </Link>
+              </div>
             </motion.div>
           );
         })}
@@ -253,17 +257,13 @@ export default function ServicosSection() {
           const Icon = svc.icon;
           return (
             <motion.div key={svc.slug} variants={fadeUp}>
-              <Link
-                href={`/servicos/${svc.slug}`}
-                className="group flex flex-col gap-3 p-7 hover:bg-gray-50 transition-colors duration-200 relative overflow-hidden h-full"
-              >
+              <div className="group flex flex-col gap-3 p-7 hover:bg-gray-50 transition-colors duration-200 relative overflow-hidden h-full">
                 <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-red-600 group-hover:w-full transition-all duration-500" />
 
                 <div className="flex items-start justify-between">
                   <div className="w-10 h-10 rounded-lg bg-white border border-gray-100 flex items-center justify-center group-hover:bg-red-600 group-hover:border-red-600 transition-all duration-300">
                     <Icon className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-300" />
                   </div>
-                  <ArrowUpRight className="w-4 h-4 text-gray-300 opacity-0 group-hover:opacity-100 group-hover:text-red-500 transition-all duration-200 -translate-y-1 translate-x-1 group-hover:translate-y-0 group-hover:translate-x-0" />
                 </div>
 
                 <span className="text-[10px] font-semibold text-red-400 tracking-widest">
@@ -275,7 +275,16 @@ export default function ServicosSection() {
                 <p className="text-[13px] text-gray-400 leading-relaxed">
                   {svc.desc}
                 </p>
-              </Link>
+
+                {/*  Botão individual por serviço */}
+                <Link
+                  href={`/servicos/${svc.slug}`}
+                  className="flex items-center gap-1 text-[12px] font-semibold text-red-600 mt-auto hover:gap-2.5 transition-all duration-200 w-fit"
+                >
+                  Saiba mais
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
             </motion.div>
           );
         })}
