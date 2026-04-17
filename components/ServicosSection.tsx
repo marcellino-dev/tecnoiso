@@ -1,318 +1,235 @@
 "use client";
-import { motion } from "framer-motion";
-import Link from "next/link";
-import {
-  Gauge,
-  Award,
-  Wrench,
-  ShieldCheck,
-  Cpu,
-  GraduationCap,
-  BarChart3,
-  ShoppingCart,
-  Package,
-  Truck,
-  ArrowUpRight,
-} from "lucide-react";
 
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { ArrowUpRight, Gauge, Award, ShieldCheck, BarChart3, Wrench, Cpu, GraduationCap, ShoppingCart, Package, Truck } from "lucide-react";
+
+/* ─────────────────────────────────────────
+   Data
+───────────────────────────────────────── */
 const mainServices = [
   {
-    num: "01",
     slug: "calibracao",
     icon: Gauge,
-    tag: "Rastreabilidade INMETRO",
-    title: "Calibração de instrumentos com alta precisão",
-    desc: "Calibração de instrumentos de medição com total rastreabilidade às normas nacionais e internacionais, garantindo a confiabilidade dos seus processos.",
+    title: "Calibração de Instrumentos",
+    desc: "A calibração garante que seus instrumentos de medição operem com exatidão e confiabilidade. A Tecnoiso realiza esse processo com total rastreabilidade às normas nacionais e internacionais, emitindo certificados reconhecidos por auditorias, órgãos reguladores e sistemas de gestão da qualidade.",
     bullets: [
       "Termômetros, manômetros, balanças e dimensionais",
       "Certificado com rastreabilidade RBC/INMETRO",
-      "Atendimento in-loco ou em laboratório",
+      "Atendimento in-loco ou em laboratório próprio",
+      "Válido para ISO 9001, IATF 16949 e BPF",
     ],
-    bgImage: "/servico/calibracao.jpg",
   },
   {
-    num: "02",
     slug: "certificacao",
     icon: Award,
-    tag: "Acreditado",
-    title: "Certificados acreditados com validade nacional",
-    desc: "Certificados de calibração acreditados pelo INMETRO, reconhecidos por auditorias, órgãos reguladores e sistemas de gestão da qualidade.",
+    title: "Certificados Acreditados",
+    desc: "Emitimos certificados de calibração acreditados pelo INMETRO, com validade nacional e reconhecimento internacional. Nossos certificados atendem plenamente às exigências de auditorias internas e externas, garantindo a conformidade do seu sistema de gestão.",
     bullets: [
-      "Válidos para ISO 9001, IATF 16949 e BPF",
-      "Assinatura digital e código de verificação",
+      "Certificados com assinatura digital e código de verificação",
       "Entrega em até 5 dias úteis",
+      "Conformidade com ISO 9001, IATF 16949 e ANVISA",
     ],
-    bgImage: "/servico/certificados.jpg",
   },
   {
-    num: "03",
     slug: "nr13",
     icon: ShieldCheck,
-    tag: "Norma Regulamentadora",
-    title: "Inspeção de vasos de pressão e caldeiras",
-    desc: "Adequação e inspeção de equipamentos conforme a NR 13, com emissão de prontuário e acompanhamento por profissional habilitado.",
+    title: "Inspeção NR 13",
+    desc: "Realizamos a inspeção de vasos de pressão e caldeiras conforme os requisitos da Norma Regulamentadora NR 13. Todo o processo é conduzido por engenheiro habilitado com ART, garantindo a segurança dos equipamentos e a conformidade legal da sua empresa.",
     bullets: [
       "Inspeção periódica e inicial de vasos e caldeiras",
       "Emissão de prontuário e registro no MTE",
-      "Engenheiro responsável com ART",
+      "Engenheiro responsável com ART emitida",
+      "Laudos técnicos completos e documentação regularizada",
     ],
-    bgImage: "/servico/Inspecao-de-Equipamentos-NR13.jpg",
   },
   {
-    num: "04",
     slug: "gerenciamento",
     icon: BarChart3,
-    tag: "Gestão Completa",
-    title: "Controle total do seu parque de instrumentos",
-    desc: "Gerenciamos todo o ciclo de vida dos seus instrumentos: prazos de calibração, histórico de manutenções, indicadores e relatórios para auditorias.",
+    title: "Gerenciamento de Instrumentos",
+    desc: "Assumimos o controle total do ciclo de vida dos seus instrumentos. Desde os prazos de calibração até o histórico de manutenções, você tem visibilidade completa via dashboard, com relatórios prontos para auditorias e alertas automáticos antes dos vencimentos.",
     bullets: [
-      "Dashboard com vencimentos e status em tempo real",
+      "Dashboard em tempo real com status e vencimentos",
       "Relatórios para ISO, IATF e ANVISA",
-      "Alertas automáticos de vencimento",
+      "Alertas automáticos de vencimento de calibrações",
+      "Histórico completo de cada instrumento",
     ],
-    bgImage: "/servico/controle.jpg",
   },
 ];
 
 const secondaryServices = [
-  {
-    num: "05",
-    slug: "manutencao",
-    icon: Wrench,
-    title: "Manutenção",
-    desc: "Preventiva e corretiva de instrumentos, prolongando a vida útil dos equipamentos.",
-  },
-  {
-    num: "06",
-    slug: "automacao",
-    icon: Cpu,
-    title: "Automação",
-    desc: "Soluções industriais para otimizar processos e aumentar eficiência operacional.",
-  },
-  {
-    num: "07",
-    slug: "treinamentos",
-    icon: GraduationCap,
-    title: "Treinamentos",
-    desc: "Capacitação técnica em metrologia, calibração e instrumentação.",
-  },
-  {
-    num: "08",
-    slug: "vendas",
-    icon: ShoppingCart,
-    title: "Vendas",
-    desc: "Comercialização de instrumentos das melhores marcas do mercado.",
-  },
-  {
-    num: "09",
-    slug: "locacao",
-    icon: Package,
-    title: "Locação",
-    desc: "Instrumentos calibrados para projetos temporários ou sazonais.",
-  },
-  {
-    num: "10",
-    slug: "logistica",
-    icon: Truck,
-    title: "Suporte Logístico",
-    desc: "Coleta e entrega dedicada, com agilidade e segurança garantidas.",
-  },
+  { slug: "manutencao",  icon: Wrench,       title: "Manutenção",        desc: "Preventiva e corretiva de instrumentos de medição, prolongando a vida útil e garantindo a precisão dos equipamentos." },
+  { slug: "automacao",   icon: Cpu,          title: "Automação",         desc: "Soluções industriais de automação para otimizar processos produtivos e aumentar a eficiência operacional." },
+  { slug: "treinamentos",icon: GraduationCap,title: "Treinamentos",      desc: "Capacitação técnica em metrologia, calibração e instrumentação para suas equipes de qualidade e produção." },
+  { slug: "vendas",      icon: ShoppingCart, title: "Vendas",            desc: "Comercialização de instrumentos de medição das melhores marcas nacionais e internacionais." },
+  { slug: "locacao",     icon: Package,      title: "Locação",           desc: "Instrumentos calibrados disponíveis para locação em projetos temporários ou demandas sazonais." },
+  { slug: "logistica",   icon: Truck,        title: "Suporte Logístico", desc: "Coleta e entrega com logística dedicada, garantindo agilidade, rastreabilidade e segurança dos instrumentos." },
 ];
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-    },
-  },
-};
+/* ─────────────────────────────────────────
+   Hero Banner
+───────────────────────────────────────── */
+const HeroBanner = () => {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setVisible(true), 60);
+    return () => clearTimeout(t);
+  }, []);
 
-const stagger = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.07 } },
-};
-
-export default function ServicosSection() {
   return (
-    <section id="servicos" className="bg-white">
+    <section className="relative h-[420px] md:h-[500px] overflow-hidden">
+      {/* Imagem */}
+      <img
+        src="/banner/slide1-precision.jpg"
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{
+          transform: visible ? "scale(1)" : "scale(1.04)",
+          transition: "transform 1.4s cubic-bezier(0.22,1,0.36,1)",
+        }}
+      />
 
-      {/* ── Intro ── */}
-      <div className="border-b border-gray-100 py-10 px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+      {/* Overlay: escurecimento + tint vermelho sutil */}
+      <div className="absolute inset-0 bg-black/55" />
+      <div className="absolute inset-0 bg-[hsl(var(--brand-red))]/10" />
+
+      {/* Gradiente lateral esquerdo vermelho — como o verde da Falcon */}
+      <div className="absolute inset-y-0 left-0 w-2/5 bg-gradient-to-r from-[hsl(var(--brand-red))]/40 to-transparent" />
+
+      {/* Conteúdo alinhado à esquerda */}
+      <div className="relative z-10 h-full flex flex-col justify-center px-8 md:px-16 lg:px-24 max-w-5xl">
+        <div
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(24px)",
+            transition: "opacity 0.7s ease 0.1s, transform 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s",
+          }}
         >
-          <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 leading-tight tracking-tight max-w-xl mx-auto">
-            Precisão que{" "}
-            <span className="text-red-600">transforma</span>{" "}
-            processos industriais
+          
+
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight max-w-2xl">
+            Da calibração à{" "}
+            <span className="text-[hsl(var(--brand-red))]">conformidade</span>{" "}
+            total.
           </h1>
-          <p className="mt-3 text-gray-400 text-sm max-w-md mx-auto leading-relaxed">
-            Soluções completas em metrologia, calibração e automação industrial com certificação INMETRO.
+
+          <p className="mt-4 text-white/60 text-base md:text-lg max-w-lg leading-relaxed">
+            Soluções completas em metrologia, inspeção e automação industrial com certificação INMETRO.
           </p>
-        </motion.div>
+        </div>
       </div>
+    </section>
+  );
+};
 
-      {/* ── Main Services ── */}
-      <div className="divide-y divide-gray-100">
-        {mainServices.map((svc, i) => {
-          const isEven = i % 2 === 0;
-          const Icon = svc.icon;
-          return (
-            <motion.div
-              key={svc.slug}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, amount: 0.15 }}
-              variants={fadeUp}
-            >
+/* ─────────────────────────────────────────
+   Page
+───────────────────────────────────────── */
+export default function ServicosPage() {
+  return (
+    <>
+      <HeroBanner />
+
+      {/* ── Seção escura — serviços principais ── */}
+      <section className="bg-gray-950 text-white">
+
+        {/* Heading da seção */}
+        <div className="px-8 md:px-16 lg:px-24 pt-16 pb-10 border-b border-white/10">
+          <h2 className="text-3xl md:text-4xl font-bold text-[hsl(var(--brand-red))] leading-tight">
+            Soluções em metrologia industrial
+          </h2>
+          <p className="mt-2 text-white/40 text-sm max-w-xl">
+            Atendemos indústrias de todos os segmentos com precisão, rastreabilidade e conformidade normativa.
+          </p>
+        </div>
+
+        {/* Lista de serviços principais */}
+        <div className="divide-y divide-white/10">
+          {mainServices.map((svc) => {
+            const Icon = svc.icon;
+            return (
               <div
-                className={`
-                  group flex flex-col md:flex-row
-                  ${isEven ? "" : "md:flex-row-reverse"}
-                  hover:bg-gray-50/70 transition-colors duration-300
-                `}
+                key={svc.slug}
+                className="group px-8 md:px-16 lg:px-24 py-10 hover:bg-white/[0.03] transition-colors duration-300"
               >
-                {/* ── Visual panel ── */}
-                <div className="w-full md:w-[38%] relative overflow-hidden flex flex-col items-center justify-center gap-3 p-8 bg-gray-100 min-h-[220px]">
-                  <div
-                    className="absolute inset-0 bg-cover bg-center scale-105 group-hover:scale-100 transition-transform duration-700"
-                    style={{ backgroundImage: `url(${svc.bgImage})` }}
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-500" />
+                <div className="flex flex-col md:flex-row md:items-start gap-6 md:gap-12 max-w-5xl">
 
-                  {/* large number */}
-                  <span className="absolute top-2 right-3 text-[6rem] font-bold text-white/10 group-hover:text-white/20 leading-none select-none transition-colors duration-500 pointer-events-none z-10">
-                    {svc.num}
-                  </span>
-
-                  {/* icon circle */}
-                  <div className="relative z-10 w-14 h-14 rounded-full border border-white/30 flex items-center justify-center bg-white/10 backdrop-blur-sm">
-                    <Icon className="w-6 h-6 text-white drop-shadow" />
+                  {/* Ícone + título */}
+                  <div className="flex-shrink-0 flex items-start gap-4 md:w-64">
+                    <div className="w-10 h-10 rounded-sm bg-[hsl(var(--brand-red))]/10 border border-[hsl(var(--brand-red))]/20 flex items-center justify-center flex-shrink-0 group-hover:bg-[hsl(var(--brand-red))] group-hover:border-[hsl(var(--brand-red))] transition-all duration-300">
+                      <Icon className="w-5 h-5 text-[hsl(var(--brand-red))] group-hover:text-white transition-colors duration-300" />
+                    </div>
+                    <h3 className="text-[15px] font-bold text-white leading-snug pt-1.5">
+                      {svc.title}
+                    </h3>
                   </div>
 
-                  <span className="relative z-10 text-[10px] font-semibold tracking-widest uppercase text-white/60">
-                    {svc.title.split(" ")[0]}
-                  </span>
-                </div>
-
-                {/* ── Content panel ── */}
-                <div className="w-full md:w-[62%] flex flex-col justify-center gap-3 p-6 md:p-8 lg:p-10">
-                  {/* tag */}
-                  <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold text-red-600 bg-red-50 px-2.5 py-1 rounded-sm w-fit uppercase tracking-wider">
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-600" />
-                    {svc.tag}
-                  </span>
-
-                  <h2 className="text-xl md:text-2xl font-semibold text-gray-900 leading-snug tracking-tight">
-                    {svc.title}
-                  </h2>
-
-                  <p className="text-gray-500 text-[14px] leading-relaxed">
-                    {svc.desc}
-                  </p>
-
-                  <ul className="space-y-1.5">
-                    {svc.bullets.map((b) => (
-                      <li key={b} className="flex items-start gap-2 text-[12px] text-gray-500">
-                        <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5 flex-shrink-0" />
-                        {b}
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* ── CTA button ── */}
-                  <div className="mt-1">
+                  {/* Descrição + bullets + botão */}
+                  <div className="flex-1 space-y-4">
+                    <p className="text-white/55 text-[14px] leading-relaxed">
+                      {svc.desc}
+                    </p>
+                    <ul className="space-y-1.5">
+                      {svc.bullets.map((b) => (
+                        <li key={b} className="flex items-start gap-2.5 text-[13px] text-white/50">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--brand-red))] mt-1.5 flex-shrink-0" />
+                          {b}
+                        </li>
+                      ))}
+                    </ul>
                     <Link
                       href={`/servicos/${svc.slug}`}
-                      className="
-                        inline-flex items-center gap-2
-                        bg-red-600 hover:bg-red-700 active:bg-red-800
-                        text-white text-[12px] font-semibold tracking-wide uppercase
-                        px-4 py-2.5 rounded-sm
-                        transition-all duration-200
-                        hover:gap-3 group/btn
-                        w-fit
-                      "
+                      className="inline-flex items-center gap-2 bg-[hsl(var(--brand-red))] hover:bg-red-700 text-white text-[11px] font-semibold tracking-widest uppercase px-4 py-2.5 rounded-sm transition-all duration-200 group/btn hover:gap-3 mt-2"
                     >
                       Saiba mais
-                      <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+                      <ArrowUpRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform duration-200" />
                     </Link>
                   </div>
                 </div>
               </div>
-            </motion.div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
 
-      {/* ── Divider ── */}
-      <div className="flex items-center gap-3 px-5 py-3 border-t border-b border-gray-100 bg-gray-50">
-        <span className="text-[10px] font-semibold tracking-widest uppercase text-gray-400">
-          Mais serviços
-        </span>
-        <div className="flex-1 h-px bg-gray-200" />
-      </div>
+        {/* ── Separador ── */}
+        <div className="flex items-center gap-4 px-8 md:px-16 lg:px-24 py-4 border-t border-white/10 bg-white/[0.02]">
+          <span className="text-[10px] font-semibold tracking-widest uppercase text-white/30">
+            Mais serviços
+          </span>
+          <div className="flex-1 h-px bg-white/10" />
+        </div>
 
-      {/* ── Secondary Services grid ── */}
-      <motion.div
-        variants={stagger}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.1 }}
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 divide-y sm:divide-y-0 sm:[&>*:nth-child(3n+2)]:border-x sm:[&>*:nth-child(3n+2)]:border-gray-100 lg:divide-y-0 border-b border-gray-100"
-      >
-        {secondaryServices.map((svc) => {
-          const Icon = svc.icon;
-          return (
-            <motion.div key={svc.slug} variants={fadeUp}>
-              <div className="group relative flex flex-col gap-2 p-5 hover:bg-gray-50/80 transition-colors duration-200 overflow-hidden h-full border-b border-gray-100 sm:border-b-0 sm:border-r last:border-r-0 [&:nth-child(3n)]:border-r-0">
-                {/* bottom accent line */}
-                <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-red-600 group-hover:w-full transition-all duration-500" />
+        {/* ── Grid secundário ── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 divide-y divide-white/10 sm:divide-y-0 border-t border-white/10">
+          {secondaryServices.map((svc) => {
+            const Icon = svc.icon;
+            return (
+              <div
+                key={svc.slug}
+                className="group relative flex flex-col gap-3 px-8 py-8 hover:bg-white/[0.04] transition-colors duration-200 border-b border-r border-white/10 last:border-r-0 [&:nth-child(3n)]:border-r-0"
+              >
+                <div className="absolute bottom-0 left-0 h-px w-0 bg-[hsl(var(--brand-red))] group-hover:w-full transition-all duration-500" />
 
-                {/* icon */}
-                <div className="w-8 h-8 rounded-md bg-white border border-gray-100 flex items-center justify-center group-hover:bg-red-600 group-hover:border-red-600 transition-all duration-300 mb-0.5">
-                  <Icon className="w-4 h-4 text-gray-400 group-hover:text-white transition-colors duration-300" />
+                <div className="w-9 h-9 rounded-sm bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-[hsl(var(--brand-red))] group-hover:border-[hsl(var(--brand-red))] transition-all duration-300">
+                  <Icon className="w-4 h-4 text-white/40 group-hover:text-white transition-colors duration-300" />
                 </div>
 
-                <span className="text-[9px] font-bold text-red-400 tracking-widest">
-                  {svc.num}
-                </span>
-                <h3 className="text-[14px] font-semibold text-gray-800 leading-tight">
-                  {svc.title}
-                </h3>
-                <p className="text-[12px] text-gray-400 leading-relaxed">
-                  {svc.desc}
-                </p>
+                <h3 className="text-[14px] font-bold text-white/80">{svc.title}</h3>
+                <p className="text-[12px] text-white/35 leading-relaxed">{svc.desc}</p>
 
-                {/* ── CTA button ── */}
                 <Link
                   href={`/servicos/${svc.slug}`}
-                  className="
-                    inline-flex items-center gap-1.5 mt-auto pt-1
-                    bg-red-600 hover:bg-red-700 active:bg-red-800
-                    text-white text-[11px] font-semibold tracking-wide uppercase
-                    px-3 py-2 rounded-sm
-                    transition-all duration-200
-                    w-fit
-                    group/btn
-                  "
+                  className="inline-flex items-center gap-1.5 mt-auto bg-[hsl(var(--brand-red))] hover:bg-red-700 text-white text-[11px] font-semibold tracking-widest uppercase px-3 py-2 rounded-sm transition-all duration-200 w-fit group/btn"
                 >
                   Saiba mais
-                  <ArrowUpRight className="w-3 h-3 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+                  <ArrowUpRight className="w-3 h-3 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform duration-200" />
                 </Link>
               </div>
-            </motion.div>
-          );
-        })}
-      </motion.div>
+            );
+          })}
+        </div>
 
-    </section>
+      </section>
+    </>
   );
 }
