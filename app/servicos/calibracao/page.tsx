@@ -6,9 +6,10 @@ import {
   ShieldCheck, Award, ChevronDown, ChevronRight, Settings, Lock,
   ArrowRight, AlertTriangle, MessageCircle, XCircle, AlertCircle,
   Ban, RefreshCcw, Unlink, Users, BadgeAlert, TrendingUp, Eye, Zap,
-  MapPin, Phone, Mail, Clock,
+  MapPin, Phone, Mail, Clock, ArrowLeft,
 } from "lucide-react";
 import { Instagram, Linkedin } from "lucide-react";
+import Link from "next/link";
 
 /* ─────────────────────────────────────────────────────────────
    LINKS
@@ -106,16 +107,50 @@ export default function CalibracaoPage() {
   return (
     <main style={{ background: "#fff" }}>
 
-      {/* ══ FAIXA ALERTA ══════════════════════════════════════════ */}
+      {/* ══ FAIXA ALERTA COM BOTÃO VOLTAR ══════════════════════════════════════════ */}
       <div style={{ background: "#F22020", padding: "14px 24px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <AlertTriangle style={{ width: 20, height: 20, color: "#fff", flexShrink: 0 }} />
-            <p style={{ color: "#fff", fontSize: 15, fontWeight: 500, margin: 0, lineHeight: 1.4 }}>
-              <strong style={{ fontWeight: 800, fontSize: 16 }}>ATENÇÃO INDÚSTRIAS:</strong>{" "}
-              Não conformidade metrológica pode gerar multas, interdições e prejuízos operacionais.
-            </p>
+          
+          {/* Botão Voltar (branco) + Mensagem */}
+          <div style={{ display: "flex", alignItems: "center", gap: 24, flexWrap: "wrap" }}>
+            <Link 
+              href="/servicos" 
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                background: "transparent",
+                color: "#fff",
+                fontWeight: 600,
+                fontSize: 14,
+                padding: "8px 16px",
+                borderRadius: 8,
+                textDecoration: "none",
+                border: "1.5px solid rgba(255,255,255,0.5)",
+                transition: "all 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.15)";
+                e.currentTarget.style.borderColor = "#fff";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "transparent";
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)";
+              }}
+            >
+              <ArrowLeft style={{ width: 16, height: 16 }} />
+              Voltar
+            </Link>
+
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <AlertTriangle style={{ width: 20, height: 20, color: "#fff", flexShrink: 0 }} />
+              <p style={{ color: "#fff", fontSize: 15, fontWeight: 500, margin: 0, lineHeight: 1.4 }}>
+                <strong style={{ fontWeight: 800, fontSize: 16 }}>ATENÇÃO INDÚSTRIAS:</strong>{" "}
+                Não conformidade metrológica pode gerar multas, interdições e prejuízos operacionais.
+              </p>
+            </div>
           </div>
+
           <a href={WA_AVALIACAO} target="_blank" rel="noopener noreferrer"
             style={{
               background: "#fff", color: "#F22020", fontWeight: 700, fontSize: 13,
@@ -236,7 +271,6 @@ export default function CalibracaoPage() {
 
       {/* ══ GRANDEZAS ════════════════════════════════════════════ */}
       <section style={{ position: "relative", background: "#0D0D0D", padding: "56px 24px", overflow: "hidden" }}>
-        {/* Subtle red gradient accent top-right */}
         <div style={{ position: "absolute", top: 0, right: 0, width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(242,34,32,0.08) 0%, transparent 70%)", pointerEvents: "none" }} />
 
         <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto" }}>
@@ -256,10 +290,7 @@ export default function CalibracaoPage() {
             </p>
           </div>
 
-          {/* Layout: sidebar tabs + painel */}
           <div style={{ display: "grid", gridTemplateColumns: "220px 1fr", gap: 16, alignItems: "start" }}>
-
-            {/* Sidebar tabs */}
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               {grandezas.map((g) => {
                 const Icon = g.icon;
@@ -285,7 +316,6 @@ export default function CalibracaoPage() {
               })}
             </div>
 
-            {/* Painel direito */}
             <div style={{ background: "rgba(255,255,255,0.04)", border: "1.5px solid rgba(255,255,255,0.08)", borderRadius: 14, overflow: "hidden" }}>
               <div style={{ height: 3, background: "#F22020" }} />
               <div style={{ padding: "32px 36px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 40 }}>
@@ -318,10 +348,8 @@ export default function CalibracaoPage() {
                 </div>
               </div>
             </div>
-
           </div>
 
-          {/* Footer note */}
           <p style={{ textAlign: "center", fontSize: 13, color: "#444", margin: "28px 0 0", fontStyle: "italic" }}>
             Centralize sua confiança em um único parceiro e elimine riscos de inconsistência entre laudos.
           </p>
@@ -455,7 +483,6 @@ export default function CalibracaoPage() {
           </div>
         </div>
       </footer>
-
     </main>
   );
 }
