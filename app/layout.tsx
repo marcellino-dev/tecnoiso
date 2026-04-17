@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "sonner";
 import IntroAnimation from "@/components/IntroAnimation";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tecnoiso.com.br"),
@@ -90,52 +91,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           />
         </noscript>
 
-        {/* Botão WhatsApp — carrega após a intro terminar (~4s) */}
-        <script dangerouslySetInnerHTML={{ __html: `
-          (function() {
-            function carregarWhatsapp() {
-              var s = document.createElement('script');
-              s.src = 'https://whatsredirect.vercel.app/script';
-              s.setAttribute('data-webhook', 'https://flow.goalfy.com.br/automations/v1/f1dac498-eb2c-466e-9a6e-da0c59ce380b/hooks/catch/');
-              s.setAttribute('data-numero', '4734401719');
-              s.setAttribute('data-mensagem', 'Olá, vim do site e gostaria de falar com um consultor');
-              s.setAttribute('data-campo-integrado-nome', 'nome');
-              s.setAttribute('data-campo-integrado-telefone', 'telefone');
-              s.setAttribute('data-campo-personalizado-1-nome', 'Nome da Empresa');
-              s.setAttribute('data-campo-personalizado-1-tipo', 'text');
-              s.setAttribute('data-campo-personalizado-1-placeholder', 'Digite o nome da empresa');
-              s.setAttribute('data-campo-personalizado-1-obrigatorio', 'true');
-              s.setAttribute('data-campo-personalizado-2-nome', 'Serviço de Interesse');
-              s.setAttribute('data-campo-personalizado-2-tipo', 'select');
-              s.setAttribute('data-campo-personalizado-2-opcoes', 'Calibração,Certificação,Manutenção,NR13,Automação,Treinamentos,Gerenciamento Metrológico,Locação,Suporte Logístico');
-              s.setAttribute('data-campo-personalizado-2-placeholder', '');
-              s.setAttribute('data-campo-personalizado-2-obrigatorio', 'false');
-              s.onload = function() {
-                document.dispatchEvent(new Event('DOMContentLoaded'));
-              };
-              document.body.appendChild(s);
-            }
-            // Aguarda 6s para a intro terminar antes de carregar o botão
-            window.addEventListener('load', function() {
-              setTimeout(carregarWhatsapp, 6000);
-            });
-          })();
-        ` }} />
-
         <div
           id="stage"
-          style={{
-            position: 'relative',
-            overflowX: 'hidden',
-            overflowY: 'hidden',
-          }}
+          style={{ position: 'relative', overflowX: 'hidden', overflowY: 'hidden' }}
         >
           <IntroAnimation />
-
-          <div id="site-content" style={{ marginTop: typeof window !== 'undefined' && sessionStorage.getItem('tecnoiso_intro_done') ? '0' : '100vh' }}>
+          <div
+            id="site-content"
+            style={{ marginTop: typeof window !== 'undefined' && sessionStorage.getItem('tecnoiso_intro_done') ? '0' : '100vh' }}
+          >
             {children}
           </div>
         </div>
+
+        {/* Botão WhatsApp — componente próprio, sem dependência externa */}
+        <WhatsAppButton />
 
         <Toaster richColors position="top-right" />
 
