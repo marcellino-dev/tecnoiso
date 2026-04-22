@@ -5,7 +5,7 @@ import IntroAnimation from "@/components/IntroAnimation";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://tecnoiso.com.br"),
+  metadataBase: new URL("https://tecnoiso.com"),
   title: { template: "%s | Tecnoiso", default: "Home- Tecnoiso" },
   description: "Laboratório acreditado INMETRO em Joinville/SC. Calibração, certificação, manutenção e consultoria em metrologia industrial. Solicite um orçamento.",
   keywords: "metrologia, calibração, certificação, INMETRO, qualidade, precisão, laboratório, Joinville, Santa Catarina",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Tecnoiso - Metrologia, Calibração e Certificação Industrial",
     description: "Laboratório acreditado INMETRO. Calibração, certificação, manutenção e consultoria em metrologia industrial em Joinville/SC.",
-    type: "website", url: "https://tecnoiso.com.br",
+    type: "website", url: "https://tecnoiso.com",
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Tecnoiso" }],
     locale: "pt_BR", siteName: "Tecnoiso",
   },
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
 const orgSchema = {
   "@context": "https://schema.org", "@type": "Organization",
   name: "Tecnoiso - Tecnologia e Soluções Industriais",
-  url: "https://tecnoiso.com.br", logo: "https://tecnoiso.com.br/tecnoiso-logo.png",
+  url: "https://tecnoiso.com", logo: "https://tecnoiso/tecnoiso-logo.png",
   description: "Laboratório acreditado INMETRO especializado em metrologia, calibração e certificação industrial.",
   address: { "@type": "PostalAddress", streetAddress: "R. Dona Emma, 1541 - Floresta", addressLocality: "Joinville", addressRegion: "SC", postalCode: "89211-493", addressCountry: "BR" },
   telephone: "+5547989299801",
@@ -54,8 +54,8 @@ const orgSchema = {
 
 const websiteSchema = {
   "@context": "https://schema.org", "@type": "WebSite",
-  name: "Tecnoiso", url: "https://tecnoiso.com.br",
-  potentialAction: { "@type": "SearchAction", target: "https://tecnoiso.com.br/?q={search_term_string}", "query-input": "required name=search_term_string" },
+  name: "Tecnoiso", url: "https://tecnoiso.com",
+  potentialAction: { "@type": "SearchAction", target: "https://tecnoiso.com/?q={search_term_string}", "query-input": "required name=search_term_string" },
 };
 
 const faqSchema = {

@@ -24,6 +24,6 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "*", allow: "/" },
     ],
     // Sitemap é gerado automaticamente pelo app/sitemap.ts
-    sitemap: "https://tecnoiso.com.br/sitemap.xml",
+    sitemap: "https://tecnoiso.com/sitemap.xml",
   };
 }

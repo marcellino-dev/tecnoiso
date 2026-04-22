@@ -86,9 +86,9 @@ export default function ObrigadoPage() {
               <Phone className="w-4 h-4 text-[hsl(var(--brand-red))]" />
               (47) 3438-3175
             </a>
-            <a href="mailto:contato@tecnoiso.com.br" className="flex items-center gap-2 text-muted-foreground hover:text-[hsl(var(--brand-red))] transition-colors text-sm">
+            <a href="mailto:contato@tecnoiso.com" className="flex items-center gap-2 text-muted-foreground hover:text-[hsl(var(--brand-red))] transition-colors text-sm">
               <Mail className="w-4 h-4 text-[hsl(var(--brand-red))]" />
-              contato@tecnoiso.com.br
+              contato@tecnoiso.com.
             </a>
           </div>
           <Link

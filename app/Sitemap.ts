@@ -9,7 +9,7 @@
 
 import type { MetadataRoute } from "next";
 
-const BASE_URL = "https://tecnoiso.com.br";
+const BASE_URL = "https://tecnoiso.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

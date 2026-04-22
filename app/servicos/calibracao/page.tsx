@@ -437,7 +437,7 @@ export default function CalibracaoPage() {
                 {[
                   { icon: MapPin, text: "R. Dona Emma, 1541 - Floresta\nJoinville - SC, 89211-493" },
                   { icon: Phone,  text: "(47) 3438-3175" },
-                  { icon: Mail,   text: "contato@tecnoiso.com.br" },
+                  { icon: Mail,   text: "contato@tecnoiso.com" },
                   { icon: Clock,  text: "Segunda à Sexta\n07:42 às 17:30" },
                 ].map(({ icon: Icon, text }, i) => (
                   <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>

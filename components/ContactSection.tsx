@@ -59,7 +59,7 @@ const ContactSection = () => {
   const contactInfo = [
     { icon: MapPin, title: "Endereço", content: "R. Dona Emma, 1541 - Floresta\nJoinville - SC, 89211-493" },
     { icon: Phone,  title: "Telefone", content: "(47) 3438-3175" },
-    { icon: Mail,   title: "E-mail",   content: "contato@tecnoiso.com.br" },
+    { icon: Mail,   title: "E-mail",   content: "contato@tecnoiso.com" },
     { icon: Clock,  title: "Horário",  content: "Segunda à Sexta\n07:42 às 17:30" },
   ];
 

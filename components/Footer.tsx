@@ -69,7 +69,7 @@ const Footer = () => {
               {[
                 { icon: MapPin, text: "R. Dona Emma, 1541 - Floresta\nJoinville - SC, 89211-493" },
                 { icon: Phone,  text: "(47) 3438-3175" },
-                { icon: Mail,   text: "contato@tecnoiso.com.br" },
+                { icon: Mail,   text: "contato@tecnoiso.com" },
               ].map(({ icon: Icon, text }, i) => (
                 <motion.div key={i} variants={fadeX} className="flex items-start space-x-3">
                   <Icon className="w-5 h-5 text-[hsl(var(--brand-red))] mt-0.5 flex-shrink-0" />
