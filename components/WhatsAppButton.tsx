@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const NUMERO = "554734401719";
 const MENSAGEM_PADRAO = "Olá, vim do site e gostaria de falar com um consultor";
-const WEBHOOK = "https://flow.goalfy.com.br/automations/v1/cc37d63a-d1ff-424a-a18d-6b81332b4fe9/hooks/catch/";
+const WEBHOOK = "https://flow.goalfy.com.br/automations/v1/f1dac498-eb2c-466e-9a6e-da0c59ce380b/hooks/catch/";
 
 const SERVICOS = [
   "Calibração",
