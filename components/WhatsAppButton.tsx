@@ -4,6 +4,7 @@ import { useState } from "react";
 
 const NUMERO = "554734401719";
 const MENSAGEM_PADRAO = "Olá, vim do site e gostaria de falar com um consultor";
+const WEBHOOK = "https://flow.goalfy.com.br/automations/v1/cc37d63a-d1ff-424a-a18d-6b81332b4fe9/hooks/catch/";
 
 const SERVICOS = [
   "Calibração",
@@ -29,6 +30,15 @@ const IconWA = ({ size = 28 }: { size?: number }) => (
   </svg>
 );
 
+function formatarTelefone(valor: string): string {
+  const v = valor.replace(/\D/g, "").slice(0, 11);
+  if (v.length === 0) return "";
+  if (v.length <= 2) return `(${v}`;
+  if (v.length <= 6) return `(${v.slice(0, 2)}) ${v.slice(2)}`;
+  if (v.length <= 10) return `(${v.slice(0, 2)}) ${v.slice(2, 6)}-${v.slice(6)}`;
+  return `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`;
+}
+
 export default function WhatsAppButton() {
   const [aberto, setAberto] = useState(false);
   const [nome, setNome] = useState("");
@@ -36,6 +46,7 @@ export default function WhatsAppButton() {
   const [empresa, setEmpresa] = useState("");
   const [servico, setServico] = useState("");
   const [erros, setErros] = useState<Erros>({});
+  const [enviando, setEnviando] = useState(false);
 
   function validar(): boolean {
     const novosErros: Erros = {};
@@ -46,11 +57,38 @@ export default function WhatsAppButton() {
     return Object.keys(novosErros).length === 0;
   }
 
-  function enviar() {
+  async function enviar() {
     if (!validar()) return;
+
+    setEnviando(true);
+
+    const payload = {
+      nome,
+      telefone,
+      empresa,
+      servico: servico || null,
+    };
+
+    fetch(WEBHOOK, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    }).catch(() => {});
+
     let mensagem = `${MENSAGEM_PADRAO}\n\nNome: ${nome}\nTelefone: ${telefone}\nEmpresa: ${empresa}`;
     if (servico) mensagem += `\nServiço de Interesse: ${servico}`;
+
     window.open(`https://wa.me/${NUMERO}?text=${encodeURIComponent(mensagem)}`, "_blank");
+
+    setTimeout(() => {
+      setNome("");
+      setTelefone("");
+      setEmpresa("");
+      setServico("");
+      setErros({});
+      setEnviando(false);
+      setAberto(false);
+    }, 1500);
   }
 
   const inputClass = (erro?: string) =>
@@ -102,8 +140,12 @@ export default function WhatsAppButton() {
               <input
                 type="tel"
                 value={telefone}
-                onChange={(e) => { setTelefone(e.target.value); if (erros.telefone) setErros((p) => ({ ...p, telefone: undefined })); }}
+                onChange={(e) => {
+                  setTelefone(formatarTelefone(e.target.value));
+                  if (erros.telefone) setErros((p) => ({ ...p, telefone: undefined }));
+                }}
                 placeholder="(47) 99999-9999"
+                maxLength={15}
                 className={inputClass(erros.telefone)}
               />
               {erros.telefone && <span className="mt-1 block text-xs text-red-500">{erros.telefone}</span>}
@@ -137,10 +179,18 @@ export default function WhatsAppButton() {
 
             <button
               onClick={enviar}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#25d366] py-2.5 text-sm font-medium text-white transition hover:bg-[#1ebe5d] active:scale-95"
+              disabled={enviando}
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#25d366] py-2.5 text-sm font-medium text-white transition hover:bg-[#1ebe5d] active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              <IconWA size={20} />
-              Iniciar conversa
+              {enviando ? (
+                <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24" fill="none">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                </svg>
+              ) : (
+                <IconWA size={20} />
+              )}
+              {enviando ? "Aguarde..." : "Iniciar conversa"}
             </button>
           </div>
         </div>
