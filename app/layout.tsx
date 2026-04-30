@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "sonner";
 import IntroAnimation from "@/components/IntroAnimation";
-import WhatsAppButton from "@/components/WhatsAppButton";
+import WhatsAppScript from "@/components/WhatsAppScript";
+
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tecnoiso.com"),
@@ -104,8 +105,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </div>
 
-        {/* Botão WhatsApp — componente próprio, sem dependência externa */}
-        <WhatsAppButton />
+        {/* Widget WhatsApp — carrega o script e dispara DOMContentLoaded manualmente */}
+        <WhatsAppScript />
 
         <Toaster richColors position="top-right" />
 
