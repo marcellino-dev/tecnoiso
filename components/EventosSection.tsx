@@ -3,30 +3,40 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
+// ─── TIPOS ────────────────────────────────────────────────────────────────────
+type MediaType = "image" | "video";
+
+interface EventItem {
+  id: number;
+  mediaUrl: string;
+  mediaType: MediaType;
+  index: string;
+}
+
 // ─── DADOS DOS EVENTOS ────────────────────────────────────────────────────────
-const events = [
+const events: EventItem[] = [
   {
     id: 1,
     mediaUrl: "/eventos/evento1.jpg",
-    mediaType: "image" as const,
+    mediaType: "image",
     index: "01",
   },
   {
     id: 2,
     mediaUrl: "/eventos/agradecimentos.png",
-    mediaType: "image" as const,
+    mediaType: "image",
     index: "02",
   },
   {
     id: 3,
     mediaUrl: "/eventos/evento2.jpg",
-    mediaType: "image" as const,
+    mediaType: "image",
     index: "03",
   },
   {
     id: 4,
     mediaUrl: "/eventos/evento3.jpg",
-    mediaType: "image" as const,
+    mediaType: "image",
     index: "04",
   },
 ];
@@ -39,11 +49,11 @@ const CARD_STEP = CARD_W + CARD_GAP;
 const TOTAL     = events.length;
 const SET_WIDTH = TOTAL * CARD_STEP;
 
-const infiniteEvents = [...events, ...events, ...events];
+const infiniteEvents: EventItem[] = [...events, ...events, ...events];
 const INITIAL_X = -SET_WIDTH;
 
 // ─── COMPONENTE DE CARD ───────────────────────────────────────────────────────
-function EventCard({ event }: { event: (typeof events)[0] }) {
+function EventCard({ event }: { event: EventItem }) {
   return (
     <div style={{ width: CARD_W, flexShrink: 0 }} className="group cursor-pointer">
       <div className="relative rounded-2xl overflow-hidden" style={{ height: CARD_H }}>
@@ -79,13 +89,13 @@ const EventsSection = () => {
     const el = sectionRef.current;
     if (!el) return;
 
-    const rect             = el.getBoundingClientRect();
-    const sectionH         = el.offsetHeight;
-    const vh               = window.innerHeight;
+    const rect               = el.getBoundingClientRect();
+    const sectionH           = el.offsetHeight;
+    const vh                 = window.innerHeight;
     const scrollableDistance = sectionH + vh;
-    const scrolled         = vh - rect.top;
-    const progress         = Math.max(0, Math.min(1, scrolled / scrollableDistance));
-    const targetX          = INITIAL_X - progress * SET_WIDTH;
+    const scrolled           = vh - rect.top;
+    const progress           = Math.max(0, Math.min(1, scrolled / scrollableDistance));
+    const targetX            = INITIAL_X - progress * SET_WIDTH;
 
     const currentX = xRaw.get();
 
