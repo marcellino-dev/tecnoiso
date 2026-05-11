@@ -13,8 +13,8 @@ const events = [
   },
   {
     id: 2,
-    mediaUrl: "https://res.cloudinary.com/dvqhv29io/video/upload/video_1_xtfruk.mp4",
-    mediaType: "video" as const,
+    mediaUrl: "/eventos/agradecimentos.png",
+    mediaType: "image" as const,
     index: "02",
   },
   {
@@ -123,7 +123,6 @@ const EventsSection = () => {
             Eventos &{" "}
             <span className="text-[hsl(var(--brand-red))]">Palestras</span>
           </h2>
-          
         </div>
       </div>
 
