@@ -425,14 +425,27 @@ function EquipamentosSection() {
 }
 
 /* ─── Formulário ─────────────────────────────────────────────────────── */
+
+const CHANNEL_OPTIONS = [
+  { id: "whatsapp_text",  label: "WhatsApp mensagem", icon: MessageCircle },
+  { id: "whatsapp_voice", label: "WhatsApp voz",      icon: Phone },
+  { id: "email",          label: "E-mail",            icon: Mail },
+  { id: "phone_call",     label: "Ligação telefônica", icon: Phone },
+] as const;
+
 function FormSection({ formRef }: { formRef: React.RefObject<HTMLElement> }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedChannels, setSelectedChannels] = useState<string[]>([]);
   const [formData, setFormData] = useState({
-    name: "", company: "", role: "", phone: "", email: "",
-    equipment: "Mais de um tipo", message: "",
+    name: "", company: "", role: "", phone: "", email: "", message: "",
   });
 
   const FOCUS_COLOR = "#F22020";
+
+  const toggleChannel = (id: string) =>
+    setSelectedChannels(prev =>
+      prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
+    );
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const d = e.target.value.replace(/\D/g, "").slice(0, 11);
@@ -445,16 +458,51 @@ function FormSection({ formRef }: { formRef: React.RefObject<HTMLElement> }) {
   };
 
   const fp = {
-    onFocus: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+    onFocus: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       (e.currentTarget.style.borderColor = FOCUS_COLOR),
-    onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+    onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"),
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => { setIsSubmitting(false); window.location.href = "/obrigado"; }, 1500);
+
+    // Coleta UTMs da URL
+    const params = new URLSearchParams(window.location.search);
+
+    try {
+      const res = await fetch("/api/send-quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name:         formData.name,
+          company:      formData.company,
+          role:         formData.role,
+          email:        formData.email,
+          phone:        formData.phone,
+          channels:     selectedChannels.join(", "),
+          message:      formData.message,
+          origem:       "nr13",
+          utm_source:   params.get("utm_source")   ?? "",
+          utm_medium:   params.get("utm_medium")   ?? "",
+          utm_campaign: params.get("utm_campaign") ?? "",
+          utm_term:     params.get("utm_term")     ?? "",
+          utm_content:  params.get("utm_content")  ?? "",
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        window.location.href = "/obrigado";
+      } else {
+        alert(data.error ?? "Erro ao enviar. Tente novamente.");
+        setIsSubmitting(false);
+      }
+    } catch {
+      alert("Erro de conexão. Tente novamente.");
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -462,6 +510,7 @@ function FormSection({ formRef }: { formRef: React.RefObject<HTMLElement> }) {
       background: "#0D0D0D", padding: "72px 24px", scrollMarginTop: 80,
     }}>
       <div style={{ maxWidth: 680, margin: "0 auto" }}>
+
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: 40 }}>
           <h2 style={{ ...raj, fontSize: "clamp(24px,3vw,40px)", color: "#fff", margin: "0 0 12px", lineHeight: 1.1 }}>
@@ -482,71 +531,132 @@ function FormSection({ formRef }: { formRef: React.RefObject<HTMLElement> }) {
           <div style={{ height: 3, background: "#F22020" }} />
           <div style={{ padding: "36px" }}>
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+
               {/* Nome */}
               <div>
                 <label style={labelBase}>Nome <span style={{ color: FOCUS_COLOR }}>*</span></label>
-                <input value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
-                  placeholder="Seu nome completo" style={inputBase} {...fp} />
+                <input
+                  required
+                  value={formData.name}
+                  onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
+                  placeholder="Seu nome completo"
+                  style={inputBase} {...fp}
+                />
               </div>
+
               {/* Empresa */}
               <div>
                 <label style={labelBase}>Empresa</label>
-                <input value={formData.company} onChange={e => setFormData(p => ({ ...p, company: e.target.value }))}
-                  placeholder="Nome da empresa" style={inputBase} {...fp} />
+                <input
+                  value={formData.company}
+                  onChange={e => setFormData(p => ({ ...p, company: e.target.value }))}
+                  placeholder="Nome da empresa"
+                  style={inputBase} {...fp}
+                />
               </div>
+
               {/* Cargo */}
               <div>
                 <label style={labelBase}>Cargo</label>
-                <input value={formData.role} onChange={e => setFormData(p => ({ ...p, role: e.target.value }))}
-                  placeholder="Seu cargo" style={inputBase} {...fp} />
+                <input
+                  value={formData.role}
+                  onChange={e => setFormData(p => ({ ...p, role: e.target.value }))}
+                  placeholder="Seu cargo"
+                  style={inputBase} {...fp}
+                />
               </div>
+
               {/* Telefone + Email */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
                 <div>
                   <label style={labelBase}>Telefone <span style={{ color: FOCUS_COLOR }}>*</span></label>
-                  <input value={formData.phone} onChange={handlePhoneChange}
-                    placeholder="(47) 99999-9999" style={inputBase} {...fp} />
+                  <input
+                    required
+                    value={formData.phone}
+                    onChange={handlePhoneChange}
+                    placeholder="(47) 99999-9999"
+                    style={inputBase} {...fp}
+                  />
                 </div>
                 <div>
                   <label style={labelBase}>E-mail <span style={{ color: FOCUS_COLOR }}>*</span></label>
-                  <input type="email" value={formData.email} onChange={e => setFormData(p => ({ ...p, email: e.target.value }))}
-                    placeholder="seu@email.com" style={inputBase} {...fp} />
+                  <input
+                    required
+                    type="email"
+                    value={formData.email}
+                    onChange={e => setFormData(p => ({ ...p, email: e.target.value }))}
+                    placeholder="seu@email.com"
+                    style={inputBase} {...fp}
+                  />
                 </div>
               </div>
-              {/* Tipo de equipamento */}
+
+              {/* Canal preferido */}
               <div>
-                <label style={labelBase}>Tipo de equipamento</label>
-                <select value={formData.equipment} onChange={e => setFormData(p => ({ ...p, equipment: e.target.value }))}
-                  style={{ ...inputBase, cursor: "pointer", appearance: "none" }} {...fp}>
-                  {["Mais de um tipo", "Caldeiras", "Vasos de pressão", "Tubulações", "Tanques metálicos"].map(s => (
-                    <option key={s} value={s} style={{ background: "#1a1a1a" }}>{s}</option>
-                  ))}
-                </select>
+                <label style={labelBase}>Canal preferido de atendimento</label>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                  {CHANNEL_OPTIONS.map(({ id, label, icon: Icon }) => {
+                    const active = selectedChannels.includes(id);
+                    return (
+                      <button
+                        key={id}
+                        type="button"
+                        onClick={() => toggleChannel(id)}
+                        style={{
+                          display: "flex", alignItems: "center", gap: 10,
+                          padding: "11px 14px", borderRadius: 8, cursor: "pointer",
+                          fontSize: 13, fontWeight: 500, textAlign: "left",
+                          background: active ? "rgba(242,34,32,0.12)" : "rgba(255,255,255,0.04)",
+                          border: `1.5px solid ${active ? "#F22020" : "rgba(255,255,255,0.1)"}`,
+                          color: active ? "#fff" : "#888",
+                          transition: "all 0.15s",
+                        }}
+                      >
+                        <Icon style={{ width: 15, height: 15, color: active ? "#F22020" : "#555", flexShrink: 0 }} />
+                        {label}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-              {/* Descrição */}
+
+              {/* Mensagem */}
               <div>
-                <label style={labelBase}>Descreva quantidade, capacidade e categoria dos equipamentos</label>
-                <textarea value={formData.message} onChange={e => setFormData(p => ({ ...p, message: e.target.value }))}
+                <label style={labelBase}>Descreva seus equipamentos</label>
+                <textarea
+                  value={formData.message}
+                  onChange={e => setFormData(p => ({ ...p, message: e.target.value }))}
                   placeholder="Ex: 3 caldeiras a vapor, 300 CV, categoria C — 8 vasos de pressão, 15 bar..."
-                  style={{ ...inputBase, height: "auto", minHeight: 100, padding: "12px 14px", resize: "none" }} {...fp} />
+                  style={{ ...inputBase, height: "auto", minHeight: 100, padding: "12px 14px", resize: "none" }}
+                  {...fp}
+                />
               </div>
+
               {/* Submit */}
               <div style={{ display: "flex", alignItems: "center", gap: 20, flexWrap: "wrap" }}>
-                <button type="submit" disabled={isSubmitting} style={{
-                  display: "inline-flex", alignItems: "center", gap: 8,
-                  background: isSubmitting ? "#a01010" : FOCUS_COLOR,
-                  color: "#fff", fontWeight: 700, fontSize: 13,
-                  padding: "13px 28px", borderRadius: 8, border: "none",
-                  cursor: isSubmitting ? "not-allowed" : "pointer",
-                  letterSpacing: "0.05em", textTransform: "uppercase",
-                  opacity: isSubmitting ? 0.75 : 1,
-                }}>
-                  {isSubmitting ? "Enviando..." : <>Solicitar Inspeção NR-13 <ArrowRight style={{ width: 16, height: 16 }} /></>}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  style={{
+                    display: "inline-flex", alignItems: "center", gap: 8,
+                    background: isSubmitting ? "#a01010" : FOCUS_COLOR,
+                    color: "#fff", fontWeight: 700, fontSize: 13,
+                    padding: "13px 28px", borderRadius: 8, border: "none",
+                    cursor: isSubmitting ? "not-allowed" : "pointer",
+                    letterSpacing: "0.05em", textTransform: "uppercase",
+                    opacity: isSubmitting ? 0.75 : 1,
+                  }}
+                >
+                  {isSubmitting
+                    ? "Enviando..."
+                    : <><span>Solicitar Inspeção NR-13</span> <ArrowRight style={{ width: 16, height: 16 }} /></>
+                  }
                 </button>
                 <span style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#555" }}>
                   <Lock style={{ width: 12, height: 12 }} /> Seus dados estão seguros
                 </span>
               </div>
+
             </form>
           </div>
         </div>
@@ -560,6 +670,7 @@ function FormSection({ formRef }: { formRef: React.RefObject<HTMLElement> }) {
             (47) 3438-3175
           </a>
         </div>
+
       </div>
     </section>
   );
