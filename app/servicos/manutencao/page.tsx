@@ -360,14 +360,27 @@ function InstrumentosSection() {
 }
 
 /* ─── Orçamento Form ─────────────────────────────────────────────────── */
+
+const CHANNEL_OPTIONS = [
+  { id: "whatsapp_text",  label: "WhatsApp mensagem", icon: MessageCircle },
+  { id: "whatsapp_voice", label: "WhatsApp voz",      icon: Phone },
+  { id: "email",          label: "E-mail",            icon: Mail },
+  { id: "phone_call",     label: "Ligação telefônica", icon: Phone },
+] as const;
+
 function OrcamentoSection({ formRef }: { formRef: React.RefObject<HTMLElement> }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedChannels, setSelectedChannels] = useState<string[]>([]);
   const [formData, setFormData] = useState({
-    name: "", company: "", role: "", phone: "", email: "",
-    frente: "Plano combinado", message: "",
+    name: "", company: "", role: "", phone: "", email: "", message: "",
   });
 
   const FOCUS_COLOR = "#F22020";
+
+  const toggleChannel = (id: string) =>
+    setSelectedChannels(prev =>
+      prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
+    );
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const d = e.target.value.replace(/\D/g, "").slice(0, 11);
@@ -380,16 +393,50 @@ function OrcamentoSection({ formRef }: { formRef: React.RefObject<HTMLElement> }
   };
 
   const fp = {
-    onFocus: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+    onFocus: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       (e.currentTarget.style.borderColor = FOCUS_COLOR),
-    onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+    onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"),
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => { setIsSubmitting(false); window.location.href = "/obrigado"; }, 1500);
+
+    const params = new URLSearchParams(window.location.search);
+
+    try {
+      const res = await fetch("/api/send-quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name:         formData.name,
+          company:      formData.company,
+          role:         formData.role,
+          email:        formData.email,
+          phone:        formData.phone,
+          channels:     selectedChannels.join(", "),
+          message:      formData.message,
+          origem:       "manutencao",
+          utm_source:   params.get("utm_source")   ?? "",
+          utm_medium:   params.get("utm_medium")   ?? "",
+          utm_campaign: params.get("utm_campaign") ?? "",
+          utm_term:     params.get("utm_term")     ?? "",
+          utm_content:  params.get("utm_content")  ?? "",
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        window.location.href = "/obrigado";
+      } else {
+        alert(data.error ?? "Erro ao enviar. Tente novamente.");
+        setIsSubmitting(false);
+      }
+    } catch {
+      alert("Erro de conexão. Tente novamente.");
+      setIsSubmitting(false);
+    }
   };
 
   const bullets = [
@@ -408,6 +455,7 @@ function OrcamentoSection({ formRef }: { formRef: React.RefObject<HTMLElement> }
         display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
         gap: 64, alignItems: "start",
       }}>
+        {/* Left: texto + bullets + telefone */}
         <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
           <div>
             <p style={{ fontSize: 11, fontWeight: 700, color: "#F22020", letterSpacing: "0.12em", margin: "0 0 12px" }}>
@@ -440,6 +488,7 @@ function OrcamentoSection({ formRef }: { formRef: React.RefObject<HTMLElement> }
           </div>
         </div>
 
+        {/* Right: form card */}
         <div style={{
           background: "rgba(255,255,255,0.03)",
           border: "1.5px solid rgba(255,255,255,0.08)",
@@ -448,118 +497,134 @@ function OrcamentoSection({ formRef }: { formRef: React.RefObject<HTMLElement> }
           <div style={{ height: 3, background: "#F22020" }} />
           <div style={{ padding: "36px" }}>
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+
+              {/* Nome + Empresa */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
                 <div>
                   <label style={labelBase}>Nome <span style={{ color: FOCUS_COLOR }}>*</span></label>
-                  <input value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
-                    placeholder="Seu nome completo" style={inputBase} {...fp} />
+                  <input
+                    required
+                    value={formData.name}
+                    onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
+                    placeholder="Seu nome completo"
+                    style={inputBase} {...fp}
+                  />
                 </div>
                 <div>
                   <label style={labelBase}>Empresa</label>
-                  <input value={formData.company} onChange={e => setFormData(p => ({ ...p, company: e.target.value }))}
-                    placeholder="Nome da empresa" style={inputBase} {...fp} />
+                  <input
+                    value={formData.company}
+                    onChange={e => setFormData(p => ({ ...p, company: e.target.value }))}
+                    placeholder="Nome da empresa"
+                    style={inputBase} {...fp}
+                  />
                 </div>
               </div>
+
+              {/* Cargo */}
               <div>
                 <label style={labelBase}>Cargo</label>
-                <input value={formData.role} onChange={e => setFormData(p => ({ ...p, role: e.target.value }))}
-                  placeholder="Seu cargo" style={inputBase} {...fp} />
+                <input
+                  value={formData.role}
+                  onChange={e => setFormData(p => ({ ...p, role: e.target.value }))}
+                  placeholder="Seu cargo"
+                  style={inputBase} {...fp}
+                />
               </div>
+
+              {/* Telefone + Email */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
                 <div>
                   <label style={labelBase}>Telefone <span style={{ color: FOCUS_COLOR }}>*</span></label>
-                  <input value={formData.phone} onChange={handlePhoneChange}
-                    placeholder="(47) 99999-9999" style={inputBase} {...fp} />
+                  <input
+                    required
+                    value={formData.phone}
+                    onChange={handlePhoneChange}
+                    placeholder="(47) 99999-9999"
+                    style={inputBase} {...fp}
+                  />
                 </div>
                 <div>
                   <label style={labelBase}>E-mail <span style={{ color: FOCUS_COLOR }}>*</span></label>
-                  <input type="email" value={formData.email} onChange={e => setFormData(p => ({ ...p, email: e.target.value }))}
-                    placeholder="seu@email.com" style={inputBase} {...fp} />
+                  <input
+                    required
+                    type="email"
+                    value={formData.email}
+                    onChange={e => setFormData(p => ({ ...p, email: e.target.value }))}
+                    placeholder="seu@email.com"
+                    style={inputBase} {...fp}
+                  />
                 </div>
               </div>
+
+              {/* Canal preferido */}
               <div>
-                <label style={labelBase}>Frente desejada</label>
-                <select value={formData.frente} onChange={e => setFormData(p => ({ ...p, frente: e.target.value }))}
-                  style={{ ...inputBase, cursor: "pointer", appearance: "none" }} {...fp}>
-                  {["Plano combinado", "Manutenção Preventiva", "Manutenção Corretiva", "Manutenção Preditiva"].map(s => (
-                    <option key={s} value={s} style={{ background: "#1a1a1a" }}>{s}</option>
-                  ))}
-                </select>
+                <label style={labelBase}>Canal preferido de atendimento</label>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                  {CHANNEL_OPTIONS.map(({ id, label, icon: Icon }) => {
+                    const active = selectedChannels.includes(id);
+                    return (
+                      <button
+                        key={id}
+                        type="button"
+                        onClick={() => toggleChannel(id)}
+                        style={{
+                          display: "flex", alignItems: "center", gap: 10,
+                          padding: "11px 14px", borderRadius: 8, cursor: "pointer",
+                          fontSize: 13, fontWeight: 500, textAlign: "left",
+                          background: active ? "rgba(242,34,32,0.12)" : "rgba(255,255,255,0.04)",
+                          border: `1.5px solid ${active ? "#F22020" : "rgba(255,255,255,0.1)"}`,
+                          color: active ? "#fff" : "#888",
+                          transition: "all 0.15s",
+                        }}
+                      >
+                        <Icon style={{ width: 15, height: 15, color: active ? "#F22020" : "#555", flexShrink: 0 }} />
+                        {label}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
+
+              {/* Mensagem */}
               <div>
                 <label style={labelBase}>Descreva os equipamentos e a criticidade da operação</label>
-                <textarea value={formData.message} onChange={e => setFormData(p => ({ ...p, message: e.target.value }))}
+                <textarea
+                  value={formData.message}
+                  onChange={e => setFormData(p => ({ ...p, message: e.target.value }))}
                   placeholder="Ex: 12 manômetros de pressão, 4 balanças industriais, linha de produção contínua..."
-                  style={{ ...inputBase, height: "auto", minHeight: 100, padding: "12px 14px", resize: "none" }} {...fp} />
+                  style={{ ...inputBase, height: "auto", minHeight: 100, padding: "12px 14px", resize: "none" }}
+                  {...fp}
+                />
               </div>
+
+              {/* Submit */}
               <div style={{ display: "flex", alignItems: "center", gap: 20, flexWrap: "wrap" }}>
-                <button type="submit" disabled={isSubmitting} style={{
-                  display: "inline-flex", alignItems: "center", gap: 8,
-                  background: isSubmitting ? "#a01010" : FOCUS_COLOR,
-                  color: "#fff", fontWeight: 700, fontSize: 13,
-                  padding: "13px 28px", borderRadius: 8, border: "none",
-                  cursor: isSubmitting ? "not-allowed" : "pointer",
-                  letterSpacing: "0.05em", textTransform: "uppercase",
-                  opacity: isSubmitting ? 0.75 : 1,
-                }}>
-                  {isSubmitting ? "Enviando..." : <>Quero meu Plano de Manutenção <ArrowRight style={{ width: 16, height: 16 }} /></>}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  style={{
+                    display: "inline-flex", alignItems: "center", gap: 8,
+                    background: isSubmitting ? "#a01010" : FOCUS_COLOR,
+                    color: "#fff", fontWeight: 700, fontSize: 13,
+                    padding: "13px 28px", borderRadius: 8, border: "none",
+                    cursor: isSubmitting ? "not-allowed" : "pointer",
+                    letterSpacing: "0.05em", textTransform: "uppercase",
+                    opacity: isSubmitting ? 0.75 : 1,
+                  }}
+                >
+                  {isSubmitting
+                    ? "Enviando..."
+                    : <><span>Quero meu Plano de Manutenção</span> <ArrowRight style={{ width: 16, height: 16 }} /></>
+                  }
                 </button>
                 <span style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#555" }}>
                   <Lock style={{ width: 12, height: 12 }} /> Seus dados estão seguros
                 </span>
               </div>
+
             </form>
           </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── FAQ ────────────────────────────────────────────────────────────── */
-function FaqSection() {
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
-  return (
-    <section style={{ background: "#FAFAFA", padding: "56px 24px" }}>
-      <div style={{
-        maxWidth: 1200, margin: "0 auto",
-        display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 64,
-      }}>
-        <div>
-          <p style={{ fontSize: 11, fontWeight: 700, color: "#F22020", letterSpacing: "0.1em", margin: "0 0 10px" }}>FAQ</p>
-          <h2 style={{ ...raj, fontSize: "clamp(20px,2.8vw,30px)", color: "#111", margin: "0 0 10px", lineHeight: 1.1 }}>
-            Perguntas Frequentes
-          </h2>
-          <p style={{ color: "#888", fontSize: 14, lineHeight: 1.6, margin: 0 }}>
-            Tire suas dúvidas sobre nosso processo de manutenção industrial.
-          </p>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-          {faqs.map((faq, i) => (
-            <div key={i} style={{ background: "#fff", border: "1.5px solid #EBEBEB", borderRadius: 10, overflow: "hidden" }}>
-              <button
-                onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                style={{
-                  width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
-                  padding: "15px 20px", background: "none", border: "none",
-                  cursor: "pointer", textAlign: "left", gap: 16,
-                }}
-              >
-                <span style={{ fontSize: 14, fontWeight: 600, color: openFaq === i ? "#F22020" : "#111" }}>
-                  {faq.q}
-                </span>
-                <ChevronDown style={{
-                  width: 15, height: 15, color: openFaq === i ? "#F22020" : "#AAA", flexShrink: 0,
-                  transform: openFaq === i ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s",
-                }} />
-              </button>
-              {openFaq === i && (
-                <div style={{ padding: "0 20px 14px", borderTop: "1px solid #F0F0F0" }}>
-                  <p style={{ fontSize: 14, color: "#666", lineHeight: 1.7, margin: "12px 0 0" }}>{faq.a}</p>
-                </div>
-              )}
-            </div>
-          ))}
         </div>
       </div>
     </section>
@@ -661,7 +726,7 @@ export default function ManutencaoPage() {
       <BeneficiosSection />
       <InstrumentosSection />
       <OrcamentoSection  formRef={formRef as React.RefObject<HTMLElement>} />
-      <FaqSection />
+    
       <PageFooter />
 
     </main>
