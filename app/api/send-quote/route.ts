@@ -1,15 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-// Tipos
 interface QuoteRequestBody {
   name: string;
   company?: string;
+  role?: string;
   email: string;
   phone: string;
-  service?: string;
+  channels?: string;       // ex: "whatsapp_text, email"
   message?: string;
-  // UTMs de rastreamento
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
@@ -17,7 +16,6 @@ interface QuoteRequestBody {
   utm_content?: string;
 }
 
-// Validações
 function validateBody(body: QuoteRequestBody): string | null {
   if (!body.name || body.name.trim().length < 2)
     return "Nome deve ter pelo menos 2 caracteres.";
@@ -29,47 +27,63 @@ function validateBody(body: QuoteRequestBody): string | null {
   return null;
 }
 
+// Human-readable label for channel ids
+const CHANNEL_LABELS: Record<string, string> = {
+  whatsapp_text:  "WhatsApp mensagem",
+  whatsapp_voice: "WhatsApp voz",
+  email:          "E-mail",
+  phone_call:     "Ligação telefônica",
+};
+
+function formatChannels(raw: string | undefined): string {
+  if (!raw) return "—";
+  return raw
+    .split(",")
+    .map(c => CHANNEL_LABELS[c.trim()] ?? c.trim())
+    .join(", ");
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body: QuoteRequestBody = await req.json();
 
-    // Sanitiza os campos
     const trimmed: QuoteRequestBody = {
-      name: body.name?.trim(),
-      company: body.company?.trim() || "",
-      email: body.email?.trim().toLowerCase(),
-      phone: body.phone?.trim(),
-      service: body.service?.trim() || "",
-      message: body.message?.trim() || "",
-      utm_source: body.utm_source?.trim() || "",
-      utm_medium: body.utm_medium?.trim() || "",
+      name:         body.name?.trim(),
+      company:      body.company?.trim()      || "",
+      role:         body.role?.trim()         || "",
+      email:        body.email?.trim().toLowerCase(),
+      phone:        body.phone?.trim(),
+      channels:     body.channels?.trim()     || "",
+      message:      body.message?.trim()      || "",
+      utm_source:   body.utm_source?.trim()   || "",
+      utm_medium:   body.utm_medium?.trim()   || "",
       utm_campaign: body.utm_campaign?.trim() || "",
-      utm_term: body.utm_term?.trim() || "",
-      utm_content: body.utm_content?.trim() || "",
+      utm_term:     body.utm_term?.trim()     || "",
+      utm_content:  body.utm_content?.trim()  || "",
     };
 
-    // Valida
     const validationError = validateBody(trimmed);
     if (validationError) {
       return NextResponse.json({ success: false, error: validationError }, { status: 400 });
     }
 
-    // Configura o transporter Gmail SMTP
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
-      secure: true, // SSL
+      secure: true,
       auth: {
-        user: process.env.SMTP_EMAIL,        // seu Gmail
-        pass: process.env.SMTP_APP_PASSWORD, // senha de app do Google
+        user: process.env.SMTP_EMAIL,
+        pass: process.env.SMTP_APP_PASSWORD,
       },
     });
 
-    // E-mail enviado para a empresa (notificação interna)
+    const channelsFormatted = formatChannels(trimmed.channels);
+
+    // ── E-mail interno ──────────────────────────────────────────────────────
     const internalMailOptions = {
-      from: `"Formulário do Site" <${process.env.SMTP_EMAIL}>`,
-      to: `maristela@tecnoiso.com, mclsouza1613ad@gmail.com`, // e-mail que vai receber os orçamentos
-      replyTo: trimmed.email,       // responder já vai direto pro cliente
+      from:    `"Formulário do Site" <${process.env.SMTP_EMAIL}>`,
+      to:      `maristela@tecnoiso.com, mclsouza1613ad@gmail.com`,
+      replyTo: trimmed.email,
       subject: `📋 Novo orçamento de ${trimmed.name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -78,24 +92,26 @@ export async function POST(req: NextRequest) {
             <p style="color: rgba(255,255,255,0.85); margin: 8px 0 0;">Recebido pelo site tecnoiso.com</p>
           </div>
           <div style="background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; border: 1px solid #eee;">
-            
             <table style="width: 100%; border-collapse: collapse;">
               <tr>
-                <td style="padding: 12px 0; border-bottom: 1px solid #eee; width: 140px;">
+                <td style="padding: 12px 0; border-bottom: 1px solid #eee; width: 160px;">
                   <strong style="color: #555;">👤 Nome</strong>
                 </td>
-                <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #222;">
-                  ${trimmed.name}
-                </td>
+                <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #222;">${trimmed.name}</td>
               </tr>
               ${trimmed.company ? `
               <tr>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
                   <strong style="color: #555;">🏢 Empresa</strong>
                 </td>
-                <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #222;">
-                  ${trimmed.company}
+                <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #222;">${trimmed.company}</td>
+              </tr>` : ""}
+              ${trimmed.role ? `
+              <tr>
+                <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
+                  <strong style="color: #555;">💼 Cargo</strong>
                 </td>
+                <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #222;">${trimmed.role}</td>
               </tr>` : ""}
               <tr>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
@@ -109,19 +125,16 @@ export async function POST(req: NextRequest) {
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
                   <strong style="color: #555;">📞 Telefone</strong>
                 </td>
-                <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #222;">
+                <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
                   <a href="tel:${trimmed.phone.replace(/\D/g, "")}" style="color: #c0392b;">${trimmed.phone}</a>
                 </td>
               </tr>
-              ${trimmed.service ? `
               <tr>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
-                  <strong style="color: #555;">🔧 Serviço</strong>
+                  <strong style="color: #555;">📡 Canal preferido</strong>
                 </td>
-                <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #222;">
-                  ${trimmed.service}
-                </td>
-              </tr>` : ""}
+                <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #222;">${channelsFormatted}</td>
+              </tr>
             </table>
 
             ${trimmed.message ? `
@@ -131,13 +144,27 @@ export async function POST(req: NextRequest) {
                 ${trimmed.message.replace(/\n/g, "<br>")}
               </div>
             </div>` : ""}
+
+            ${(trimmed.utm_source || trimmed.utm_medium || trimmed.utm_campaign) ? `
+            <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee;">
+              <strong style="color: #aaa; font-size: 12px;">UTMs</strong>
+              <p style="margin: 4px 0; font-size: 12px; color: #aaa;">
+                Source: ${trimmed.utm_source || "—"} &nbsp;|&nbsp;
+                Medium: ${trimmed.utm_medium || "—"} &nbsp;|&nbsp;
+                Campaign: ${trimmed.utm_campaign || "—"}
+                ${trimmed.utm_term    ? ` | Term: ${trimmed.utm_term}`    : ""}
+                ${trimmed.utm_content ? ` | Content: ${trimmed.utm_content}` : ""}
+              </p>
+            </div>` : ""}
+          </div>
+        </div>
       `,
     };
 
-    // E-mail de confirmação para o cliente
+    // ── E-mail de confirmação ao cliente ────────────────────────────────────
     const clientMailOptions = {
-      from: `"Tecnoiso" <${process.env.SMTP_EMAIL}>`,
-      to: trimmed.email,
+      from:    `"Tecnoiso" <${process.env.SMTP_EMAIL}>`,
+      to:      trimmed.email,
       subject: "✅ Recebemos sua mensagem – Tecnoiso",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -148,7 +175,7 @@ export async function POST(req: NextRequest) {
           <div style="background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; border: 1px solid #eee;">
             <p style="color: #333; font-size: 16px;">Olá, <strong>${trimmed.name}</strong>!</p>
             <p style="color: #555; line-height: 1.6;">
-              Recebemos sua solicitação de orçamento e entraremos em contato em breve. 
+              Recebemos sua solicitação e entraremos em contato pelo canal de sua preferência em breve.
               Nossa equipe responde em até <strong>1 dia útil</strong>.
             </p>
 
@@ -156,13 +183,14 @@ export async function POST(req: NextRequest) {
               <h3 style="color: #c0392b; margin: 0 0 16px;">Resumo do seu contato:</h3>
               <p style="margin: 6px 0; color: #555;"><strong>Nome:</strong> ${trimmed.name}</p>
               ${trimmed.company ? `<p style="margin: 6px 0; color: #555;"><strong>Empresa:</strong> ${trimmed.company}</p>` : ""}
+              ${trimmed.role    ? `<p style="margin: 6px 0; color: #555;"><strong>Cargo:</strong> ${trimmed.role}</p>`    : ""}
               <p style="margin: 6px 0; color: #555;"><strong>E-mail:</strong> ${trimmed.email}</p>
               <p style="margin: 6px 0; color: #555;"><strong>Telefone:</strong> ${trimmed.phone}</p>
-              ${trimmed.service ? `<p style="margin: 6px 0; color: #555;"><strong>Serviço:</strong> ${trimmed.service}</p>` : ""}
+              <p style="margin: 6px 0; color: #555;"><strong>Canal preferido:</strong> ${channelsFormatted}</p>
             </div>
 
             <p style="color: #555; line-height: 1.6;">
-              Se precisar de atendimento imediato, ligue para 
+              Se precisar de atendimento imediato, ligue para
               <a href="tel:4734383175" style="color: #c0392b; font-weight: bold;">(47) 3438-3175</a>.
             </p>
 
@@ -176,7 +204,7 @@ export async function POST(req: NextRequest) {
       `,
     };
 
-    // Envia e-mails + webhook Goalfy em paralelo
+    // ── Envio paralelo: e-mails + webhook Goalfy ────────────────────────────
     await Promise.all([
       transporter.sendMail(internalMailOptions),
       transporter.sendMail(clientMailOptions),
@@ -184,18 +212,19 @@ export async function POST(req: NextRequest) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          nome: trimmed.name,
-          email: trimmed.email,
-          telefone: trimmed.phone,
-          empresa: trimmed.company,
-          "Serviço de Interesse": trimmed.service,
-          mensagem: trimmed.message,
-          utm_source: trimmed.utm_source,
-          utm_medium: trimmed.utm_medium,
-          utm_campaign: trimmed.utm_campaign,
-          utm_term: trimmed.utm_term,
-          utm_content: trimmed.utm_content,
-          origem: "site",
+          nome:                    trimmed.name,
+          email:                   trimmed.email,
+          telefone:                trimmed.phone,
+          empresa:                 trimmed.company,
+          cargo:                   trimmed.role,
+          canal_preferido:         channelsFormatted,
+          mensagem:                trimmed.message,
+          utm_source:              trimmed.utm_source,
+          utm_medium:              trimmed.utm_medium,
+          utm_campaign:            trimmed.utm_campaign,
+          utm_term:                trimmed.utm_term,
+          utm_content:             trimmed.utm_content,
+          origem:                  "site",
         }),
       }),
     ]);
