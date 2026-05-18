@@ -4,7 +4,6 @@ import { Toaster } from "sonner";
 import IntroAnimation from "@/components/IntroAnimation";
 import WhatsAppScript from "@/components/WhatsAppScript";
 
-
 export const metadata: Metadata = {
   metadataBase: new URL("https://tecnoiso.com"),
   title: { template: "%s | Tecnoiso", default: "Home- Tecnoiso" },
@@ -31,13 +30,12 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicons/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
-      { url: "/favicons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
       { url: "/favicons/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/favicons/favicon.ico" },
+      { url: "/favicons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicons/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
     ],
-    apple: "/favicons/apple-touch-icon.png",
-    shortcut: "/favicons/android-chrome-192x192.png",
+    apple:    "/favicons/apple-touch-icon.png",
+    shortcut: "/favicons/favicon-32x32.png",
   },
   manifest: "/favicons/site.webmanifest",
 };
@@ -45,7 +43,7 @@ export const metadata: Metadata = {
 const orgSchema = {
   "@context": "https://schema.org", "@type": "Organization",
   name: "Tecnoiso - Tecnologia e Soluções Industriais",
-  url: "https://tecnoiso.com", logo: "https://tecnoiso/tecnoiso-logo.png",
+  url: "https://tecnoiso.com", logo: "https://tecnoiso.com/favicons/android-chrome-192x192.png",
   description: "Laboratório acreditado INMETRO especializado em metrologia, calibração e certificação industrial.",
   address: { "@type": "PostalAddress", streetAddress: "R. Dona Emma, 1541 - Floresta", addressLocality: "Joinville", addressRegion: "SC", postalCode: "89211-493", addressCountry: "BR" },
   telephone: "+5547989299801",
@@ -88,24 +86,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-5M69SNRH"
             height="0" width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
+            style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
 
         <div
           id="stage"
-          style={{ position: 'relative', overflowX: 'hidden', overflowY: 'hidden' }}
+          style={{ position: "relative", overflowX: "hidden", overflowY: "hidden" }}
         >
           <IntroAnimation />
           <div
             id="site-content"
-            style={{ marginTop: typeof window !== 'undefined' && sessionStorage.getItem('tecnoiso_intro_done') ? '0' : '100vh' }}
+            style={{ marginTop: typeof window !== "undefined" && sessionStorage.getItem("tecnoiso_intro_done") ? "0" : "100vh" }}
           >
             {children}
           </div>
         </div>
 
-        {/* Widget WhatsApp — carrega o script e dispara DOMContentLoaded manualmente */}
         <WhatsAppScript />
 
         <Toaster richColors position="top-right" />
