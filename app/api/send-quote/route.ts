@@ -15,7 +15,7 @@ interface QuoteRequestBody {
   utm_campaign?: string;
   utm_term?: string;
   utm_content?: string;
-  
+
 }
 
 function validateBody(body: QuoteRequestBody): string | null {

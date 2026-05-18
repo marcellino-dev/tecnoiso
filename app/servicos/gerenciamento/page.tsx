@@ -1,19 +1,22 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
-  ArrowLeft, ArrowRight, CheckCircle2, MessageCircle,
+  ArrowLeft, ArrowRight, CheckCircle2,
   Lock, MapPin, Phone, Mail, Clock,
-  BarChart3, Bell, FileText, Users, History,
+  BarChart3, Bell, FileText, History,
   Target, ShieldCheck, Layers, ClipboardList,
-  Instagram, Linkedin,
+  Instagram, Linkedin, Loader2,
+  MessageCircle, Mic,
 } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 
 /* ─── Constants ─────────────────────────────────────────────────────── */
-const WA_NUM            = "4734401719";
-const WA_BASE           = `https://wa.me/${WA_NUM}`;
-const WA_GERENCIAMENTO  = `${WA_BASE}?text=Olá%2C%20gostaria%20de%20saber%20mais%20sobre%20o%20Gerenciamento%20Metrológico`;
+const RED      = "#F22020";
+const RED_DARK = "#a01010";
+const BLUR_BG  = "rgba(255,255,255,0.05)";
+const BORDER   = "rgba(255,255,255,0.10)";
 
 /* ─── Styles ─────────────────────────────────────────────────────────── */
 const raj: React.CSSProperties = {
@@ -24,8 +27,8 @@ const raj: React.CSSProperties = {
 const inputBase: React.CSSProperties = {
   width: "100%",
   height: 44,
-  background: "rgba(255,255,255,0.05)",
-  border: "1.5px solid rgba(255,255,255,0.1)",
+  background: BLUR_BG,
+  border: `1.5px solid ${BORDER}`,
   borderRadius: 8,
   padding: "0 14px",
   fontSize: 14,
@@ -33,6 +36,7 @@ const inputBase: React.CSSProperties = {
   outline: "none",
   transition: "border-color 0.2s",
   boxSizing: "border-box",
+  fontFamily: "inherit",
 };
 
 const labelBase: React.CSSProperties = {
@@ -55,62 +59,34 @@ const heroBullets = [
 
 const comoFuncionaSteps = [
   {
-    num: "01",
-    icon: Layers,
+    num: "01", icon: Layers,
     title: "Mapeamento do parque",
     desc: "Levantamento técnico de todos os instrumentos críticos, classificação por uso e definição de periodicidade.",
   },
   {
-    num: "02",
-    icon: ClipboardList,
+    num: "02", icon: ClipboardList,
     title: "Cadastro inteligente",
     desc: "Cada instrumento entra no sistema com histórico, certificados, validade e responsável associado.",
   },
   {
-    num: "03",
-    icon: Bell,
+    num: "03", icon: Bell,
     title: "Monitoramento contínuo",
     desc: "Alertas automáticos antes do vencimento e acompanhamento técnico de todas as ações corretivas.",
   },
   {
-    num: "04",
-    icon: FileText,
+    num: "04", icon: FileText,
     title: "Relatórios e auditoria",
     desc: "Documentação pronta para ISO 9001, IATF 16949, ANVISA e auditorias internas a qualquer momento.",
   },
 ];
 
 const beneficios = [
-  {
-    icon: BarChart3,
-    title: "Dashboard em tempo real",
-    desc: "Status, vencimentos e indicadores de cada instrumento em um só painel.",
-  },
-  {
-    icon: FileText,
-    title: "Relatórios para auditoria",
-    desc: "Modelos prontos para ISO 9001, IATF 16949 e ANVISA.",
-  },
-  {
-    icon: Bell,
-    title: "Alertas automáticos",
-    desc: "Avisos antecipados de vencimento — zero surpresa em auditoria.",
-  },
-  {
-    icon: History,
-    title: "Histórico completo",
-    desc: "Toda intervenção, calibração e manutenção rastreada por equipamento.",
-  },
-  {
-    icon: Target,
-    title: "Foco no seu core",
-    desc: "Sua equipe deixa de gastar tempo com planilhas e cobranças.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Conformidade contínua",
-    desc: "Operação sempre dentro dos requisitos da ISO 17025.",
-  },
+  { icon: BarChart3,   title: "Dashboard em tempo real",  desc: "Status, vencimentos e indicadores de cada instrumento em um só painel." },
+  { icon: FileText,    title: "Relatórios para auditoria", desc: "Modelos prontos para ISO 9001, IATF 16949 e ANVISA." },
+  { icon: Bell,        title: "Alertas automáticos",       desc: "Avisos antecipados de vencimento — zero surpresa em auditoria." },
+  { icon: History,     title: "Histórico completo",        desc: "Toda intervenção, calibração e manutenção rastreada por equipamento." },
+  { icon: Target,      title: "Foco no seu core",          desc: "Sua equipe deixa de gastar tempo com planilhas e cobranças." },
+  { icon: ShieldCheck, title: "Conformidade contínua",     desc: "Operação sempre dentro dos requisitos da ISO 17025." },
 ];
 
 const contactItems = [
@@ -122,18 +98,28 @@ const contactItems = [
 
 const socialLinks = [
   { href: "https://www.instagram.com/leorosajr/",                     icon: Instagram, label: "Instagram" },
-  { href: "https://br.linkedin.com/in/leonardo-rosa-junior-8b68264b", icon: Linkedin,  label: "LinkedIn" },
+  { href: "https://br.linkedin.com/in/leonardo-rosa-junior-8b68264b", icon: Linkedin,  label: "LinkedIn"  },
 ];
 
 const services = ["Calibração", "Certificação", "Manutenção", "Consultoria", "Treinamentos"];
 
+/* ─── Canal preferido ──────────────────────────────────────────────── */
+type Channel = "whatsapp_text" | "whatsapp_voice" | "email" | "phone_call";
+
+const CHANNELS: { id: Channel; label: string; Icon: React.ElementType }[] = [
+  { id: "whatsapp_text",  label: "WhatsApp mensagem", Icon: MessageCircle },
+  { id: "whatsapp_voice", label: "WhatsApp voz",      Icon: Mic          },
+  { id: "email",          label: "E-mail",             Icon: Mail         },
+  { id: "phone_call",     label: "Ligação telefônica", Icon: Phone        },
+];
+
 /* ─── Mock Dashboard ─────────────────────────────────────────────────── */
 const mockInstruments = [
-  { id: "PT-100 #4521", area: "Caldeira A", date: "12/08/2026", status: "ok" },
-  { id: "Manômetro #1183", area: "Linha 03", date: "29/05/2026", status: "warning" },
-  { id: "Balança Ind. #07", area: "Expedição", date: "30/09/2026", status: "ok" },
-  { id: "Termopar #2210", area: "Forno 03", date: "—", status: "service" },
-  { id: "Multímetro #88", area: "Manutenção", date: "15/11/2026", status: "ok" },
+  { id: "PT-100 #4521",      area: "Caldeira A",  date: "12/08/2026", status: "ok"      },
+  { id: "Manômetro #1183",   area: "Linha 03",    date: "29/05/2026", status: "warning" },
+  { id: "Balança Ind. #07",  area: "Expedição",   date: "30/09/2026", status: "ok"      },
+  { id: "Termopar #2210",    area: "Forno 03",    date: "—",          status: "service" },
+  { id: "Multímetro #88",    area: "Manutenção",  date: "15/11/2026", status: "ok"      },
 ];
 
 function MockDashboard() {
@@ -164,20 +150,17 @@ function MockDashboard() {
         </div>
         <div style={{
           width: 28, height: 28, borderRadius: "50%",
-          background: "#F22020", display: "flex", alignItems: "center", justifyContent: "center",
+          background: RED, display: "flex", alignItems: "center", justifyContent: "center",
         }}>
           <Bell style={{ width: 13, height: 13, color: "#fff" }} />
         </div>
       </div>
       {/* Stats row */}
-      <div style={{
-        display: "grid", gridTemplateColumns: "1fr 1fr 1fr",
-        borderBottom: "1px solid #2a2a2a",
-      }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", borderBottom: "1px solid #2a2a2a" }}>
         {[
-          { label: "Total", value: "324", color: "#fff" },
-          { label: "Em dia", value: "298", color: "#22c55e" },
-          { label: "Atenção", value: "26", color: "#F22020" },
+          { label: "Total",   value: "324", color: "#fff"     },
+          { label: "Em dia",  value: "298", color: "#22c55e"  },
+          { label: "Atenção", value: "26",  color: RED        },
         ].map(({ label, value, color }) => (
           <div key={label} style={{ padding: "12px 16px", borderRight: "1px solid #2a2a2a" }}>
             <p style={{ fontSize: 10, color: "#555", margin: 0, marginBottom: 2 }}>{label}</p>
@@ -189,8 +172,7 @@ function MockDashboard() {
       {mockInstruments.map(inst => (
         <div key={inst.id} style={{
           padding: "11px 18px", borderBottom: "1px solid #1e1e1e",
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          gap: 12,
+          display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12,
         }}>
           <div>
             <p style={{ fontSize: 12, fontWeight: 600, color: "#e0e0e0", margin: 0 }}>{inst.id}</p>
@@ -198,13 +180,9 @@ function MockDashboard() {
           </div>
           <div style={{
             display: "flex", alignItems: "center", gap: 6,
-            background: "rgba(255,255,255,0.04)", borderRadius: 20,
-            padding: "3px 10px",
+            background: "rgba(255,255,255,0.04)", borderRadius: 20, padding: "3px 10px",
           }}>
-            <div style={{
-              width: 6, height: 6, borderRadius: "50%",
-              background: statusColor(inst.status),
-            }} />
+            <div style={{ width: 6, height: 6, borderRadius: "50%", background: statusColor(inst.status) }} />
             <span style={{ fontSize: 11, color: statusColor(inst.status), fontWeight: 600 }}>
               {inst.status === "ok" ? inst.date : statusLabel(inst.status)}
             </span>
@@ -214,6 +192,10 @@ function MockDashboard() {
     </div>
   );
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SECTIONS
+   ═══════════════════════════════════════════════════════════════════════ */
 
 /* ─── Hero ───────────────────────────────────────────────────────────── */
 function HeroSection({ onCtaClick }: { onCtaClick: () => void }) {
@@ -229,7 +211,8 @@ function HeroSection({ onCtaClick }: { onCtaClick: () => void }) {
         position: "absolute", inset: 0,
         background: "linear-gradient(135deg, rgba(10,10,10,0.88) 50%, rgba(242,34,32,0.07) 100%)",
       }} />
-      {/* Back link */}
+
+      {/* Back */}
       <div style={{ position: "relative", maxWidth: 900, margin: "0 auto", padding: "20px 24px 0" }}>
         <Link href="/" style={{
           display: "inline-flex", alignItems: "center", gap: 6,
@@ -238,41 +221,45 @@ function HeroSection({ onCtaClick }: { onCtaClick: () => void }) {
           <ArrowLeft style={{ width: 14, height: 14 }} /> Voltar para a home
         </Link>
       </div>
+
       <div style={{ position: "relative", maxWidth: 900, margin: "0 auto", padding: "48px 24px 72px" }}>
-        {/* Badge */}
         <div style={{
-          display: "inline-block", background: "#F22020",
+          display: "inline-block", background: RED,
           color: "#fff", fontSize: 11, fontWeight: 700,
           letterSpacing: "0.1em", padding: "4px 12px", borderRadius: 4,
           marginBottom: 18, textTransform: "uppercase",
         }}>
           Gerenciamento Metrológico
         </div>
+
         <h1 style={{ ...raj, fontSize: "clamp(28px,4vw,52px)", lineHeight: 1.05, color: "#fff", margin: "0 0 16px" }}>
           Foque no seu negócio.{" "}
-          <span style={{ color: "#F22020", fontStyle: "italic" }}>
+          <span style={{ color: RED, fontStyle: "italic" }}>
             A metrologia é com a TECNOISO.
           </span>
         </h1>
+
         <p style={{ color: "#A0A0A0", fontSize: 15, lineHeight: 1.75, margin: "0 0 28px", maxWidth: 520 }}>
           Assumimos o controle total do ciclo de vida dos seus instrumentos — dos prazos de calibração
           ao histórico técnico — com visibilidade completa via dashboard e alertas automáticos antes
           de qualquer vencimento.
         </p>
+
         <ul style={{ margin: "0 0 32px", padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 10 }}>
           {heroBullets.map(item => (
             <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14, color: "#DEDEDE" }}>
-              <CheckCircle2 style={{ width: 16, height: 16, color: "#F22020", marginTop: 2, flexShrink: 0 }} />
+              <CheckCircle2 style={{ width: 16, height: 16, color: RED, marginTop: 2, flexShrink: 0 }} />
               {item}
             </li>
           ))}
         </ul>
+
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
           <button
             onClick={onCtaClick}
             style={{
               display: "inline-flex", alignItems: "center", gap: 8,
-              background: "#F22020", color: "#fff", fontWeight: 700, fontSize: 13,
+              background: RED, color: "#fff", fontWeight: 700, fontSize: 13,
               padding: "13px 24px", borderRadius: 8, border: "none", cursor: "pointer",
               letterSpacing: "0.04em", textTransform: "uppercase",
             }}
@@ -280,7 +267,7 @@ function HeroSection({ onCtaClick }: { onCtaClick: () => void }) {
             Quero terceirizar minha metrologia
           </button>
           <button
-            onClick={() => { document.getElementById("como-funciona")?.scrollIntoView({ behavior: "smooth" }); }}
+            onClick={() => document.getElementById("como-funciona")?.scrollIntoView({ behavior: "smooth" })}
             style={{
               display: "inline-flex", alignItems: "center", gap: 8,
               background: "transparent", color: "#E0E0E0",
@@ -302,12 +289,12 @@ function ComoFuncionaSection() {
     <section id="como-funciona" style={{ background: "#F5F5F5", padding: "64px 24px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 48 }}>
-          <p style={{ fontSize: 11, fontWeight: 700, color: "#F22020", letterSpacing: "0.1em", margin: "0 0 10px" }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: RED, letterSpacing: "0.1em", margin: "0 0 10px" }}>
             COMO FUNCIONA
           </p>
           <h2 style={{ ...raj, fontSize: "clamp(22px,3vw,38px)", color: "#111", margin: "0 0 12px", lineHeight: 1.1 }}>
             Um processo claro para{" "}
-            <span style={{ color: "#F22020" }}>controle total</span>{" "}
+            <span style={{ color: RED }}>controle total</span>{" "}
             da sua metrologia
           </h2>
           <p style={{ color: "#777", fontSize: 14, lineHeight: 1.7, maxWidth: 520, margin: "0 auto" }}>
@@ -317,25 +304,22 @@ function ComoFuncionaSection() {
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: 16 }}>
-          {comoFuncionaSteps.map((step) => {
+          {comoFuncionaSteps.map(step => {
             const Icon = step.icon;
             return (
               <div key={step.num} style={{
                 background: "#fff", border: "1.5px solid #E8E8E8", borderRadius: 14,
                 overflow: "hidden", display: "flex", flexDirection: "column",
               }}>
-                <div style={{ height: 3, background: "#F22020" }} />
+                <div style={{ height: 3, background: RED }} />
                 <div style={{ padding: "22px" }}>
-                  <div style={{
-                    display: "flex", alignItems: "center", justifyContent: "space-between",
-                    marginBottom: 16,
-                  }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
                     <div style={{
                       width: 40, height: 40, borderRadius: 10,
                       background: "#FFF0F0", border: "1px solid #FCCFCF",
                       display: "flex", alignItems: "center", justifyContent: "center",
                     }}>
-                      <Icon style={{ width: 20, height: 20, color: "#F22020" }} />
+                      <Icon style={{ width: 20, height: 20, color: RED }} />
                     </div>
                     <span style={{ fontSize: 22, fontWeight: 700, color: "#EBEBEB", letterSpacing: "0.02em" }}>
                       {step.num}
@@ -364,14 +348,13 @@ function DashboardSection({ onCtaClick }: { onCtaClick: () => void }) {
         display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
         gap: 64, alignItems: "center",
       }}>
-        {/* Left text */}
         <div>
-          <p style={{ fontSize: 11, fontWeight: 700, color: "#F22020", letterSpacing: "0.1em", margin: "0 0 10px" }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: RED, letterSpacing: "0.1em", margin: "0 0 10px" }}>
             DASHBOARD TECNOISO
           </p>
           <h2 style={{ ...raj, fontSize: "clamp(22px,3vw,38px)", color: "#111", margin: "0 0 16px", lineHeight: 1.1 }}>
             Toda a sua metrologia em{" "}
-            <span style={{ color: "#F22020" }}>um só painel</span>
+            <span style={{ color: RED }}>um só painel</span>
           </h2>
           <p style={{ color: "#555", fontSize: 14, lineHeight: 1.8, margin: "0 0 20px" }}>
             Você acompanha em tempo real cada instrumento da sua planta — status de calibração,
@@ -386,7 +369,7 @@ function DashboardSection({ onCtaClick }: { onCtaClick: () => void }) {
               "Notificações por e-mail antes de cada vencimento",
             ].map(item => (
               <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14, color: "#444" }}>
-                <CheckCircle2 style={{ width: 15, height: 15, color: "#F22020", marginTop: 2, flexShrink: 0 }} />
+                <CheckCircle2 style={{ width: 15, height: 15, color: RED, marginTop: 2, flexShrink: 0 }} />
                 {item}
               </li>
             ))}
@@ -395,7 +378,7 @@ function DashboardSection({ onCtaClick }: { onCtaClick: () => void }) {
             onClick={onCtaClick}
             style={{
               display: "inline-flex", alignItems: "center", gap: 8,
-              background: "#F22020", color: "#fff", fontWeight: 700, fontSize: 13,
+              background: RED, color: "#fff", fontWeight: 700, fontSize: 13,
               padding: "13px 24px", borderRadius: 8, border: "none", cursor: "pointer",
               letterSpacing: "0.04em", textTransform: "uppercase",
             }}
@@ -403,7 +386,6 @@ function DashboardSection({ onCtaClick }: { onCtaClick: () => void }) {
             Quero conhecer o painel <ArrowRight style={{ width: 15, height: 15 }} />
           </button>
         </div>
-        {/* Right mock dashboard */}
         <div style={{ display: "flex", justifyContent: "center" }}>
           <MockDashboard />
         </div>
@@ -418,12 +400,12 @@ function BeneficiosSection() {
     <section style={{ background: "#F5F5F5", padding: "64px 24px" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 48 }}>
-          <p style={{ fontSize: 11, fontWeight: 700, color: "#F22020", letterSpacing: "0.1em", margin: "0 0 10px" }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: RED, letterSpacing: "0.1em", margin: "0 0 10px" }}>
             BENEFÍCIOS
           </p>
           <h2 style={{ ...raj, fontSize: "clamp(22px,3vw,38px)", color: "#111", margin: "0 0 10px", lineHeight: 1.1 }}>
             Visibilidade total.{" "}
-            <span style={{ color: "#F22020" }}>Zero retrabalho.</span>
+            <span style={{ color: RED }}>Zero retrabalho.</span>
           </h2>
           <p style={{ color: "#777", fontSize: 14, lineHeight: 1.6, maxWidth: 480, margin: "0 auto" }}>
             Tudo o que sua equipe precisa para operar com conformidade e sem surpresas em auditoria.
@@ -442,7 +424,7 @@ function BeneficiosSection() {
                   background: "#FFF0F0", border: "1px solid #FCCFCF",
                   display: "flex", alignItems: "center", justifyContent: "center",
                 }}>
-                  <Icon style={{ width: 18, height: 18, color: "#F22020" }} />
+                  <Icon style={{ width: 18, height: 18, color: RED }} />
                 </div>
                 <div>
                   <h3 style={{ fontSize: 14, fontWeight: 700, color: "#111", margin: "0 0 4px" }}>{b.title}</h3>
@@ -457,100 +439,209 @@ function BeneficiosSection() {
   );
 }
 
-/* ─── Formulário ─────────────────────────────────────────────────────── */
+/* ─── Form Section ───────────────────────────────────────────────────── */
 function FormSection({ formRef }: { formRef: React.RefObject<HTMLElement> }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    name: "", company: "", role: "", phone: "", email: "",
-    instruments: "", message: "",
+    name:        "",
+    company:     "",
+    role:        "",
+    phone:       "",
+    email:       "",
+    instruments: "Até 50 instrumentos",
+    channels:    [] as Channel[],
+    message:     "",
+  });
+  const [utms, setUtms] = useState({
+    utm_source: "", utm_medium: "", utm_campaign: "", utm_term: "", utm_content: "",
   });
 
-  const FOCUS_COLOR = "#F22020";
+  useEffect(() => {
+    const p = new URLSearchParams(window.location.search);
+    setUtms({
+      utm_source:   p.get("utm_source")   || "",
+      utm_medium:   p.get("utm_medium")   || "",
+      utm_campaign: p.get("utm_campaign") || "",
+      utm_term:     p.get("utm_term")     || "",
+      utm_content:  p.get("utm_content")  || "",
+    });
+  }, []);
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const d = e.target.value.replace(/\D/g, "").slice(0, 11);
     let m = "";
-    if (d.length <= 2)  m = `(${d}`;
-    else if (d.length <= 6) m = `(${d.slice(0,2)}) ${d.slice(2)}`;
-    else if (d.length <= 10) m = `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`;
-    else m = `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7,11)}`;
+    if (d.length === 0)      m = "";
+    else if (d.length <= 2)  m = `(${d}`;
+    else if (d.length <= 6)  m = `(${d.slice(0, 2)}) ${d.slice(2)}`;
+    else if (d.length <= 10) m = `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+    else                     m = `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7, 11)}`;
     setFormData(p => ({ ...p, phone: m }));
   };
 
+  const toggleChannel = (id: Channel) =>
+    setFormData(p => ({
+      ...p,
+      channels: p.channels.includes(id)
+        ? p.channels.filter(c => c !== id)
+        : [...p.channels, id],
+    }));
+
   const fp = {
     onFocus: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
-      (e.currentTarget.style.borderColor = FOCUS_COLOR),
+      (e.currentTarget.style.borderColor = RED),
     onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
-      (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"),
+      (e.currentTarget.style.borderColor = BORDER),
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const t = {
+      name:     formData.name.trim(),
+      company:  formData.company.trim(),
+      role:     formData.role.trim(),
+      email:    formData.email.trim(),
+      phone:    formData.phone.trim(),
+      // "service" é o campo genérico que a API já aceita — usamos para registrar o contexto
+      service:  `Gerenciamento Metrológico — ${formData.instruments}`,
+      channels: formData.channels.join(", "),
+      message:  formData.message.trim(),
+    };
+
+    if (!t.name || !t.email || !t.phone) {
+      toast.error("Por favor, preencha todos os campos obrigatórios."); return;
+    }
+    if (t.name.length < 2) {
+      toast.error("Nome deve ter pelo menos 2 caracteres."); return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t.email)) {
+      toast.error("E-mail inválido."); return;
+    }
+    if (t.phone.replace(/\D/g, "").length < 10) {
+      toast.error("Telefone inválido."); return;
+    }
+
     setIsSubmitting(true);
-    setTimeout(() => { setIsSubmitting(false); window.location.href = "/obrigado"; }, 1500);
+    try {
+      const res = await fetch("/api/send-quote", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ ...t, ...utms, origem: "gerenciamento" }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setFormData({
+          name: "", company: "", role: "", phone: "", email: "",
+          instruments: "Até 50 instrumentos", channels: [], message: "",
+        });
+        window.location.href = "/obrigado";
+      } else {
+        throw new Error(data.error || "Erro ao enviar");
+      }
+    } catch {
+      toast.error("Erro ao enviar. Tente novamente ou ligue para nós.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <section ref={formRef} id="orcamento" style={{
-      background: "#0D0D0D", padding: "72px 24px", scrollMarginTop: 80,
-    }}>
+    <section
+      ref={formRef}
+      id="orcamento"
+      style={{ background: "#0D0D0D", padding: "72px 24px", scrollMarginTop: 80 }}
+    >
       <div style={{ maxWidth: 680, margin: "0 auto" }}>
+
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: 40 }}>
           <h2 style={{ ...raj, fontSize: "clamp(24px,3vw,40px)", color: "#fff", margin: "0 0 12px", lineHeight: 1.1 }}>
-            Terceirize sua{" "}
-            <span style={{ color: "#F22020" }}>Metrologia</span>
+            Terceirize sua <span style={{ color: RED }}>Metrologia</span>
           </h2>
           <p style={{ color: "#777", fontSize: 14, lineHeight: 1.7, margin: 0 }}>
             Conte sobre seu parque de instrumentos. Em até 1 dia útil retornamos com uma proposta.
           </p>
         </div>
 
-        {/* Form card */}
+        {/* Card */}
         <div style={{
           background: "rgba(255,255,255,0.03)",
           border: "1.5px solid rgba(255,255,255,0.08)",
           borderRadius: 16, overflow: "hidden",
         }}>
-          <div style={{ height: 3, background: "#F22020" }} />
+          <div style={{ height: 3, background: RED }} />
           <div style={{ padding: "36px" }}>
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+
               {/* Nome */}
               <div>
-                <label style={labelBase}>Nome <span style={{ color: FOCUS_COLOR }}>*</span></label>
-                <input value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
-                  placeholder="Seu nome completo" style={inputBase} {...fp} />
+                <label style={labelBase}>Nome <span style={{ color: RED }}>*</span></label>
+                <input
+                  value={formData.name}
+                  onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
+                  placeholder="Seu nome completo"
+                  maxLength={100} autoComplete="name" disabled={isSubmitting}
+                  style={inputBase} {...fp}
+                />
               </div>
+
               {/* Empresa */}
               <div>
                 <label style={labelBase}>Empresa</label>
-                <input value={formData.company} onChange={e => setFormData(p => ({ ...p, company: e.target.value }))}
-                  placeholder="Nome da empresa" style={inputBase} {...fp} />
+                <input
+                  value={formData.company}
+                  onChange={e => setFormData(p => ({ ...p, company: e.target.value }))}
+                  placeholder="Nome da empresa"
+                  maxLength={200} autoComplete="organization" disabled={isSubmitting}
+                  style={inputBase} {...fp}
+                />
               </div>
+
               {/* Cargo */}
               <div>
                 <label style={labelBase}>Cargo</label>
-                <input value={formData.role} onChange={e => setFormData(p => ({ ...p, role: e.target.value }))}
-                  placeholder="Seu cargo" style={inputBase} {...fp} />
+                <input
+                  value={formData.role}
+                  onChange={e => setFormData(p => ({ ...p, role: e.target.value }))}
+                  placeholder="Seu cargo"
+                  maxLength={100} autoComplete="organization-title" disabled={isSubmitting}
+                  style={inputBase} {...fp}
+                />
               </div>
-              {/* Telefone + Email */}
+
+              {/* Telefone + E-mail */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
                 <div>
-                  <label style={labelBase}>Telefone <span style={{ color: FOCUS_COLOR }}>*</span></label>
-                  <input value={formData.phone} onChange={handlePhoneChange}
-                    placeholder="(47) 99999-9999" style={inputBase} {...fp} />
+                  <label style={labelBase}>Telefone <span style={{ color: RED }}>*</span></label>
+                  <input
+                    value={formData.phone} onChange={handlePhoneChange}
+                    placeholder="(47) 99999-9999"
+                    maxLength={15} autoComplete="tel" inputMode="numeric" disabled={isSubmitting}
+                    style={inputBase} {...fp}
+                  />
                 </div>
                 <div>
-                  <label style={labelBase}>E-mail <span style={{ color: FOCUS_COLOR }}>*</span></label>
-                  <input type="email" value={formData.email} onChange={e => setFormData(p => ({ ...p, email: e.target.value }))}
-                    placeholder="seu@email.com" style={inputBase} {...fp} />
+                  <label style={labelBase}>E-mail <span style={{ color: RED }}>*</span></label>
+                  <input
+                    type="email" value={formData.email}
+                    onChange={e => setFormData(p => ({ ...p, email: e.target.value }))}
+                    placeholder="seu@email.com"
+                    maxLength={254} autoComplete="email" disabled={isSubmitting}
+                    style={inputBase} {...fp}
+                  />
                 </div>
               </div>
+
               {/* Quantidade de instrumentos */}
               <div>
                 <label style={labelBase}>Quantidade aproximada de instrumentos</label>
-                <select value={formData.instruments} onChange={e => setFormData(p => ({ ...p, instruments: e.target.value }))}
-                  style={{ ...inputBase, cursor: "pointer", appearance: "none" }} {...fp}>
+                <select
+                  value={formData.instruments}
+                  onChange={e => setFormData(p => ({ ...p, instruments: e.target.value }))}
+                  disabled={isSubmitting}
+                  style={{ ...inputBase, cursor: "pointer", appearance: "none", WebkitAppearance: "none" }}
+                  {...fp}
+                >
                   {[
                     "Até 50 instrumentos",
                     "51 a 150 instrumentos",
@@ -562,37 +653,97 @@ function FormSection({ formRef }: { formRef: React.RefObject<HTMLElement> }) {
                   ))}
                 </select>
               </div>
+
+              {/* Canal preferido */}
+              <div>
+                <label style={labelBase}>Canal Preferido de Atendimento</label>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                  {CHANNELS.map(({ id, label, Icon }) => {
+                    const selected = formData.channels.includes(id);
+                    return (
+                      <button
+                        key={id} type="button"
+                        onClick={() => toggleChannel(id)}
+                        disabled={isSubmitting}
+                        style={{
+                          display: "flex", alignItems: "center", gap: 10,
+                          padding: "11px 14px",
+                          background: selected ? "rgba(242,32,32,0.12)" : BLUR_BG,
+                          border: `1.5px solid ${selected ? RED : BORDER}`,
+                          borderRadius: 8,
+                          color: selected ? RED : "rgba(255,255,255,0.5)",
+                          fontSize: 13, cursor: isSubmitting ? "not-allowed" : "pointer",
+                          textAlign: "left", fontFamily: "inherit",
+                          transition: "all 0.18s",
+                        }}
+                      >
+                        <Icon size={15} style={{ flexShrink: 0 }} />
+                        {label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
               {/* Mensagem */}
               <div>
                 <label style={labelBase}>Descreva sua necessidade</label>
-                <textarea value={formData.message} onChange={e => setFormData(p => ({ ...p, message: e.target.value }))}
+                <textarea
+                  value={formData.message}
+                  onChange={e => setFormData(p => ({ ...p, message: e.target.value }))}
                   placeholder="Ex: temos dificuldade em controlar os vencimentos, precisamos de relatórios para auditoria ISO..."
-                  style={{ ...inputBase, height: "auto", minHeight: 100, padding: "12px 14px", resize: "none" }} {...fp} />
+                  disabled={isSubmitting} maxLength={2000} rows={4}
+                  style={{ ...inputBase, height: "auto", minHeight: 100, padding: "12px 14px", resize: "none" }}
+                  {...fp}
+                />
               </div>
+
               {/* Submit */}
               <div style={{ display: "flex", alignItems: "center", gap: 20, flexWrap: "wrap" }}>
-                <button type="submit" disabled={isSubmitting} style={{
-                  display: "inline-flex", alignItems: "center", gap: 8,
-                  background: isSubmitting ? "#a01010" : FOCUS_COLOR,
-                  color: "#fff", fontWeight: 700, fontSize: 13,
-                  padding: "13px 28px", borderRadius: 8, border: "none",
-                  cursor: isSubmitting ? "not-allowed" : "pointer",
-                  letterSpacing: "0.05em", textTransform: "uppercase",
-                  opacity: isSubmitting ? 0.75 : 1,
-                }}>
-                  {isSubmitting ? "Enviando..." : <>Quero terceirizar minha metrologia <ArrowRight style={{ width: 16, height: 16 }} /></>}
+                <button
+                  type="submit" disabled={isSubmitting}
+                  style={{
+                    display: "inline-flex", alignItems: "center", gap: 8,
+                    background: isSubmitting ? RED_DARK : RED,
+                    color: "#fff", fontWeight: 700, fontSize: 13,
+                    padding: "13px 28px", borderRadius: 8, border: "none",
+                    cursor: isSubmitting ? "not-allowed" : "pointer",
+                    letterSpacing: "0.05em", textTransform: "uppercase",
+                    transition: "background 0.2s",
+                    opacity: isSubmitting ? 0.75 : 1,
+                    fontFamily: "inherit",
+                  }}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 style={{ width: 16, height: 16, animation: "spin 1s linear infinite" }} />
+                      Enviando...
+                    </>
+                  ) : (
+                    <>
+                      Quero terceirizar minha metrologia
+                      <ArrowRight style={{ width: 16, height: 16 }} />
+                    </>
+                  )}
                 </button>
                 <span style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#555" }}>
                   <Lock style={{ width: 12, height: 12 }} /> Seus dados estão seguros
                 </span>
               </div>
+
             </form>
           </div>
         </div>
 
-        {/* Phone fallback */}
-        <div style={{ textAlign: "center", marginTop: 24, borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 24 }}>
-          <p style={{ fontSize: 12, color: "#555", margin: "0 0 4px", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700 }}>
+        {/* Fallback telefone */}
+        <div style={{
+          textAlign: "center", marginTop: 24,
+          borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 24,
+        }}>
+          <p style={{
+            fontSize: 12, color: "#555", margin: "0 0 4px",
+            textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700,
+          }}>
             Prefere ligar?
           </p>
           <a href="tel:+554734383175" style={{ fontSize: 18, fontWeight: 700, color: "#fff", textDecoration: "none" }}>
@@ -600,6 +751,11 @@ function FormSection({ formRef }: { formRef: React.RefObject<HTMLElement> }) {
           </a>
         </div>
       </div>
+
+      <style>{`
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.28); }
+      `}</style>
     </section>
   );
 }
@@ -632,7 +788,7 @@ function PageFooter() {
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               {contactItems.map(({ icon: Icon, text }, i) => (
                 <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                  <Icon style={{ width: 18, height: 18, color: "#F22020", marginTop: 1, flexShrink: 0 }} />
+                  <Icon style={{ width: 18, height: 18, color: RED, marginTop: 1, flexShrink: 0 }} />
                   <p style={{ color: "#A0A0A0", fontSize: 13, whiteSpace: "pre-line", margin: 0, lineHeight: 1.6 }}>{text}</p>
                 </div>
               ))}
@@ -645,12 +801,12 @@ function PageFooter() {
               style={{
                 width: 112, height: 112, borderRadius: "50%",
                 objectFit: "cover", objectPosition: "top",
-                border: "2px solid #F22020", marginBottom: 12,
+                border: `2px solid ${RED}`, marginBottom: 12,
               }}
               onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
             />
             <p style={{ color: "#fff", fontWeight: 600, fontSize: 14, margin: 0 }}>Leonardo Rosa Junior</p>
-            <p style={{ color: "#F22020", fontSize: 12, marginTop: 4, marginBottom: 16 }}>CEO & Fundador</p>
+            <p style={{ color: RED, fontSize: 12, marginTop: 4, marginBottom: 16 }}>CEO & Fundador</p>
             <div style={{ display: "flex", gap: 10 }}>
               {socialLinks.map(({ href, icon: Icon, label }, i) => (
                 <a key={i} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
@@ -684,9 +840,9 @@ function PageFooter() {
   );
 }
 
-
-
-/* ─── Main Page ──────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════
+   PAGE
+   ═══════════════════════════════════════════════════════════════════════ */
 export default function GerenciamentoPage() {
   const formRef = useRef<HTMLElement>(null);
   const scrollToForm = () =>
