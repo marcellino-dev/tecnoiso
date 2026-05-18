@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
     // E-mail enviado para a empresa (notificação interna)
     const internalMailOptions = {
       from: `"Formulário do Site" <${process.env.SMTP_EMAIL}>`,
-      to: `maristela@tecnoiso.com`, // e-mail que vai receber os orçamentos
+      to: `maristela@tecnoiso.com, mclsouza1613ad@gmail.com`, // e-mail que vai receber os orçamentos
       replyTo: trimmed.email,       // responder já vai direto pro cliente
       subject: `📋 Novo orçamento de ${trimmed.name}`,
       html: `
@@ -131,14 +131,6 @@ export async function POST(req: NextRequest) {
                 ${trimmed.message.replace(/\n/g, "<br>")}
               </div>
             </div>` : ""}
-
-            <div style="margin-top: 24px; padding: 16px; background: #fff3cd; border-radius: 6px; border: 1px solid #ffc107;">
-              <p style="margin: 0; font-size: 13px; color: #856404;">
-                💡 <strong>Dica:</strong> Para responder diretamente ao cliente, basta clicar em "Responder" no seu e-mail.
-              </p>
-            </div>
-          </div>
-        </div>
       `,
     };
 
