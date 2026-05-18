@@ -9,11 +9,13 @@ interface QuoteRequestBody {
   phone: string;
   channels?: string;       // ex: "whatsapp_text, email"
   message?: string;
+  origem?: string;         // ex: "site" | "certificados" | "vendas"
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
   utm_term?: string;
   utm_content?: string;
+  
 }
 
 function validateBody(body: QuoteRequestBody): string | null {
@@ -55,6 +57,7 @@ export async function POST(req: NextRequest) {
       phone:        body.phone?.trim(),
       channels:     body.channels?.trim()     || "",
       message:      body.message?.trim()      || "",
+      origem:       body.origem?.trim()       || "site",
       utm_source:   body.utm_source?.trim()   || "",
       utm_medium:   body.utm_medium?.trim()   || "",
       utm_campaign: body.utm_campaign?.trim() || "",
@@ -224,7 +227,7 @@ export async function POST(req: NextRequest) {
           utm_campaign:            trimmed.utm_campaign,
           utm_term:                trimmed.utm_term,
           utm_content:             trimmed.utm_content,
-          origem:                  "site",
+          origem:                  trimmed.origem || "site",
         }),
       }),
     ]);
