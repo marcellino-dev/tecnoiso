@@ -40,7 +40,6 @@ const ContactSection = () => {
     name: "", company: "", email: "", phone: "", service: "", message: "",
   });
 
-  // Captura UTMs da URL automaticamente
   const [utms, setUtms] = useState({
     utm_source: "", utm_medium: "", utm_campaign: "", utm_term: "", utm_content: "",
   });
@@ -77,10 +76,8 @@ const ContactSection = () => {
     } else if (digits.length <= 6) {
       masked = `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
     } else if (digits.length <= 10) {
-      // Fixo: (47) 3438-3175
       masked = `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
     } else {
-      // Celular: (47) 98929-9801
       masked = `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
     }
     setFormData(prev => ({ ...prev, phone: masked }));
@@ -97,7 +94,6 @@ const ContactSection = () => {
     e.preventDefault();
     const trimmed = Object.fromEntries(Object.entries(formData).map(([k, v]) => [k, v.trim()]));
 
-    // Validações no cliente
     if (!trimmed.name || !trimmed.email || !trimmed.phone) {
       toast.error("Por favor, preencha todos os campos obrigatórios."); return;
     }
@@ -182,21 +178,59 @@ const ContactSection = () => {
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="text-sm font-medium text-foreground mb-2 block">Nome *</label>
-                      <Input name="name" value={formData.name} onChange={handleInputChange} placeholder="Seu nome completo" disabled={isSubmitting} maxLength={100} autoComplete="name" />
+                      <Input
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        placeholder="Seu nome completo"
+                        disabled={isSubmitting}
+                        maxLength={100}
+                        autoComplete="name"
+                        className="bg-white text-gray-900 placeholder:text-gray-400"
+                      />
                     </div>
                     <div>
                       <label className="text-sm font-medium text-foreground mb-2 block">Empresa</label>
-                      <Input name="company" value={formData.company} onChange={handleInputChange} placeholder="Nome da empresa" disabled={isSubmitting} maxLength={200} autoComplete="organization" />
+                      <Input
+                        name="company"
+                        value={formData.company}
+                        onChange={handleInputChange}
+                        placeholder="Nome da empresa"
+                        disabled={isSubmitting}
+                        maxLength={200}
+                        autoComplete="organization"
+                        className="bg-white text-gray-900 placeholder:text-gray-400"
+                      />
                     </div>
                   </div>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="text-sm font-medium text-foreground mb-2 block">E-mail *</label>
-                      <Input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="seu@email.com" disabled={isSubmitting} maxLength={254} autoComplete="email" />
+                      <Input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        placeholder="seu@email.com"
+                        disabled={isSubmitting}
+                        maxLength={254}
+                        autoComplete="email"
+                        className="bg-white text-gray-900 placeholder:text-gray-400"
+                      />
                     </div>
                     <div>
                       <label className="text-sm font-medium text-foreground mb-2 block">Telefone *</label>
-                      <Input name="phone" value={formData.phone} onChange={handlePhoneChange} placeholder="(47) 99999-9999" disabled={isSubmitting} maxLength={15} autoComplete="tel" inputMode="numeric" />
+                      <Input
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handlePhoneChange}
+                        placeholder="(47) 99999-9999"
+                        disabled={isSubmitting}
+                        maxLength={15}
+                        autoComplete="tel"
+                        inputMode="numeric"
+                        className="bg-white text-gray-900 placeholder:text-gray-400"
+                      />
                     </div>
                   </div>
                   <div>
@@ -206,7 +240,8 @@ const ContactSection = () => {
                       value={formData.service}
                       onChange={(e) => setFormData(prev => ({ ...prev, service: e.target.value }))}
                       disabled={isSubmitting}
-                      className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 text-foreground"
+                      style={{ backgroundColor: "#ffffff", color: "#111827" }}
+                      className="w-full h-10 rounded-md border border-input px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       <option value="">Selecione um serviço...</option>
                       <option value="Calibração">Calibração</option>
@@ -222,9 +257,21 @@ const ContactSection = () => {
                   </div>
                   <div>
                     <label className="text-sm font-medium text-foreground mb-2 block">Mensagem</label>
-                    <Textarea name="message" value={formData.message} onChange={handleInputChange} placeholder="Descreva suas necessidades..." className="min-h-[120px]" disabled={isSubmitting} maxLength={2000} />
+                    <Textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      placeholder="Descreva suas necessidades..."
+                      disabled={isSubmitting}
+                      maxLength={2000}
+                      className="min-h-[120px] bg-white text-gray-900 placeholder:text-gray-400"
+                      style={{ backgroundColor: "#ffffff", color: "#111827" }}
+                    />
                   </div>
-                  <Button type="submit" size="lg" disabled={isSubmitting}
+                  <Button
+                    type="submit"
+                    size="lg"
+                    disabled={isSubmitting}
                     className="w-full bg-gradient-to-r from-[hsl(var(--brand-red))] to-[hsl(var(--brand-red-dark))] hover:from-[hsl(var(--brand-red-dark))] hover:to-[hsl(var(--brand-red))] text-[hsl(var(--brand-white))] font-semibold transition-all duration-500 hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100"
                   >
                     {isSubmitting ? <><Loader2 className="w-5 h-5 mr-2 animate-spin" />Enviando...</> : "Enviar Mensagem"}
