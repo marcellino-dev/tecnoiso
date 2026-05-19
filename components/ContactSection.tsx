@@ -248,7 +248,7 @@ const ContactSection = () => {
                       <option value="Certificação">Certificação</option>
                       <option value="Manutenção">Manutenção</option>
                       <option value="NR13">NR13</option>
-                      <option value="Automação">Automação</option>
+                     
                       <option value="Treinamentos">Treinamentos</option>
                       <option value="Gerenciamento Metrológico">Gerenciamento Metrológico</option>
                       <option value="Locação">Locação</option>

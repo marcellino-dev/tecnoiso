@@ -59,7 +59,6 @@ const mainServices = [
 
 const secondaryServices = [
   { slug: "manutencao",  icon: Wrench,       title: "Manutenção",        desc: "Preventiva e corretiva de instrumentos de medição, prolongando a vida útil e garantindo a precisão dos equipamentos." },
-  { slug: "automacao",   icon: Cpu,          title: "Automação",         desc: "Soluções industriais de automação para otimizar processos produtivos e aumentar a eficiência operacional." },
   { slug: "treinamentos",icon: GraduationCap,title: "Treinamentos",      desc: "Capacitação técnica em metrologia, calibração e instrumentação para suas equipes de qualidade e produção." },
   { slug: "vendas",      icon: ShoppingCart, title: "Vendas",            desc: "Comercialização de instrumentos de medição das melhores marcas nacionais e internacionais." },
   { slug: "locacao",     icon: Package,      title: "Locação",           desc: "Instrumentos calibrados disponíveis para locação em projetos temporários ou demandas sazonais." },
