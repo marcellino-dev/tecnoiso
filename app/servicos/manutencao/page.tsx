@@ -9,7 +9,7 @@ import {
   ClipboardList, Activity,
 } from "lucide-react";
 import Link from "next/link";
-
+import DeveloperSignature from "@/components/DeveloperSignature";
 /* ─── Constants ─────────────────────────────────────────────────────── */
 const WA_NUM          = "4734401719";
 const WA_BASE         = `https://wa.me/${WA_NUM}`;
@@ -704,6 +704,7 @@ function PageFooter() {
             {["Política de Qualidade", "Termos de Uso"].map(label => (
               <a key={label} href="#" style={{ color: "#555", fontSize: 12, textDecoration: "none" }}>{label}</a>
             ))}
+             <DeveloperSignature />
           </div>
         </div>
       </div>
@@ -711,7 +712,6 @@ function PageFooter() {
   );
 }
 
-/* ─── WhatsApp Button ────────────────────────────────────────────────── */
 
 /* ─── Main Page ──────────────────────────────────────────────────────── */
 export default function ManutencaoPage() {

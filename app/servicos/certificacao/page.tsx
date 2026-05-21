@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
-
+import DeveloperSignature from "@/components/DeveloperSignature";
 /* ─── Constants ─────────────────────────────────────────────────────── */
 const WA_NUM  = "4734401719";
 const WA_BASE = `https://wa.me/${WA_NUM}`;
@@ -802,10 +802,12 @@ function PageFooter() {
           <div style={{ display: "flex", gap: 20 }}>
             {["Política de Qualidade", "Termos de Uso"].map(label => (
               <a key={label} href="#" style={{ color: "#555", fontSize: 12, textDecoration: "none" }}>{label}</a>
-            ))}
+            ))}   
+             <DeveloperSignature />
           </div>
         </div>
       </div>
+  
     </footer>
   );
 }
@@ -828,6 +830,7 @@ export default function CertificadosPage() {
       <RastreabilidadeSection />
       <FormSection formRef={formRef as React.RefObject<HTMLElement>} />
       <PageFooter />
+  
     </main>
   );
 }

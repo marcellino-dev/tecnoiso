@@ -1,6 +1,6 @@
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { Instagram, Linkedin } from "lucide-react";
-
+import DeveloperSignature from "@/components/DeveloperSignature";
 const contactItems = [
   { icon: MapPin, text: "R. Dona Emma, 1541 - Floresta\nJoinville - SC, 89211-493" },
   { icon: Phone,  text: "(47) 3438-3175" },
@@ -100,6 +100,7 @@ export default function PageFooter() {
               <a key={label} href="#" style={{ color: "#555", fontSize: 12, textDecoration: "none" }}>{label}</a>
             ))}
           </div>
+          <DeveloperSignature />
         </div>
       </div>
     </footer>

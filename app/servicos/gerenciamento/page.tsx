@@ -11,7 +11,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
-
+import DevServer from "next/dist/server/dev/next-dev-server";
+import DeveloperSignature from "@/components/DeveloperSignature";
 /* ─── Constants ─────────────────────────────────────────────────────── */
 const RED      = "#F22020";
 const RED_DARK = "#a01010";
@@ -833,6 +834,7 @@ function PageFooter() {
             {["Política de Qualidade", "Termos de Uso"].map(label => (
               <a key={label} href="#" style={{ color: "#555", fontSize: 12, textDecoration: "none" }}>{label}</a>
             ))}
+             <DeveloperSignature/>
           </div>
         </div>
       </div>

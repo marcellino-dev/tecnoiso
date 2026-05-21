@@ -10,7 +10,8 @@ import {
   MessageCircle, Mic, AtSign, PhoneCall,
 } from "lucide-react";
 import Link from "next/link";
-
+import DevServer from "next/dist/server/dev/next-dev-server";
+import DeveloperSignature from "@/components/DeveloperSignature";
 /* ─── Styles ─────────────────────────────────────────────────────────── */
 const raj: React.CSSProperties = {
   fontFamily: "var(--font-rajdhani, 'Rajdhani', sans-serif)",
@@ -558,6 +559,7 @@ function PageFooter() {
             {["Política de Qualidade", "Termos de Uso"].map(label => (
               <a key={label} href="#" style={{ color: "#555", fontSize: 12, textDecoration: "none" }}>{label}</a>
             ))}
+             <DeveloperSignature/>
           </div>
         </div>
       </div>

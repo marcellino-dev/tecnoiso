@@ -27,6 +27,17 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+const headerBg = isScrolled
+  ? "bg-[hsl(var(--header-bg))] header-blur shadow-[var(--shadow-elegant)]"
+  : "bg-transparent";
+
+  const textColor = isScrolled ? "text-[hsl(var(--header-text))]" : "text-white";
+ const borderColor = isScrolled ? "border-[hsl(var(--header-text))]/20" : "border-white/20";
+  const mobileBg = isScrolled ? "bg-[hsl(var(--header-bg))] header-blur" : "bg-black";
+
+  const linkClass = textColor + " hover:text-[hsl(var(--brand-red))] font-medium transition-colors duration-300";
+  const iconClass = textColor + " hover:text-[hsl(var(--brand-red))] transition-colors duration-300 hover:scale-110";
+
   const menuItems = [
     { label: "HOME", href: "/" },
     { label: "QUEM SOMOS", href: "/#sobre" },
@@ -36,13 +47,7 @@ const Header = () => {
   ];
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled
-          ? "bg-[hsl(var(--header-bg))] header-blur shadow-[var(--shadow-elegant)]"
-          : "bg-transparent"
-      } ${isHeaderVisible ? "translate-y-0" : "-translate-y-full"}`}
-    >
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${headerBg} ${isHeaderVisible ? "translate-y-0" : "-translate-y-full"}`}>
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
 
@@ -63,11 +68,7 @@ const Header = () => {
           {/* Nav Desktop */}
           <nav className="hidden lg:flex items-center space-x-10">
             {menuItems.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="text-[hsl(var(--hero-text))] hover:text-[hsl(var(--brand-red))] font-medium transition-colors duration-300"
-              >
+              <Link key={item.label} href={item.href} className={linkClass}>
                 {item.label}
               </Link>
             ))}
@@ -75,14 +76,14 @@ const Header = () => {
 
           {/* Redes sociais desktop */}
           <div className="hidden lg:flex items-center space-x-6">
-            <div className="flex items-center space-x-4 border-l border-[hsl(var(--hero-text))]/20 pl-6">
-              <a href="https://www.instagram.com/tecnoiso/" target="_blank" rel="noopener noreferrer" className="text-[hsl(var(--hero-text))] hover:text-[hsl(var(--brand-red))] transition-colors duration-300 hover:scale-110">
+            <div className={"flex items-center space-x-4 border-l pl-6 " + borderColor}>
+              <a href="https://www.instagram.com/tecnoiso/" target="_blank" rel="noopener noreferrer" className={iconClass}>
                 <Instagram size={20} />
               </a>
-              <a href="#" target="_blank" rel="noopener noreferrer" className="text-[hsl(var(--hero-text))] hover:text-[hsl(var(--brand-red))] transition-colors duration-300 hover:scale-110">
+              <a href="#" target="_blank" rel="noopener noreferrer" className={iconClass}>
                 <Facebook size={20} />
               </a>
-              <a href="https://www.linkedin.com/company/tecnoso-tecnologia-e-soluções-industriais-ltda/posts/?feedView=all" target="_blank" rel="noopener noreferrer" className="text-[hsl(var(--hero-text))] hover:text-[hsl(var(--brand-red))] transition-colors duration-300 hover:scale-110">
+              <a href="https://www.linkedin.com/company/tecnoso-tecnologia-e-soluções-industriais-ltda/posts/?feedView=all" target="_blank" rel="noopener noreferrer" className={iconClass}>
                 <Linkedin size={20} />
               </a>
             </div>
@@ -92,7 +93,7 @@ const Header = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden text-[hsl(var(--hero-text))] hover:text-[hsl(var(--brand-red))]"
+            className={"lg:hidden hover:text-[hsl(var(--brand-red))] " + textColor}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -101,13 +102,13 @@ const Header = () => {
 
         {/* Menu Mobile */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden mt-4 py-4 bg-[hsl(var(--header-bg))] header-blur rounded-lg">
+          <div className={"lg:hidden mt-4 py-4 rounded-lg " + mobileBg}>
             <nav className="flex flex-col space-y-4">
               {menuItems.map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="text-[hsl(var(--header-text))] hover:text-[hsl(var(--brand-red))] font-medium px-4 transition-colors duration-300"
+                  className="text-white hover:text-[hsl(var(--brand-red))] font-medium px-4 transition-colors duration-300"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.label}
