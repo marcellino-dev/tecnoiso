@@ -6,38 +6,76 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { MapPin, Phone, Mail, Clock, Loader2 } from "lucide-react";
+import {
+  MapPin, Phone, Mail, Clock,
+  Loader2, Lock, ArrowRight,
+  MessageCircle, Mic,
+} from "lucide-react";
 import { toast } from "sonner";
 
+/* ─── Variants ───────────────────────────────────────────────────────── */
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 40 },
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
 };
-
 const fadeRight: Variants = {
   hidden: { opacity: 0, x: -50 },
   show: { opacity: 1, x: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } },
 };
-
 const fadeLeft: Variants = {
   hidden: { opacity: 0, x: 50 },
   show: { opacity: 1, x: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } },
 };
-
 const stagger: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.1 } },
 };
-
 const staggerFast: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.08 } },
 };
 
+/* ─── Canal preferido ────────────────────────────────────────────────── */
+type Channel = "whatsapp_text" | "whatsapp_voice" | "email" | "phone_call";
+
+const CHANNELS: { id: Channel; label: string; Icon: React.ElementType }[] = [
+  { id: "whatsapp_text",  label: "WhatsApp mensagem", Icon: MessageCircle },
+  { id: "whatsapp_voice", label: "WhatsApp voz",      Icon: Mic           },
+  { id: "email",          label: "E-mail",             Icon: Mail          },
+  { id: "phone_call",     label: "Ligação telefônica", Icon: Phone         },
+];
+
+/* ─── Label style ────────────────────────────────────────────────────── */
+const Label = ({ children }: { children: React.ReactNode }) => (
+  <label
+    style={{
+      display: "block",
+      fontSize: 10,
+      fontWeight: 700,
+      color: "#888",
+      letterSpacing: "0.1em",
+      textTransform: "uppercase" as const,
+      marginBottom: 6,
+    }}
+  >
+    {children}
+  </label>
+);
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT
+   ═══════════════════════════════════════════════════════════════════════ */
 const ContactSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    name: "", company: "", email: "", phone: "", service: "", message: "",
+    name:     "",
+    company:  "",
+    role:     "",
+    email:    "",
+    phone:    "",
+    service:  "",
+    channels: [] as Channel[],
+    message:  "",
   });
 
   const [utms, setUtms] = useState({
@@ -47,11 +85,11 @@ const ContactSection = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     setUtms({
-      utm_source: params.get("utm_source") || "",
-      utm_medium: params.get("utm_medium") || "",
+      utm_source:   params.get("utm_source")   || "",
+      utm_medium:   params.get("utm_medium")   || "",
       utm_campaign: params.get("utm_campaign") || "",
-      utm_term: params.get("utm_term") || "",
-      utm_content: params.get("utm_content") || "",
+      utm_term:     params.get("utm_term")     || "",
+      utm_content:  params.get("utm_content")  || "",
     });
   }, []);
 
@@ -63,23 +101,17 @@ const ContactSection = () => {
   ];
 
   const maxLengths: Record<string, number> = {
-    name: 100, company: 200, email: 254, phone: 20, service: 300, message: 2000,
+    name: 100, company: 200, role: 100, email: 254, phone: 20, service: 300, message: 2000,
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const digits = e.target.value.replace(/\D/g, "").slice(0, 11);
     let masked = "";
-    if (digits.length === 0) {
-      masked = "";
-    } else if (digits.length <= 2) {
-      masked = `(${digits}`;
-    } else if (digits.length <= 6) {
-      masked = `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
-    } else if (digits.length <= 10) {
-      masked = `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
-    } else {
-      masked = `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
-    }
+    if (digits.length === 0)       masked = "";
+    else if (digits.length <= 2)   masked = `(${digits}`;
+    else if (digits.length <= 6)   masked = `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+    else if (digits.length <= 10)  masked = `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+    else                           masked = `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
     setFormData(prev => ({ ...prev, phone: masked }));
   };
 
@@ -90,30 +122,56 @@ const ContactSection = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const toggleChannel = (id: Channel) =>
+    setFormData(prev => ({
+      ...prev,
+      channels: prev.channels.includes(id)
+        ? prev.channels.filter(c => c !== id)
+        : [...prev.channels, id],
+    }));
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const trimmed = Object.fromEntries(Object.entries(formData).map(([k, v]) => [k, v.trim()]));
+
+    const trimmed = {
+      name:     formData.name.trim(),
+      company:  formData.company.trim(),
+      role:     formData.role.trim(),
+      email:    formData.email.trim(),
+      phone:    formData.phone.trim(),
+      service:  formData.service,
+      channels: formData.channels.join(", "),
+      message:  formData.message.trim(),
+    };
 
     if (!trimmed.name || !trimmed.email || !trimmed.phone) {
       toast.error("Por favor, preencha todos os campos obrigatórios."); return;
     }
-    if (trimmed.name.length < 2) { toast.error("Nome deve ter pelo menos 2 caracteres."); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed.email)) { toast.error("E-mail inválido."); return; }
-    const phoneDigits = trimmed.phone.replace(/\D/g, "");
-    if (phoneDigits.length < 10 || phoneDigits.length > 15) { toast.error("Telefone inválido."); return; }
+    if (trimmed.name.length < 2) {
+      toast.error("Nome deve ter pelo menos 2 caracteres."); return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed.email)) {
+      toast.error("E-mail inválido."); return;
+    }
+    if (trimmed.phone.replace(/\D/g, "").length < 10) {
+      toast.error("Telefone inválido."); return;
+    }
 
     setIsSubmitting(true);
     try {
       const response = await fetch("/api/send-quote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...trimmed, ...utms }),
+        body: JSON.stringify({ ...trimmed, ...utms, origem: "home" }),
       });
 
       const data = await response.json();
 
       if (response.ok && data.success) {
-        setFormData({ name: "", company: "", email: "", phone: "", service: "", message: "" });
+        setFormData({
+          name: "", company: "", role: "", email: "", phone: "",
+          service: "", channels: [], message: "",
+        });
         window.location.href = "/obrigado";
       } else {
         throw new Error(data.error || "Erro ao enviar");
@@ -126,7 +184,11 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contato" className="py-20 bg-gradient-to-b from-background to-[hsl(var(--brand-gray))] relative overflow-hidden">
+    <section
+      id="contato"
+      className="py-20 bg-gradient-to-b from-background to-[hsl(var(--brand-gray))] relative overflow-hidden"
+    >
+      {/* Decorative blobs */}
       <motion.div
         className="absolute top-10 left-10 w-40 h-40 bg-gradient-to-br from-[hsl(var(--brand-red))]/10 to-transparent rounded-full blur-3xl"
         animate={{ scale: [1, 1.3, 1], opacity: [0.6, 0.3, 0.6] }}
@@ -148,7 +210,10 @@ const ContactSection = () => {
           whileInView="show"
           viewport={{ once: true, amount: 0.3 }}
         >
-          <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+          <motion.h2
+            variants={fadeUp}
+            className="text-4xl md:text-5xl font-bold text-foreground mb-6"
+          >
             Entre em{" "}
             <span className="text-transparent bg-gradient-to-r from-[hsl(var(--brand-red))] to-[hsl(var(--brand-red-light))] bg-clip-text">
               Contato
@@ -161,7 +226,7 @@ const ContactSection = () => {
 
         <div className="grid lg:grid-cols-2 gap-12">
 
-          {/* FORMULÁRIO */}
+          {/* ── FORMULÁRIO ─────────────────────────────────────────────── */}
           <motion.div
             variants={fadeRight}
             initial="hidden"
@@ -169,15 +234,27 @@ const ContactSection = () => {
             viewport={{ once: true, amount: 0.2 }}
           >
             <Card className="border-0 shadow-[var(--shadow-red-soft)] backdrop-blur-sm bg-gradient-to-br from-card to-[hsl(var(--brand-red))]/5 relative overflow-hidden">
+              {/* Red top bar — igual ao FormSection da página certificados */}
+              <div
+                className="absolute top-0 left-0 right-0 h-1"
+                style={{ background: "hsl(var(--brand-red))" }}
+              />
+
               <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[hsl(var(--brand-red))]/5 to-transparent opacity-50" />
-              <CardHeader className="relative z-10">
-                <CardTitle className="text-2xl font-bold text-foreground">Solicite seu Orçamento</CardTitle>
+
+              <CardHeader className="relative z-10 pt-6">
+                <CardTitle className="text-2xl font-bold text-foreground">
+                  Solicite seu Orçamento
+                </CardTitle>
               </CardHeader>
+
               <CardContent className="relative z-10">
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-5">
+
+                  {/* Nome + Empresa */}
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-sm font-medium text-foreground mb-2 block">Nome *</label>
+                      <Label>Nome <span style={{ color: "hsl(var(--brand-red))" }}>*</span></Label>
                       <Input
                         name="name"
                         value={formData.name}
@@ -190,7 +267,7 @@ const ContactSection = () => {
                       />
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-foreground mb-2 block">Empresa</label>
+                      <Label>Empresa</Label>
                       <Input
                         name="company"
                         value={formData.company}
@@ -203,9 +280,26 @@ const ContactSection = () => {
                       />
                     </div>
                   </div>
+
+                  {/* Cargo */}
+                  <div>
+                    <Label>Cargo</Label>
+                    <Input
+                      name="role"
+                      value={formData.role}
+                      onChange={handleInputChange}
+                      placeholder="Seu cargo"
+                      disabled={isSubmitting}
+                      maxLength={100}
+                      autoComplete="organization-title"
+                      className="bg-white text-gray-900 placeholder:text-gray-400"
+                    />
+                  </div>
+
+                  {/* E-mail + Telefone */}
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-sm font-medium text-foreground mb-2 block">E-mail *</label>
+                      <Label>E-mail <span style={{ color: "hsl(var(--brand-red))" }}>*</span></Label>
                       <Input
                         type="email"
                         name="email"
@@ -219,7 +313,7 @@ const ContactSection = () => {
                       />
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-foreground mb-2 block">Telefone *</label>
+                      <Label>Telefone <span style={{ color: "hsl(var(--brand-red))" }}>*</span></Label>
                       <Input
                         name="phone"
                         value={formData.phone}
@@ -233,12 +327,14 @@ const ContactSection = () => {
                       />
                     </div>
                   </div>
+
+                  {/* Serviço */}
                   <div>
-                    <label className="text-sm font-medium text-foreground mb-2 block">Serviço de Interesse</label>
+                    <Label>Serviço de Interesse</Label>
                     <select
                       name="service"
                       value={formData.service}
-                      onChange={(e) => setFormData(prev => ({ ...prev, service: e.target.value }))}
+                      onChange={e => setFormData(prev => ({ ...prev, service: e.target.value }))}
                       disabled={isSubmitting}
                       style={{ backgroundColor: "#ffffff", color: "#111827" }}
                       className="w-full h-10 rounded-md border border-input px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -248,15 +344,43 @@ const ContactSection = () => {
                       <option value="Certificação">Certificação</option>
                       <option value="Manutenção">Manutenção</option>
                       <option value="NR13">NR13</option>
-                     
                       <option value="Treinamentos">Treinamentos</option>
                       <option value="Gerenciamento Metrológico">Gerenciamento Metrológico</option>
                       <option value="Locação">Locação</option>
                       <option value="Suporte Logístico">Suporte Logístico</option>
                     </select>
                   </div>
+
+                  {/* Canal preferido — toggle igual ao FormSection */}
                   <div>
-                    <label className="text-sm font-medium text-foreground mb-2 block">Mensagem</label>
+                    <Label>Canal Preferido de Atendimento</Label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {CHANNELS.map(({ id, label, Icon }) => {
+                        const selected = formData.channels.includes(id);
+                        return (
+                          <button
+                            key={id}
+                            type="button"
+                            onClick={() => toggleChannel(id)}
+                            disabled={isSubmitting}
+                            className="flex items-center gap-2 px-3 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-left"
+                            style={{
+                              background: selected ? "rgba(var(--brand-red-rgb, 220,38,38),0.07)" : "#ffffff",
+                              borderColor: selected ? "hsl(var(--brand-red))" : "#e5e7eb",
+                              color: selected ? "hsl(var(--brand-red))" : "#6b7280",
+                            }}
+                          >
+                            <Icon size={14} style={{ flexShrink: 0 }} />
+                            {label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Mensagem */}
+                  <div>
+                    <Label>Mensagem</Label>
                     <Textarea
                       name="message"
                       value={formData.message}
@@ -264,24 +388,55 @@ const ContactSection = () => {
                       placeholder="Descreva suas necessidades..."
                       disabled={isSubmitting}
                       maxLength={2000}
-                      className="min-h-[120px] bg-white text-gray-900 placeholder:text-gray-400"
+                      className="min-h-[100px] bg-white text-gray-900 placeholder:text-gray-400"
                       style={{ backgroundColor: "#ffffff", color: "#111827" }}
                     />
                   </div>
-                  <Button
-                    type="submit"
-                    size="lg"
-                    disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-[hsl(var(--brand-red))] to-[hsl(var(--brand-red-dark))] hover:from-[hsl(var(--brand-red-dark))] hover:to-[hsl(var(--brand-red))] text-[hsl(var(--brand-white))] font-semibold transition-all duration-500 hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100"
-                  >
-                    {isSubmitting ? <><Loader2 className="w-5 h-5 mr-2 animate-spin" />Enviando...</> : "Enviar Mensagem"}
-                  </Button>
+
+                  {/* Submit + segurança */}
+                  <div className="flex items-center gap-4 flex-wrap">
+                    <Button
+                      type="submit"
+                      size="lg"
+                      disabled={isSubmitting}
+                      className="flex-1 bg-gradient-to-r from-[hsl(var(--brand-red))] to-[hsl(var(--brand-red-dark))] hover:from-[hsl(var(--brand-red-dark))] hover:to-[hsl(var(--brand-red))] text-[hsl(var(--brand-white))] font-semibold transition-all duration-500 hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100 uppercase tracking-wider"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Enviando...
+                        </>
+                      ) : (
+                        <>
+                          Enviar Mensagem
+                          <ArrowRight className="w-4 h-4 ml-2" />
+                        </>
+                      )}
+                    </Button>
+                    <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <Lock className="w-3 h-3" /> Seus dados estão seguros
+                    </span>
+                  </div>
+
+                  {/* Fallback telefone */}
+                  <div className="text-center pt-2 border-t border-border">
+                    <p className="text-xs text-muted-foreground mb-1 uppercase tracking-widest font-bold">
+                      Prefere ligar?
+                    </p>
+                    <a
+                      href="tel:+554734383175"
+                      className="text-base font-bold text-foreground hover:text-[hsl(var(--brand-red))] transition-colors"
+                    >
+                      (47) 3438-3175
+                    </a>
+                  </div>
+
                 </form>
               </CardContent>
             </Card>
           </motion.div>
 
-          {/* INFO + MAPA */}
+          {/* ── INFO + MAPA ─────────────────────────────────────────────── */}
           <motion.div
             className="space-y-8"
             variants={stagger}
@@ -307,7 +462,7 @@ const ContactSection = () => {
                       <info.icon className="w-6 h-6 text-[hsl(var(--brand-red))]" />
                     </motion.div>
                     <div>
-                      <h4 className="font-semibold text-foreground mb-2">{info.title}</h4>
+                      <h4 className="font-semibold text-foreground mb-1">{info.title}</h4>
                       <p className="text-sm text-muted-foreground whitespace-pre-line">{info.content}</p>
                     </div>
                   </motion.div>
@@ -315,14 +470,22 @@ const ContactSection = () => {
               </motion.div>
             </motion.div>
 
-            <motion.div variants={fadeLeft} className="rounded-2xl overflow-hidden shadow-[var(--shadow-elegant)] relative">
+            <motion.div
+              variants={fadeLeft}
+              className="rounded-2xl overflow-hidden shadow-[var(--shadow-elegant)] relative"
+            >
               <div className="absolute top-4 left-4 z-10 bg-[hsl(var(--card))]/90 backdrop-blur-sm px-3 py-2 rounded-lg shadow-md">
                 <p className="text-sm font-medium text-[hsl(var(--foreground))]">📍 Tecnoiso</p>
               </div>
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3582.1234567890123!2d-48.83333333333333!3d-26.31666666666667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94deafe1cfc4c4c1%3A0x1234567890abcdef!2sR.%20Dona%20Emma%2C%201541%20-%20Floresta%2C%20Joinville%20-%20SC%2C%2089211-493!5e0!3m2!1spt-BR!2sbr!4v1234567890123!5m2!1spt-BR!2sbr"
-                width="100%" height="350" style={{ border: 0 }} allowFullScreen loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade" title="Localização Tecnoiso"
+                width="100%"
+                height="300"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Localização Tecnoiso"
                 className="w-full hover:opacity-90 transition-opacity duration-300"
               />
             </motion.div>
@@ -330,7 +493,8 @@ const ContactSection = () => {
             <motion.div variants={fadeLeft} className="text-center">
               <motion.a
                 href="https://maps.google.com/?q=R.+Dona+Emma,+1541+-+Floresta,+Joinville+-+SC,+89211-493"
-                target="_blank" rel="noopener noreferrer"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
                 className="inline-flex items-center space-x-3 bg-gradient-to-r from-[hsl(var(--brand-red))] to-[hsl(var(--brand-red-dark))] text-white px-6 py-3 rounded-xl transition-all duration-300 shadow-[var(--shadow-red)] font-medium"
