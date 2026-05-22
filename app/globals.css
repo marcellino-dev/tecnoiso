@@ -248,4 +248,8 @@
 
 .animate-scroll:hover {
   animation-play-state: paused;
+}/* Eleva o botão do WhatsApp acima do banner de cookie */
+#goalfy-whatsapp {
+  bottom: 80px !important;
+  transition: bottom 0.3s ease;
 }

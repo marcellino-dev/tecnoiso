@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
+import { useIntroPhase } from '@/lib/introContext';
 
 export default function IntroAnimation() {
-  const [phase, setPhase] = useState<'loading' | 'lifting' | 'done'>('loading');
+  const { phase, setPhase } = useIntroPhase();          // ← contexto
   const topRef = useRef<(HTMLSpanElement | null)[]>([]);
   const botRef = useRef<(HTMLSpanElement | null)[]>([]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -15,7 +16,6 @@ export default function IntroAnimation() {
     Math.round(5 + (i / (word.length - 1)) * 88)
   );
 
-  // ─── Background: Linhas Vivas ─────────────────────────────────────────────
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -49,13 +49,11 @@ export default function IntroAnimation() {
     return () => { running = false; cancelAnimationFrame(raf); };
   }, []);
 
-  // ─── Progress + Slice reveal ──────────────────────────────────────────────
   useEffect(() => {
-    // Se já viu a intro antes, remove o marginTop imediatamente e encerra
     if (sessionStorage.getItem('tecnoiso_intro_done')) {
       const site = document.getElementById('site-content');
       if (site) site.style.marginTop = '0';
-      setPhase('done');
+      setPhase('done');                                  // ← contexto
       return;
     }
 
@@ -96,7 +94,7 @@ export default function IntroAnimation() {
         clearInterval(interval);
         setTimeout(() => {
           sessionStorage.setItem('tecnoiso_intro_done', '1');
-          setPhase('lifting');
+          setPhase('lifting');                           // ← contexto
         }, 500);
       }
     }, 38);
@@ -104,7 +102,6 @@ export default function IntroAnimation() {
     return () => clearInterval(interval);
   }, []);
 
-  // ─── Lifting animation ────────────────────────────────────────────────────
   useEffect(() => {
     if (phase !== 'lifting') return;
 
@@ -116,11 +113,8 @@ export default function IntroAnimation() {
     const easing   = 'cubic-bezier(0.65, 0, 0.35, 1)';
 
     requestAnimationFrame(() => {
-      // Intro sobe para fora da tela
       intro.style.transition = `transform ${duration} ${easing}`;
       intro.style.transform  = 'translateY(-100%)';
-
-      // Site sobe removendo o marginTop com animação
       site.style.transition  = `margin-top ${duration} ${easing}`;
       site.style.marginTop   = '0';
     });
@@ -128,9 +122,8 @@ export default function IntroAnimation() {
     setTimeout(() => {
       document.body.style.overflow = '';
       if (site) site.style.transition = 'none';
-      // Esconde o intro-panel imediatamente para não deixar espaço preto
       if (intro) intro.style.display = 'none';
-      setPhase('done');
+      setPhase('done');                                  // ← contexto
     }, 1700);
   }, [phase]);
 
@@ -148,25 +141,19 @@ export default function IntroAnimation() {
     <div
       id="intro-panel"
       style={{
-        position: 'absolute',
-        top: 0, left: 0,
+        position: 'absolute', top: 0, left: 0,
         width: '100%', height: '100vh',
-        background: '#000',
-        zIndex: 9999,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        background: '#000', zIndex: 9999,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
         overflow: 'hidden',
       }}
     >
       <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
-
       <div style={{
         position: 'absolute', inset: 0,
         background: 'radial-gradient(ellipse at 50% 50%, transparent 25%, rgba(0,0,0,0.65) 100%)',
         pointerEvents: 'none',
       }} />
-
       <div style={{ position: 'relative', zIndex: 10, display: 'flex' }}>
         {word.split('').map((l, i) => (
           <div key={i} style={{ position: 'relative', overflow: 'hidden', display: 'inline-block' }}>
