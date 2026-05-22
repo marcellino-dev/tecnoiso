@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 
 // ─── TIPOS ────────────────────────────────────────────────────────────────────
 type MediaType = "image" | "video";
@@ -10,53 +9,39 @@ interface EventItem {
   id: number;
   mediaUrl: string;
   mediaType: MediaType;
-  index: string;
 }
 
 // ─── DADOS DOS EVENTOS ────────────────────────────────────────────────────────
 const events: EventItem[] = [
-  {
-    id: 1,
-    mediaUrl: "/eventos/evento1.jpg",
-    mediaType: "image",
-    index: "01",
-  },
-  {
-    id: 2,
-    mediaUrl: "/eventos/agradecimentos.png",
-    mediaType: "image",
-    index: "02",
-  },
-  {
-    id: 3,
-    mediaUrl: "/eventos/evento2.jpg",
-    mediaType: "image",
-    index: "03",
-  },
-  {
-    id: 4,
-    mediaUrl: "/eventos/evento3.jpg",
-    mediaType: "image",
-    index: "04",
-  },
+  { id: 1, mediaUrl: "/eventos/evento1.jpg",        mediaType: "image" },
+  { id: 2, mediaUrl: "/eventos/agradecimentos.png", mediaType: "image" },
+  { id: 3, mediaUrl: "/eventos/evento2.jpg",        mediaType: "image" },
+  { id: 4, mediaUrl: "/eventos/evento3.jpg",        mediaType: "image" },
 ];
 
-// ─── CONSTANTES DE LAYOUT ─────────────────────────────────────────────────────
+// ─── CONSTANTES ───────────────────────────────────────────────────────────────
 const CARD_W    = 700;
 const CARD_GAP  = 40;
 const CARD_H    = 480;
 const CARD_STEP = CARD_W + CARD_GAP;
 const TOTAL     = events.length;
-const SET_WIDTH = TOTAL * CARD_STEP;
+const SET_WIDTH = TOTAL * CARD_STEP;   // largura de 1 set completo
+const AUTO_SPEED = 1.2;                // px por frame — aumente para acelerar
 
-const infiniteEvents: EventItem[] = [...events, ...events, ...events];
-const INITIAL_X = -SET_WIDTH;
+// Duplicamos 3x para ter sempre cards visíveis antes e depois
+const loopedEvents: EventItem[] = [...events, ...events, ...events];
 
-// ─── COMPONENTE DE CARD ───────────────────────────────────────────────────────
+// ─── CARD ─────────────────────────────────────────────────────────────────────
 function EventCard({ event }: { event: EventItem }) {
   return (
-    <div style={{ width: CARD_W, flexShrink: 0 }} className="group cursor-pointer">
-      <div className="relative rounded-2xl overflow-hidden" style={{ height: CARD_H }}>
+    <div
+      style={{ width: CARD_W, flexShrink: 0, marginRight: CARD_GAP }}
+      className="group cursor-pointer"
+    >
+      <div
+        className="relative rounded-2xl overflow-hidden"
+        style={{ height: CARD_H }}
+      >
         {event.mediaType === "video" ? (
           <video
             src={event.mediaUrl}
@@ -78,76 +63,67 @@ function EventCard({ event }: { event: EventItem }) {
 
 // ─── COMPONENTE PRINCIPAL ─────────────────────────────────────────────────────
 const EventsSection = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  const xRaw = useMotionValue(INITIAL_X);
-  const x = useSpring(xRaw, { stiffness: 80, damping: 25, mass: 0.5 });
-
+  const trackRef   = useRef<HTMLDivElement>(null);
+  const offsetRef  = useRef(0);          // offset acumulado em px (sempre crescente)
+  const rafRef     = useRef<number | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const handleScroll = useCallback(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    const rect               = el.getBoundingClientRect();
-    const sectionH           = el.offsetHeight;
-    const vh                 = window.innerHeight;
-    const scrollableDistance = sectionH + vh;
-    const scrolled           = vh - rect.top;
-    const progress           = Math.max(0, Math.min(1, scrolled / scrollableDistance));
-    const targetX            = INITIAL_X - progress * SET_WIDTH;
-
-    const currentX = xRaw.get();
-
-    if (currentX < -2 * SET_WIDTH) {
-      xRaw.set(currentX + SET_WIDTH);
-      return;
-    }
-    if (currentX > 0) {
-      xRaw.set(currentX - SET_WIDTH);
-      return;
-    }
-
-    xRaw.set(targetX);
-
-    const absoluteIndex = Math.round(Math.abs(targetX - INITIAL_X) / CARD_STEP);
-    setActiveIndex(absoluteIndex % TOTAL);
-  }, [xRaw]);
-
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
+    const tick = () => {
+      offsetRef.current += AUTO_SPEED;
+
+      // Quando passamos um set completo, voltamos exatamente 1 set —
+      // o visual é idêntico porque os cards se repetem.
+      if (offsetRef.current >= SET_WIDTH) {
+        offsetRef.current -= SET_WIDTH;
+      }
+
+      // Aplica direto no DOM — sem re-render, sem spring, sem salto
+      if (trackRef.current) {
+        trackRef.current.style.transform = `translateX(-${offsetRef.current}px)`;
+      }
+
+      // Atualiza dot (só setState com frequência baixa para não sobrecarregar)
+      const idx = Math.floor(offsetRef.current / CARD_STEP) % TOTAL;
+      setActiveIndex(idx);
+
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
 
   return (
-    <section ref={sectionRef} className="py-24 overflow-hidden">
+    <section className="py-24 overflow-hidden">
 
       {/* ── CABEÇALHO ──────────────────────────────────────────────────────── */}
       <div className="px-10 mb-10">
         <span className="text-[hsl(var(--brand-red))] font-semibold text-xs tracking-[0.25em] uppercase mb-2 block">
           Agenda
         </span>
-        <div className="flex items-end justify-between">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground leading-tight">
-            Eventos &{" "}
-            <span className="text-[hsl(var(--brand-red))]">Palestras</span>
-          </h2>
+        <h2 className="text-4xl md:text-5xl font-bold text-foreground leading-tight">
+          Eventos &{" "}
+          <span className="text-[hsl(var(--brand-red))]">Palestras</span>
+        </h2>
+      </div>
+
+      {/* ── TRACK ─────────────────────────────────────────────────────────── */}
+      <div className="overflow-visible" style={{ paddingLeft: 40 }}>
+        <div
+          ref={trackRef}
+          className="flex"
+          style={{ willChange: "transform" }}
+        >
+          {loopedEvents.map((event, i) => (
+            <EventCard key={`${event.id}-${i}`} event={event} />
+          ))}
         </div>
       </div>
 
-      {/* ── TRACK HORIZONTAL ─────────────────────────────────────────────── */}
-      <div className="overflow-visible">
-        <motion.div className="flex" style={{ x, paddingLeft: 40 }}>
-          {infiniteEvents.map((event, i) => (
-            <div key={`${event.id}-${i}`} style={{ marginRight: CARD_GAP }}>
-              <EventCard event={event} />
-            </div>
-          ))}
-        </motion.div>
-      </div>
-
-      {/* ── DOTS INDICADORES ─────────────────────────────────────────────── */}
+      {/* ── DOTS ──────────────────────────────────────────────────────────── */}
       <div className="flex items-center justify-center gap-2 mt-8">
         {events.map((_, i) => (
           <div
