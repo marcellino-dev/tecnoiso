@@ -1,140 +1,197 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useEffect } from "react";
 
-// ─── TIPOS ────────────────────────────────────────────────────────────────────
-type MediaType = "image" | "video";
-
-interface EventItem {
-  id: number;
-  mediaUrl: string;
-  mediaType: MediaType;
-}
-
-// ─── DADOS DOS EVENTOS ────────────────────────────────────────────────────────
-const events: EventItem[] = [
-  { id: 1, mediaUrl: "/eventos/evento1.jpg",        mediaType: "image" },
-  { id: 2, mediaUrl: "/eventos/agradecimentos.png", mediaType: "image" },
-  { id: 3, mediaUrl: "/eventos/evento2.jpg",        mediaType: "image" },
-  { id: 4, mediaUrl: "/eventos/evento3.jpg",        mediaType: "image" },
+const images = [
+  "/eventos/evento1.jpg",
+  "/eventos/agradecimentos.png",
+  "/eventos/evento2.jpg",
+  "/eventos/evento3.jpg",
 ];
 
-// ─── CONSTANTES ───────────────────────────────────────────────────────────────
-const CARD_W    = 700;
-const CARD_GAP  = 40;
-const CARD_H    = 480;
-const CARD_STEP = CARD_W + CARD_GAP;
-const TOTAL     = events.length;
-const SET_WIDTH = TOTAL * CARD_STEP;   // largura de 1 set completo
-const AUTO_SPEED = 1.2;                // px por frame — aumente para acelerar
+const CARD_W = 680;
+const GAP    = 12;
+const STEP   = CARD_W + GAP;
+const TOTAL  = images.length;
+const SET_W  = TOTAL * STEP;
+const SPEED  = 0.6;
 
-// Duplicamos 3x para ter sempre cards visíveis antes e depois
-const loopedEvents: EventItem[] = [...events, ...events, ...events];
+const looped = [...images, ...images, ...images];
 
-// ─── CARD ─────────────────────────────────────────────────────────────────────
-function EventCard({ event }: { event: EventItem }) {
-  return (
-    <div
-      style={{ width: CARD_W, flexShrink: 0, marginRight: CARD_GAP }}
-      className="group cursor-pointer"
-    >
-      <div
-        className="relative rounded-2xl overflow-hidden"
-        style={{ height: CARD_H }}
-      >
-        {event.mediaType === "video" ? (
-          <video
-            src={event.mediaUrl}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            autoPlay muted loop playsInline
-          />
-        ) : (
-          <img
-            src={event.mediaUrl}
-            alt=""
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            loading="lazy"
-          />
-        )}
-      </div>
-    </div>
-  );
-}
-
-// ─── COMPONENTE PRINCIPAL ─────────────────────────────────────────────────────
 const EventsSection = () => {
-  const trackRef   = useRef<HTMLDivElement>(null);
-  const offsetRef  = useRef(0);          // offset acumulado em px (sempre crescente)
-  const rafRef     = useRef<number | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const trackRef     = useRef<HTMLDivElement>(null);
+  const vpRef        = useRef<HTMLDivElement>(null);
+  const offsetRef    = useRef(0);
+  const pausedRef    = useRef(false);
+  const rafRef       = useRef<number | null>(null);
+  const pauseTimer   = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const dragStart    = useRef<number | null>(null);
+  const dragOffset   = useRef(0);
+
+  const applyOffset = () => {
+    if (trackRef.current) {
+      trackRef.current.style.transform = `translateX(-${offsetRef.current}px)`;
+    }
+  };
+
+  const normalize = () => {
+    if (offsetRef.current >= SET_W) offsetRef.current -= SET_W;
+    if (offsetRef.current < 0)      offsetRef.current += SET_W;
+  };
+
+  const pauseBriefly = (ms = 1200) => {
+    pausedRef.current = true;
+    if (pauseTimer.current) clearTimeout(pauseTimer.current);
+    pauseTimer.current = setTimeout(() => { pausedRef.current = false; }, ms);
+  };
+
+  const jumpBy = (delta: number) => {
+    offsetRef.current += delta;
+    normalize();
+    applyOffset();
+    pauseBriefly(1400);
+  };
 
   useEffect(() => {
     const tick = () => {
-      offsetRef.current += AUTO_SPEED;
-
-      // Quando passamos um set completo, voltamos exatamente 1 set —
-      // o visual é idêntico porque os cards se repetem.
-      if (offsetRef.current >= SET_WIDTH) {
-        offsetRef.current -= SET_WIDTH;
+      if (!pausedRef.current) {
+        offsetRef.current += SPEED;
+        normalize();
+        applyOffset();
       }
-
-      // Aplica direto no DOM — sem re-render, sem spring, sem salto
-      if (trackRef.current) {
-        trackRef.current.style.transform = `translateX(-${offsetRef.current}px)`;
-      }
-
-      // Atualiza dot (só setState com frequência baixa para não sobrecarregar)
-      const idx = Math.floor(offsetRef.current / CARD_STEP) % TOTAL;
-      setActiveIndex(idx);
-
       rafRef.current = requestAnimationFrame(tick);
     };
-
     rafRef.current = requestAnimationFrame(tick);
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (pauseTimer.current) clearTimeout(pauseTimer.current);
+    };
+  }, []);
+
+  // ── Mouse drag ────────────────────────────────────────────────────────────
+  useEffect(() => {
+    const vp = vpRef.current;
+    if (!vp) return;
+
+    const onMouseDown = (e: MouseEvent) => {
+      dragStart.current  = e.clientX;
+      dragOffset.current = offsetRef.current;
+      pausedRef.current  = true;
+      vp.style.cursor    = "grabbing";
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      if (dragStart.current === null) return;
+      offsetRef.current = dragOffset.current + (dragStart.current - e.clientX);
+      normalize();
+      applyOffset();
+    };
+
+    const onMouseUp = () => {
+      if (dragStart.current === null) return;
+      dragStart.current = null;
+      vp.style.cursor   = "grab";
+      pauseBriefly(800);
+    };
+
+    const onTouchStart = (e: TouchEvent) => {
+      dragStart.current  = e.touches[0].clientX;
+      dragOffset.current = offsetRef.current;
+      pausedRef.current  = true;
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (dragStart.current === null) return;
+      offsetRef.current = dragOffset.current + (dragStart.current - e.touches[0].clientX);
+      normalize();
+      applyOffset();
+    };
+
+    const onTouchEnd = () => {
+      dragStart.current = null;
+      pauseBriefly(800);
+    };
+
+    vp.addEventListener("mousedown",  onMouseDown);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup",   onMouseUp);
+    vp.addEventListener("touchstart", onTouchStart, { passive: true });
+    vp.addEventListener("touchmove",  onTouchMove,  { passive: true });
+    vp.addEventListener("touchend",   onTouchEnd);
+
+    return () => {
+      vp.removeEventListener("mousedown",  onMouseDown);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup",   onMouseUp);
+      vp.removeEventListener("touchstart", onTouchStart);
+      vp.removeEventListener("touchmove",  onTouchMove);
+      vp.removeEventListener("touchend",   onTouchEnd);
     };
   }, []);
 
   return (
-    <section className="py-24 overflow-hidden">
+    <section className="py-16 overflow-hidden">
 
-      {/* ── CABEÇALHO ──────────────────────────────────────────────────────── */}
-      <div className="px-10 mb-10">
-        <span className="text-[hsl(var(--brand-red))] font-semibold text-xs tracking-[0.25em] uppercase mb-2 block">
-          Agenda
-        </span>
-        <h2 className="text-4xl md:text-5xl font-bold text-foreground leading-tight">
-          Eventos &{" "}
-          <span className="text-[hsl(var(--brand-red))]">Palestras</span>
-        </h2>
-      </div>
+      {/* Cabeçalho */}
+      <div className="px-8 mb-8 flex items-end justify-between">
+        <div>
+          <span className="text-[hsl(var(--brand-red))] font-semibold text-[11px] tracking-[0.2em] uppercase mb-1.5 block">
+            Agenda
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground leading-tight">
+            Eventos &{" "}
+            <span className="text-[hsl(var(--brand-red))]">Palestras</span>
+          </h2>
+        </div>
 
-      {/* ── TRACK ─────────────────────────────────────────────────────────── */}
-      <div className="overflow-visible" style={{ paddingLeft: 40 }}>
-        <div
-          ref={trackRef}
-          className="flex"
-          style={{ willChange: "transform" }}
-        >
-          {loopedEvents.map((event, i) => (
-            <EventCard key={`${event.id}-${i}`} event={event} />
-          ))}
+        {/* Botões de navegação */}
+        <div className="flex gap-2">
+          <button
+            onClick={() => jumpBy(-STEP)}
+            aria-label="Anterior"
+            className="w-9 h-9 rounded-full border border-border bg-background hover:bg-muted flex items-center justify-center transition-colors duration-150 active:scale-95"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+          <button
+            onClick={() => jumpBy(STEP)}
+            aria-label="Próximo"
+            className="w-9 h-9 rounded-full border border-border bg-background hover:bg-muted flex items-center justify-center transition-colors duration-150 active:scale-95"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
         </div>
       </div>
 
-      {/* ── DOTS ──────────────────────────────────────────────────────────── */}
-      <div className="flex items-center justify-center gap-2 mt-8">
-        {events.map((_, i) => (
-          <div
-            key={i}
-            className={`rounded-full transition-all duration-300 ${
-              i === activeIndex
-                ? "w-5 h-1.5 bg-[hsl(var(--brand-red))]"
-                : "w-1.5 h-1.5 bg-muted-foreground/30"
-            }`}
-          />
-        ))}
+      {/* Viewport + Track */}
+      <div
+        ref={vpRef}
+        className="overflow-hidden cursor-grab select-none"
+      >
+        <div
+          ref={trackRef}
+          className="flex"
+          style={{ paddingLeft: 32, gap: GAP, willChange: "transform" }}
+        >
+          {looped.map((src, i) => (
+            <div
+              key={i}
+              className="flex-shrink-0 rounded-xl overflow-hidden bg-muted"
+              style={{ width: CARD_W, height: 460 }}
+            >
+              <img
+                src={src}
+                alt=""
+                draggable={false}
+                className="w-full h-full object-cover pointer-events-none"
+              />
+            </div>
+          ))}
+        </div>
       </div>
 
     </section>
