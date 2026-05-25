@@ -32,12 +32,14 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicons/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/favicons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/favicons/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/favicons/favicon.ico",                   sizes: "any"              },
+      { url: "/favicons/favicon.svg",                   type: "image/svg+xml"     },
+      { url: "/favicons/favicon-96x96.png",             sizes: "96x96",  type: "image/png" },
+      { url: "/favicons/web-app-manifest-192x192.png",  sizes: "192x192", type: "image/png" },
+      { url: "/favicons/web-app-manifest-512x512.png",  sizes: "512x512", type: "image/png" },
     ],
-    apple: "/favicons/apple-touch-icon.png",
-    shortcut: "/favicons/favicon-32x32.png",
+    apple:   "/favicons/apple-touch-icon.png",
+    shortcut: "/favicons/favicon.ico",
   },
   manifest: "/favicons/site.webmanifest",
 };
@@ -45,7 +47,8 @@ export const metadata: Metadata = {
 const orgSchema = {
   "@context": "https://schema.org", "@type": "Organization",
   name: "Tecnoiso - Tecnologia e Soluções Industriais",
-  url: "https://tecnoiso.com", logo: "https://tecnoiso.com/favicons/android-chrome-192x192.png",
+  url: "https://tecnoiso.com",
+  logo: "https://tecnoiso.com/favicons/web-app-manifest-192x192.png",
   description: "Laboratório acreditado INMETRO especializado em metrologia, calibração e certificação industrial.",
   address: { "@type": "PostalAddress", streetAddress: "R. Dona Emma, 1541 - Floresta", addressLocality: "Joinville", addressRegion: "SC", postalCode: "89211-493", addressCountry: "BR" },
   telephone: "+5547989299801",
@@ -73,11 +76,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="pt-BR">
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&display=swap" rel="stylesheet" />
-        {/*
-          ✅ GTM removido daqui.
-          Agora só carrega DEPOIS que o usuário aceitar os cookies,
-          de forma dinâmica pelo componente <CookieBanner />.
-        */}
       </head>
       <body className="antialiased">
         <div
@@ -86,7 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           <IntroProvider>
             <IntroAnimation />
-            <CookieBanner /> {/* ✅ dentro do IntroProvider para ler o phase corretamente */}
+            <CookieBanner />
           </IntroProvider>
 
           <div
