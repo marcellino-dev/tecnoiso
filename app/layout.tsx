@@ -32,11 +32,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicons/favicon.ico",                   sizes: "any"              },
-      { url: "/favicons/favicon.svg",                   type: "image/svg+xml"     },
-      { url: "/favicons/favicon-96x96.png",             sizes: "96x96",  type: "image/png" },
-      { url: "/favicons/web-app-manifest-192x192.png",  sizes: "192x192", type: "image/png" },
-      { url: "/favicons/web-app-manifest-512x512.png",  sizes: "512x512", type: "image/png" },
+      { url: "/favicons/favicon.ico",                  sizes: "any"               },
+      { url: "/favicons/favicon.svg",                  type: "image/svg+xml"      },
+      { url: "/favicons/favicon-96x96.png",            sizes: "96x96",  type: "image/png" },
+      { url: "/favicons/web-app-manifest-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/favicons/web-app-manifest-512x512.png", sizes: "512x512", type: "image/png" },
     ],
     apple:   "/favicons/apple-touch-icon.png",
     shortcut: "/favicons/favicon.ico",
@@ -77,7 +77,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&display=swap" rel="stylesheet" />
       </head>
-      <body className="antialiased">
+      <body className="antialiased" suppressHydrationWarning>
         <div
           id="stage"
           style={{ position: "relative", overflowX: "hidden", overflowY: "hidden" }}
@@ -87,10 +87,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <CookieBanner />
           </IntroProvider>
 
-          <div
-            id="site-content"
-            style={{ marginTop: typeof window !== "undefined" && sessionStorage.getItem("tecnoiso_intro_done") ? "0" : "100vh" }}
-          >
+          {/* ✅ Valor fixo no servidor — o IntroProvider ajusta via useEffect no cliente */}
+          <div id="site-content" style={{ marginTop: "100vh" }}>
             {children}
           </div>
         </div>
