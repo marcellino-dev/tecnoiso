@@ -3,6 +3,7 @@
 import { motion, Variants } from "framer-motion";
 import { Instagram, Linkedin, Mail, Phone, MapPin } from "lucide-react";
 import DeveloperSignature from "@/components/DeveloperSignature";
+import Link from "next/link";
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
   show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
@@ -49,18 +50,28 @@ const Footer = () => {
           </motion.div>
 
           {/* Coluna 2 */}
-          <motion.div variants={fadeUp}>
-            <h3 className="text-lg font-bold mb-6">Serviços</h3>
-            <motion.ul variants={staggerFast} className="space-y-3">
-              {["Calibração", "Certificação", "Manutenção", "Consultoria", "Treinamentos"].map((s) => (
-                <motion.li key={s} variants={fadeX}>
-                  <a href="#servicos" className="text-gray-300 hover:text-[hsl(var(--brand-red))] transition-colors duration-300">
-                    {s}
-                  </a>
-                </motion.li>
-              ))}
-            </motion.ul>
-          </motion.div>
+<motion.div variants={fadeUp}>
+  <h3 className="text-lg font-bold mb-6">Serviços</h3>
+
+  <motion.ul variants={staggerFast} className="space-y-3">
+    {[
+      { label: "Calibração", href: "/servicos/calibracao" },
+      { label: "Certificação", href: "/servicos/certificacao" },
+      { label: "Manutenção", href: "/servicos/manutencao" },
+    
+      { label: "Treinamentos", href: "/servicos/treinamentos" },
+    ].map((item) => (
+      <motion.li key={item.label} variants={fadeX}>
+        <Link
+          href={item.href}
+          className="text-gray-300 hover:text-[hsl(var(--brand-red))] transition-colors duration-300 cursor-pointer"
+        >
+          {item.label}
+        </Link>
+      </motion.li>
+    ))}
+  </motion.ul>
+</motion.div>
 
           {/* Coluna 3 */}
           <motion.div variants={fadeUp}>

@@ -118,7 +118,7 @@ const socialLinks = [
   { href: "https://br.linkedin.com/in/leonardo-rosa-junior-8b68264b", icon: Linkedin,  label: "LinkedIn" },
 ];
 
-const services = ["Calibração", "Certificação", "Manutenção", "Consultoria", "Treinamentos"];
+const services = ["Calibração", "Certificação", "Manutenção", "Treinamentos"];
 
 /* ─── Hero ───────────────────────────────────────────────────────────── */
 function HeroSection({ onCtaClick, onTemasClick }: { onCtaClick: () => void; onTemasClick: () => void }) {
@@ -135,11 +135,11 @@ function HeroSection({ onCtaClick, onTemasClick }: { onCtaClick: () => void; onT
         background: "linear-gradient(135deg, rgba(10,10,10,0.88) 50%, rgba(242,34,32,0.07) 100%)",
       }} />
       <div style={{ position: "relative", maxWidth: 900, margin: "0 auto", padding: "20px 24px 0" }}>
-        <Link href="/" style={{
+        <Link href="/servicos" style={{
           display: "inline-flex", alignItems: "center", gap: 6,
           color: "#A0A0A0", fontSize: 13, textDecoration: "none",
         }}>
-          <ArrowLeft style={{ width: 14, height: 14 }} /> Voltar para a home
+          <ArrowLeft style={{ width: 14, height: 14 }} /> Voltar para serviços
         </Link>
       </div>
       <div style={{ position: "relative", maxWidth: 900, margin: "0 auto", padding: "48px 24px 72px" }}>

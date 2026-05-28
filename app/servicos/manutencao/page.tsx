@@ -123,7 +123,7 @@ const socialLinks = [
   { href: "https://br.linkedin.com/in/leonardo-rosa-junior-8b68264b", icon: Linkedin,  label: "LinkedIn" },
 ];
 
-const services = ["Calibração", "Certificação", "Manutenção", "Consultoria", "Treinamentos"];
+const services = ["Calibração", "Certificação", "Manutenção", "Treinamentos"];
 
 /* ─── Hero ───────────────────────────────────────────────────────────── */
 function HeroSection({ onCtaClick }: { onCtaClick: () => void }) {
@@ -147,11 +147,11 @@ function HeroSection({ onCtaClick }: { onCtaClick: () => void }) {
       }} />
       {/* Back link */}
       <div style={{ position: "relative", maxWidth: 900, margin: "0 auto", padding: "20px 24px 0" }}>
-        <Link href="/" style={{
+        <Link href="/servicos" style={{
           display: "inline-flex", alignItems: "center", gap: 6,
           color: "#A0A0A0", fontSize: 13, textDecoration: "none",
         }}>
-          <ArrowLeft style={{ width: 14, height: 14 }} /> Voltar para a home
+          <ArrowLeft style={{ width: 14, height: 14 }} /> Voltar para serviços
         </Link>
       </div>
       <div style={{ position: "relative", maxWidth: 900, margin: "0 auto", padding: "48px 24px 72px" }}>
@@ -359,8 +359,7 @@ function InstrumentosSection() {
   );
 }
 
-/* ─── Orçamento Form ─────────────────────────────────────────────────── */
-
+/* ─── Channel options ────────────────────────────────────────────────── */
 const CHANNEL_OPTIONS = [
   { id: "whatsapp_text",  label: "WhatsApp mensagem", icon: MessageCircle },
   { id: "whatsapp_voice", label: "WhatsApp voz",      icon: Phone },
@@ -368,11 +367,21 @@ const CHANNEL_OPTIONS = [
   { id: "phone_call",     label: "Ligação telefônica", icon: Phone },
 ] as const;
 
+/* ─── Maintenance type options ───────────────────────────────────────── */
+const MAINTENANCE_OPTIONS = [
+  { value: "",            label: "Selecione o tipo de manutenção" },
+  { value: "preventiva",  label: "Manutenção Preventiva" },
+  { value: "corretiva",   label: "Manutenção Corretiva" },
+  { value: "preditiva",   label: "Manutenção Preditiva" },
+] as const;
+
+/* ─── Orçamento Form ─────────────────────────────────────────────────── */
 function OrcamentoSection({ formRef }: { formRef: React.RefObject<HTMLElement> }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedChannels, setSelectedChannels] = useState<string[]>([]);
   const [formData, setFormData] = useState({
-    name: "", company: "", role: "", phone: "", email: "", message: "",
+    name: "", company: "", role: "", phone: "", email: "",
+    message: "", maintenanceType: "",
   });
 
   const FOCUS_COLOR = "#F22020";
@@ -382,20 +391,24 @@ function OrcamentoSection({ formRef }: { formRef: React.RefObject<HTMLElement> }
       prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
     );
 
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => setFormData(p => ({ ...p, [e.target.name]: e.target.value }));
+
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const d = e.target.value.replace(/\D/g, "").slice(0, 11);
     let m = "";
-    if (d.length <= 2)  m = `(${d}`;
-    else if (d.length <= 6) m = `(${d.slice(0,2)}) ${d.slice(2)}`;
+    if (d.length <= 2)       m = `(${d}`;
+    else if (d.length <= 6)  m = `(${d.slice(0,2)}) ${d.slice(2)}`;
     else if (d.length <= 10) m = `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`;
-    else m = `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7,11)}`;
+    else                     m = `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7,11)}`;
     setFormData(p => ({ ...p, phone: m }));
   };
 
   const fp = {
-    onFocus: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    onFocus: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
       (e.currentTarget.style.borderColor = FOCUS_COLOR),
-    onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
       (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"),
   };
 
@@ -410,19 +423,20 @@ function OrcamentoSection({ formRef }: { formRef: React.RefObject<HTMLElement> }
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name:         formData.name,
-          company:      formData.company,
-          role:         formData.role,
-          email:        formData.email,
-          phone:        formData.phone,
-          channels:     selectedChannels.join(", "),
-          message:      formData.message,
-          origem:       "manutencao",
-          utm_source:   params.get("utm_source")   ?? "",
-          utm_medium:   params.get("utm_medium")   ?? "",
-          utm_campaign: params.get("utm_campaign") ?? "",
-          utm_term:     params.get("utm_term")     ?? "",
-          utm_content:  params.get("utm_content")  ?? "",
+          name:            formData.name,
+          company:         formData.company,
+          role:            formData.role,
+          email:           formData.email,
+          phone:           formData.phone,
+          channels:        selectedChannels.join(", "),
+          message:         formData.message,
+          maintenanceType: formData.maintenanceType,
+          origem:          "manutencao",
+          utm_source:      params.get("utm_source")   ?? "",
+          utm_medium:      params.get("utm_medium")   ?? "",
+          utm_campaign:    params.get("utm_campaign") ?? "",
+          utm_term:        params.get("utm_term")     ?? "",
+          utm_content:     params.get("utm_content")  ?? "",
         }),
       });
 
@@ -503,9 +517,8 @@ function OrcamentoSection({ formRef }: { formRef: React.RefObject<HTMLElement> }
                 <div>
                   <label style={labelBase}>Nome <span style={{ color: FOCUS_COLOR }}>*</span></label>
                   <input
-                    required
-                    value={formData.name}
-                    onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
+                    name="name" required
+                    value={formData.name} onChange={handleChange}
                     placeholder="Seu nome completo"
                     style={inputBase} {...fp}
                   />
@@ -513,8 +526,8 @@ function OrcamentoSection({ formRef }: { formRef: React.RefObject<HTMLElement> }
                 <div>
                   <label style={labelBase}>Empresa</label>
                   <input
-                    value={formData.company}
-                    onChange={e => setFormData(p => ({ ...p, company: e.target.value }))}
+                    name="company"
+                    value={formData.company} onChange={handleChange}
                     placeholder="Nome da empresa"
                     style={inputBase} {...fp}
                   />
@@ -525,8 +538,8 @@ function OrcamentoSection({ formRef }: { formRef: React.RefObject<HTMLElement> }
               <div>
                 <label style={labelBase}>Cargo</label>
                 <input
-                  value={formData.role}
-                  onChange={e => setFormData(p => ({ ...p, role: e.target.value }))}
+                  name="role"
+                  value={formData.role} onChange={handleChange}
                   placeholder="Seu cargo"
                   style={inputBase} {...fp}
                 />
@@ -537,9 +550,8 @@ function OrcamentoSection({ formRef }: { formRef: React.RefObject<HTMLElement> }
                 <div>
                   <label style={labelBase}>Telefone <span style={{ color: FOCUS_COLOR }}>*</span></label>
                   <input
-                    required
-                    value={formData.phone}
-                    onChange={handlePhoneChange}
+                    name="phone" required
+                    value={formData.phone} onChange={handlePhoneChange}
                     placeholder="(47) 99999-9999"
                     style={inputBase} {...fp}
                   />
@@ -547,13 +559,47 @@ function OrcamentoSection({ formRef }: { formRef: React.RefObject<HTMLElement> }
                 <div>
                   <label style={labelBase}>E-mail <span style={{ color: FOCUS_COLOR }}>*</span></label>
                   <input
-                    required
-                    type="email"
-                    value={formData.email}
-                    onChange={e => setFormData(p => ({ ...p, email: e.target.value }))}
+                    name="email" type="email" required
+                    value={formData.email} onChange={handleChange}
                     placeholder="seu@email.com"
                     style={inputBase} {...fp}
                   />
+                </div>
+              </div>
+
+              {/* Tipo de Manutenção */}
+              <div>
+                <label style={labelBase}>Tipo de Manutenção</label>
+                <div style={{ position: "relative" }}>
+                  <select
+                    name="maintenanceType"
+                    value={formData.maintenanceType}
+                    onChange={handleChange}
+                    style={{
+                      ...inputBase,
+                      appearance: "none",
+                      WebkitAppearance: "none",
+                      cursor: "pointer",
+                      paddingRight: 40,
+                      color: formData.maintenanceType ? "#fff" : "#555",
+                    }}
+                    {...fp}
+                  >
+                    {MAINTENANCE_OPTIONS.map(opt => (
+                      <option
+                        key={opt.value} value={opt.value}
+                        style={{ background: "#1a1a1a", color: opt.value ? "#fff" : "#777" }}
+                      >
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown style={{
+                    position: "absolute", right: 14, top: "50%",
+                    transform: "translateY(-50%)",
+                    width: 15, height: 15, color: "#555",
+                    pointerEvents: "none",
+                  }} />
                 </div>
               </div>
 
@@ -590,8 +636,8 @@ function OrcamentoSection({ formRef }: { formRef: React.RefObject<HTMLElement> }
               <div>
                 <label style={labelBase}>Descreva os equipamentos e a criticidade da operação</label>
                 <textarea
-                  value={formData.message}
-                  onChange={e => setFormData(p => ({ ...p, message: e.target.value }))}
+                  name="message"
+                  value={formData.message} onChange={handleChange}
                   placeholder="Ex: 12 manômetros de pressão, 4 balanças industriais, linha de produção contínua..."
                   style={{ ...inputBase, height: "auto", minHeight: 100, padding: "12px 14px", resize: "none" }}
                   {...fp}
@@ -726,9 +772,7 @@ export default function ManutencaoPage() {
       <BeneficiosSection />
       <InstrumentosSection />
       <OrcamentoSection  formRef={formRef as React.RefObject<HTMLElement>} />
-    
       <PageFooter />
-
     </main>
   );
 }

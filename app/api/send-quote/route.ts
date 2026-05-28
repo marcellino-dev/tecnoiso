@@ -1,3 +1,4 @@
+// app/api/send-quote/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
@@ -7,15 +8,15 @@ interface QuoteRequestBody {
   role?: string;
   email: string;
   phone: string;
-  channels?: string;       // ex: "whatsapp_text, email"
+  channels?: string;
   message?: string;
-  origem?: string;         // ex: "site" | "certificados" | "vendas"
+  maintenanceType?: string;   // ← novo campo
+  origem?: string;
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
   utm_term?: string;
   utm_content?: string;
-
 }
 
 function validateBody(body: QuoteRequestBody): string | null {
@@ -29,12 +30,17 @@ function validateBody(body: QuoteRequestBody): string | null {
   return null;
 }
 
-// Human-readable label for channel ids
 const CHANNEL_LABELS: Record<string, string> = {
   whatsapp_text:  "WhatsApp mensagem",
   whatsapp_voice: "WhatsApp voz",
   email:          "E-mail",
   phone_call:     "Ligação telefônica",
+};
+
+const MAINTENANCE_LABELS: Record<string, string> = {
+  preventiva: "Manutenção Preventiva",
+  corretiva:  "Manutenção Corretiva",
+  preditiva:  "Manutenção Preditiva",
 };
 
 function formatChannels(raw: string | undefined): string {
@@ -45,24 +51,30 @@ function formatChannels(raw: string | undefined): string {
     .join(", ");
 }
 
+function formatMaintenance(raw: string | undefined): string {
+  if (!raw) return "—";
+  return MAINTENANCE_LABELS[raw.trim()] ?? raw.trim();
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body: QuoteRequestBody = await req.json();
 
     const trimmed: QuoteRequestBody = {
-      name:         body.name?.trim(),
-      company:      body.company?.trim()      || "",
-      role:         body.role?.trim()         || "",
-      email:        body.email?.trim().toLowerCase(),
-      phone:        body.phone?.trim(),
-      channels:     body.channels?.trim()     || "",
-      message:      body.message?.trim()      || "",
-      origem:       body.origem?.trim()       || "site",
-      utm_source:   body.utm_source?.trim()   || "",
-      utm_medium:   body.utm_medium?.trim()   || "",
-      utm_campaign: body.utm_campaign?.trim() || "",
-      utm_term:     body.utm_term?.trim()     || "",
-      utm_content:  body.utm_content?.trim()  || "",
+      name:            body.name?.trim(),
+      company:         body.company?.trim()         || "",
+      role:            body.role?.trim()             || "",
+      email:           body.email?.trim().toLowerCase(),
+      phone:           body.phone?.trim(),
+      channels:        body.channels?.trim()         || "",
+      message:         body.message?.trim()          || "",
+      maintenanceType: body.maintenanceType?.trim()  || "",
+      origem:          body.origem?.trim()           || "site",
+      utm_source:      body.utm_source?.trim()       || "",
+      utm_medium:      body.utm_medium?.trim()       || "",
+      utm_campaign:    body.utm_campaign?.trim()     || "",
+      utm_term:        body.utm_term?.trim()         || "",
+      utm_content:     body.utm_content?.trim()      || "",
     };
 
     const validationError = validateBody(trimmed);
@@ -80,7 +92,8 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const channelsFormatted = formatChannels(trimmed.channels);
+    const channelsFormatted    = formatChannels(trimmed.channels);
+    const maintenanceFormatted = formatMaintenance(trimmed.maintenanceType);
 
     // ── E-mail interno ──────────────────────────────────────────────────────
     const internalMailOptions = {
@@ -134,6 +147,12 @@ export async function POST(req: NextRequest) {
               </tr>
               <tr>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
+                  <strong style="color: #555;">🔧 Tipo de manutenção</strong>
+                </td>
+                <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #222;">${maintenanceFormatted}</td>
+              </tr>
+              <tr>
+                <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
                   <strong style="color: #555;">📡 Canal preferido</strong>
                 </td>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #222;">${channelsFormatted}</td>
@@ -155,7 +174,7 @@ export async function POST(req: NextRequest) {
                 Source: ${trimmed.utm_source || "—"} &nbsp;|&nbsp;
                 Medium: ${trimmed.utm_medium || "—"} &nbsp;|&nbsp;
                 Campaign: ${trimmed.utm_campaign || "—"}
-                ${trimmed.utm_term    ? ` | Term: ${trimmed.utm_term}`    : ""}
+                ${trimmed.utm_term    ? ` | Term: ${trimmed.utm_term}`       : ""}
                 ${trimmed.utm_content ? ` | Content: ${trimmed.utm_content}` : ""}
               </p>
             </div>` : ""}
@@ -189,6 +208,7 @@ export async function POST(req: NextRequest) {
               ${trimmed.role    ? `<p style="margin: 6px 0; color: #555;"><strong>Cargo:</strong> ${trimmed.role}</p>`    : ""}
               <p style="margin: 6px 0; color: #555;"><strong>E-mail:</strong> ${trimmed.email}</p>
               <p style="margin: 6px 0; color: #555;"><strong>Telefone:</strong> ${trimmed.phone}</p>
+              ${trimmed.maintenanceType ? `<p style="margin: 6px 0; color: #555;"><strong>Tipo de manutenção:</strong> ${maintenanceFormatted}</p>` : ""}
               <p style="margin: 6px 0; color: #555;"><strong>Canal preferido:</strong> ${channelsFormatted}</p>
             </div>
 
@@ -220,6 +240,7 @@ export async function POST(req: NextRequest) {
           telefone:                trimmed.phone,
           empresa:                 trimmed.company,
           cargo:                   trimmed.role,
+          tipo_manutencao:         maintenanceFormatted,   // ← novo campo no webhook
           canal_preferido:         channelsFormatted,
           mensagem:                trimmed.message,
           utm_source:              trimmed.utm_source,
