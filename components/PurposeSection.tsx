@@ -89,7 +89,7 @@ const PurposeSection = () => {
             <motion.div variants={staggerFast} className="grid grid-cols-2 gap-4">
               {[
                 { value: "25+", title: "Anos de Experiência", sub: "Em metrologia e qualidade" },
-                { value: "3mi+", title: "Clientes Atendidos", sub: "Em todo o território nacional" },
+                { value: "3mil+", title: "Clientes Atendidos", sub: "Em todo o território nacional" },
               ].map((card) => (
                 <motion.div
                   key={card.title}

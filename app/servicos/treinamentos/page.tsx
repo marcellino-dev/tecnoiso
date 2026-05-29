@@ -12,7 +12,6 @@ import {
 import Link from "next/link";
 import DevServer from "next/dist/server/dev/next-dev-server";
 import DeveloperSignature from "@/components/DeveloperSignature";
-/* ─── Styles ─────────────────────────────────────────────────────────── */
 const raj: React.CSSProperties = {
   fontFamily: "var(--font-rajdhani, 'Rajdhani', sans-serif)",
   fontWeight: 700,
@@ -327,14 +326,14 @@ function FormSection({ formRef }: { formRef: React.RefObject<HTMLElement> }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name:    formData.name,
-          company: formData.company,
-          email:   formData.email,
-          phone:   formData.phone,
-          service: selectedCanal
-            ? `Treinamentos Técnicos — Canal preferido: ${canalLabels[selectedCanal]}`
-            : "Treinamentos Técnicos",
-          message: formData.message,
+          name:     formData.name,
+          company:  formData.company,
+          role:     formData.role,
+          email:    formData.email,
+          phone:    formData.phone,
+          channels: selectedCanal,
+          message:  formData.message,
+          origem:   "treinamento",
         }),
       });
       const data = await res.json();

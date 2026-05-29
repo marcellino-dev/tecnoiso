@@ -10,7 +10,7 @@ interface QuoteRequestBody {
   phone: string;
   channels?: string;
   message?: string;
-  maintenanceType?: string;   // ← novo campo
+  maintenanceType?: string;
   origem?: string;
   utm_source?: string;
   utm_medium?: string;
@@ -43,6 +43,13 @@ const MAINTENANCE_LABELS: Record<string, string> = {
   preditiva:  "Manutenção Preditiva",
 };
 
+const SERVICE_LABELS: Record<string, string> = {
+  nr13:         "Inspeção NR-13",
+  manutencao:   "Manutenção & Calibração",
+  certificacao: "Certificação",
+  treinamento:  "Treinamentos",
+};
+
 function formatChannels(raw: string | undefined): string {
   if (!raw) return "—";
   return raw
@@ -62,19 +69,19 @@ export async function POST(req: NextRequest) {
 
     const trimmed: QuoteRequestBody = {
       name:            body.name?.trim(),
-      company:         body.company?.trim()         || "",
-      role:            body.role?.trim()             || "",
+      company:         body.company?.trim()        || "",
+      role:            body.role?.trim()            || "",
       email:           body.email?.trim().toLowerCase(),
       phone:           body.phone?.trim(),
-      channels:        body.channels?.trim()         || "",
-      message:         body.message?.trim()          || "",
-      maintenanceType: body.maintenanceType?.trim()  || "",
-      origem:          body.origem?.trim()           || "site",
-      utm_source:      body.utm_source?.trim()       || "",
-      utm_medium:      body.utm_medium?.trim()       || "",
-      utm_campaign:    body.utm_campaign?.trim()     || "",
-      utm_term:        body.utm_term?.trim()         || "",
-      utm_content:     body.utm_content?.trim()      || "",
+      channels:        body.channels?.trim()        || "",
+      message:         body.message?.trim()         || "",
+      maintenanceType: body.maintenanceType?.trim() || "",
+      origem:          body.origem?.trim()          || "site",
+      utm_source:      body.utm_source?.trim()      || "",
+      utm_medium:      body.utm_medium?.trim()      || "",
+      utm_campaign:    body.utm_campaign?.trim()    || "",
+      utm_term:        body.utm_term?.trim()        || "",
+      utm_content:     body.utm_content?.trim()     || "",
     };
 
     const validationError = validateBody(trimmed);
@@ -94,27 +101,30 @@ export async function POST(req: NextRequest) {
 
     const channelsFormatted    = formatChannels(trimmed.channels);
     const maintenanceFormatted = formatMaintenance(trimmed.maintenanceType);
+    const serviceFormatted     = SERVICE_LABELS[trimmed.origem ?? ""] ?? trimmed.origem ?? "—";
 
     // ── E-mail interno ──────────────────────────────────────────────────────
     const internalMailOptions = {
       from:    `"Formulário do Site" <${process.env.SMTP_EMAIL}>`,
       to:      `maristela@tecnoiso.com, mclsouza1613ad@gmail.com`,
       replyTo: trimmed.email,
-      subject: `📋 Novo orçamento de ${trimmed.name}`,
+      subject: `📋 Nova solicitação de ${serviceFormatted} – ${trimmed.name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background: linear-gradient(135deg, #c0392b, #e74c3c); padding: 30px; border-radius: 10px 10px 0 0;">
-            <h1 style="color: white; margin: 0; font-size: 24px;">Nova Solicitação de Orçamento</h1>
+            <h1 style="color: white; margin: 0; font-size: 24px;">Nova Solicitação de ${serviceFormatted}</h1>
             <p style="color: rgba(255,255,255,0.85); margin: 8px 0 0;">Recebido pelo site tecnoiso.com</p>
           </div>
           <div style="background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; border: 1px solid #eee;">
             <table style="width: 100%; border-collapse: collapse;">
+
               <tr>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee; width: 160px;">
                   <strong style="color: #555;">👤 Nome</strong>
                 </td>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #222;">${trimmed.name}</td>
               </tr>
+
               ${trimmed.company ? `
               <tr>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
@@ -122,6 +132,7 @@ export async function POST(req: NextRequest) {
                 </td>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #222;">${trimmed.company}</td>
               </tr>` : ""}
+
               ${trimmed.role ? `
               <tr>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
@@ -129,6 +140,7 @@ export async function POST(req: NextRequest) {
                 </td>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #222;">${trimmed.role}</td>
               </tr>` : ""}
+
               <tr>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
                   <strong style="color: #555;">📧 E-mail</strong>
@@ -137,6 +149,7 @@ export async function POST(req: NextRequest) {
                   <a href="mailto:${trimmed.email}" style="color: #c0392b;">${trimmed.email}</a>
                 </td>
               </tr>
+
               <tr>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
                   <strong style="color: #555;">📞 Telefone</strong>
@@ -145,18 +158,32 @@ export async function POST(req: NextRequest) {
                   <a href="tel:${trimmed.phone.replace(/\D/g, "")}" style="color: #c0392b;">${trimmed.phone}</a>
                 </td>
               </tr>
+
+              <tr>
+                <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
+                  <strong style="color: #555;">📌 Serviço solicitado</strong>
+                </td>
+                <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
+                  <span style="background:#fdecea; color:#c0392b; font-weight:700; padding:3px 10px; border-radius:4px; font-size:13px;">
+                    ${serviceFormatted}
+                  </span>
+                </td>
+              </tr>
+
               <tr>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
                   <strong style="color: #555;">🔧 Tipo de manutenção</strong>
                 </td>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #222;">${maintenanceFormatted}</td>
               </tr>
+
               <tr>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
                   <strong style="color: #555;">📡 Canal preferido</strong>
                 </td>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #222;">${channelsFormatted}</td>
               </tr>
+
             </table>
 
             ${trimmed.message ? `
@@ -178,6 +205,7 @@ export async function POST(req: NextRequest) {
                 ${trimmed.utm_content ? ` | Content: ${trimmed.utm_content}` : ""}
               </p>
             </div>` : ""}
+
           </div>
         </div>
       `,
@@ -208,6 +236,7 @@ export async function POST(req: NextRequest) {
               ${trimmed.role    ? `<p style="margin: 6px 0; color: #555;"><strong>Cargo:</strong> ${trimmed.role}</p>`    : ""}
               <p style="margin: 6px 0; color: #555;"><strong>E-mail:</strong> ${trimmed.email}</p>
               <p style="margin: 6px 0; color: #555;"><strong>Telefone:</strong> ${trimmed.phone}</p>
+              <p style="margin: 6px 0; color: #555;"><strong>Serviço solicitado:</strong> ${serviceFormatted}</p>
               ${trimmed.maintenanceType ? `<p style="margin: 6px 0; color: #555;"><strong>Tipo de manutenção:</strong> ${maintenanceFormatted}</p>` : ""}
               <p style="margin: 6px 0; color: #555;"><strong>Canal preferido:</strong> ${channelsFormatted}</p>
             </div>
@@ -235,20 +264,21 @@ export async function POST(req: NextRequest) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          nome:                    trimmed.name,
-          email:                   trimmed.email,
-          telefone:                trimmed.phone,
-          empresa:                 trimmed.company,
-          cargo:                   trimmed.role,
-          tipo_manutencao:         maintenanceFormatted,   // ← novo campo no webhook
-          canal_preferido:         channelsFormatted,
-          mensagem:                trimmed.message,
-          utm_source:              trimmed.utm_source,
-          utm_medium:              trimmed.utm_medium,
-          utm_campaign:            trimmed.utm_campaign,
-          utm_term:                trimmed.utm_term,
-          utm_content:             trimmed.utm_content,
-          origem:                  trimmed.origem || "site",
+          nome:            trimmed.name,
+          email:           trimmed.email,
+          telefone:        trimmed.phone,
+          empresa:         trimmed.company,
+          cargo:           trimmed.role,
+          servico:         serviceFormatted,
+          tipo_manutencao: maintenanceFormatted,
+          canal_preferido: channelsFormatted,
+          mensagem:        trimmed.message,
+          utm_source:      trimmed.utm_source,
+          utm_medium:      trimmed.utm_medium,
+          utm_campaign:    trimmed.utm_campaign,
+          utm_term:        trimmed.utm_term,
+          utm_content:     trimmed.utm_content,
+          origem:          trimmed.origem || "site",
         }),
       }),
     ]);
