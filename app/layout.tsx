@@ -32,14 +32,16 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicons/favicon.ico",                  sizes: "any"               },
-      { url: "/favicons/favicon.svg",                  type: "image/svg+xml"      },
-      { url: "/favicons/favicon-96x96.png",            sizes: "96x96",  type: "image/png" },
-      { url: "/favicons/web-app-manifest-192x192.png", sizes: "192x192", type: "image/png" },
-      { url: "/favicons/web-app-manifest-512x512.png", sizes: "512x512", type: "image/png" },
+      { url: "/favicon.ico",                              sizes: "any"                       },
+      { url: "/favicons/favicon-16x16.png",               sizes: "16x16",  type: "image/png" },
+      { url: "/favicons/favicon-32x32.png",               sizes: "32x32",  type: "image/png" },
+      { url: "/favicons/android-chrome-192x192.png",      sizes: "192x192", type: "image/png" },
+      { url: "/favicons/android-chrome-512x512.png",      sizes: "512x512", type: "image/png" },
     ],
-    apple:   "/favicons/apple-touch-icon.png",
-    shortcut: "/favicons/favicon.ico",
+    apple: [
+      { url: "/favicons/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
   },
   manifest: "/favicons/site.webmanifest",
 };
@@ -48,7 +50,7 @@ const orgSchema = {
   "@context": "https://schema.org", "@type": "Organization",
   name: "Tecnoiso - Tecnologia e Soluções Industriais",
   url: "https://tecnoiso.com",
-  logo: "https://tecnoiso.com/favicons/web-app-manifest-192x192.png",
+  logo: "https://tecnoiso.com/favicons/android-chrome-192x192.png",
   description: "Laboratório acreditado INMETRO especializado em metrologia, calibração e certificação industrial.",
   address: { "@type": "PostalAddress", streetAddress: "R. Dona Emma, 1541 - Floresta", addressLocality: "Joinville", addressRegion: "SC", postalCode: "89211-493", addressCountry: "BR" },
   telephone: "+5547989299801",
