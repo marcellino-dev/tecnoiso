@@ -134,7 +134,7 @@ const Footer = () => {
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             {["Política de Qualidade", "Termos de Uso"].map((label) => (
-              <a key={label} href="#" className="text-gray-400 hover:text-[hsl(var(--brand-red))] text-sm transition-colors duration-300">
+              <a key={label} href="politica-de-qualidade" className="text-gray-400 hover:text-[hsl(var(--brand-red))] text-sm transition-colors duration-300">
                 {label}
               </a>
             ))}
