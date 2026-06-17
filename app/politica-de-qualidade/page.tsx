@@ -156,10 +156,7 @@ const HeroBanner = () => {
       <div className="absolute inset-0 bg-[hsl(var(--brand-red))]/8" />
       <div className="absolute inset-y-0 left-0 w-2/5 bg-gradient-to-r from-black/60 to-transparent" />
 
-      <div
-        className="relative z-10 w-full pb-14 px-8 md:px-16 lg:px-24"
-        style={{ paddingTop: "calc(var(--header-h, 80px) + 2rem)" }}
-      >
+      <div className="relative z-10 w-full pb-14 px-8 md:px-16 lg:px-24 pt-8 md:pt-12">
         <div
           style={{
             opacity: visible ? 1 : 0,
@@ -169,12 +166,11 @@ const HeroBanner = () => {
         >
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-white/50 hover:text-white text-sm mb-8 transition-colors duration-200 group"
+            className="inline-flex items-center gap-2 text-white/50 hover:text-white text-sm mb-6 transition-colors duration-200 group"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-200" />
             Voltar para a home
           </Link>
-
 
           <h1 className="text-4xl md:text-5xl lg:text-[56px] font-bold text-white leading-[1.1] tracking-tight max-w-3xl mb-5">
             Compromisso com a{" "}
@@ -195,7 +191,6 @@ const HeroBanner = () => {
     </section>
   );
 };
-
 /* ─── Política da Qualidade — winding scroll-linked path ───────────────
  * Signature element of this page: the five commitments are laid out along
  * a single continuous line that "draws" itself in as the visitor scrolls,
