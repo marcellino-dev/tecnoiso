@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tecnoiso - Plataforma Institucional
 
-## Getting Started
+Sistema web institucional desenvolvido para a Tecnoiso, empresa especializada em serviços de calibração, manutenção e gestão de equipamentos.
 
-First, run the development server:
+O projeto foi desenvolvido para atender clientes reais, otimizar a comunicação comercial da empresa e fortalecer sua presença digital através de uma plataforma moderna, responsiva e escalável.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+🔗 Produção: https://tecnoiso.com
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tecnologias Utilizadas
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+* Next.js 15
+* TypeScript
+* React
+* Tailwind CSS
+* Supabase
+* Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Principais Funcionalidades
 
-## Learn More
+### Site Institucional
 
-To learn more about Next.js, take a look at the following resources:
+* Apresentação dos serviços da empresa
+* Catálogo de soluções oferecidas
+* Área de contato comercial
+* Formulários para solicitação de orçamento
+* Navegação otimizada para dispositivos móveis
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Integrações
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+* Integração com Supabase
+* Armazenamento e gerenciamento de dados
+* Processamento de formulários de contato
 
-## Deploy on Vercel
+### Experiência do Usuário
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* Interface responsiva
+* Componentização reutilizável
+* Navegação rápida utilizando recursos do Next.js
+* Otimização para SEO
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Conformidade
+
+* Implementação de política de privacidade
+* Adequação à LGPD
+* Gerenciamento de consentimento de cookies
+
+## Arquitetura do Projeto
+
+O sistema foi estruturado utilizando:
+
+* App Router (Next.js)
+* Componentes reutilizáveis
+* Hooks customizados
+* Integração desacoplada com Supabase
+* Organização modular para facilitar manutenção e evolução
+
+## Desafios Enfrentados
+
+Durante o desenvolvimento foram implementadas melhorias contínuas relacionadas a:
+
+* Migração de tecnologias
+* Otimização de performance
+* Responsividade
+* Correções de SEO
+* Adequação à legislação de proteção de dados
+* Evolução da experiência do usuário
+
+## Resultados
+
+* Sistema em produção
+* Utilizado por clientes reais
+* Publicação contínua através da Vercel
+* Manutenção e evolução ativa do projeto
+
+## Aprendizados
+
+Este projeto proporcionou experiência prática em:
+
+* Desenvolvimento de aplicações web modernas
+* Deploy em ambiente de produção
+* Integração frontend e backend
+* Gestão de requisitos reais de negócio
+* Boas práticas de arquitetura e manutenção de software
+
+## Autor
+
+Marcelino Souza
+
+* GitHub: https://github.com/marcellino-dev
+* LinkedIn: https://linkedin.com/in/marcelino-dev
