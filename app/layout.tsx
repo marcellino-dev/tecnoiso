@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "sonner";
-import IntroAnimation from "@/components/IntroAnimation";
 import WhatsAppScript from "@/components/WhatsAppScript";
 import CookieBanner from "@/components/CookieBanner";
 import { IntroProvider } from "@/lib/introContext";
@@ -85,12 +84,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           style={{ position: "relative", overflowX: "hidden", overflowY: "hidden" }}
         >
           <IntroProvider>
-            <IntroAnimation />
+
             <CookieBanner />
           </IntroProvider>
 
           {/* ✅ Valor fixo no servidor — o IntroProvider ajusta via useEffect no cliente */}
-          <div id="site-content" style={{ marginTop: "100vh" }}>
+          <div id="site-content" style={{ marginTop: "0" }}>
             {children}
           </div>
         </div>
