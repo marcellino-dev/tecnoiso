@@ -71,6 +71,70 @@ export default function IndicacaoTecnicosPage() {
       });
     }
 
+    // ── Múltipla seleção de oportunidade ──────────────────────────────────────
+    const OPCOES_OPORTUNIDADE = [
+      'Calibração',
+      'Manutenção preventiva',
+      'Manutenção corretiva',
+      'Venda de equipamento',
+      'Consultoria técnica',
+      'Treinamento',
+      'Outro',
+    ];
+
+    const dropdownBtn   = document.getElementById('oportunidade-btn');
+    const dropdownMenu  = document.getElementById('oportunidade-menu');
+    const dropdownLabel = document.getElementById('oportunidade-label');
+
+    // Fecha dropdown ao clicar fora
+    document.addEventListener('click', function (e) {
+      if (!dropdownBtn || !dropdownMenu) return;
+      if (!dropdownBtn.contains(e.target as Node) && !dropdownMenu.contains(e.target as Node)) {
+        dropdownMenu.classList.remove('open');
+        dropdownBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    if (dropdownBtn && dropdownMenu) {
+      dropdownBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        const isOpen = dropdownMenu.classList.toggle('open');
+        dropdownBtn.setAttribute('aria-expanded', String(isOpen));
+      });
+
+      // Cria checkboxes dinamicamente
+      OPCOES_OPORTUNIDADE.forEach(function (opcao) {
+        const item = document.createElement('label');
+        item.className = 'oportunidade-item';
+        item.innerHTML =
+          '<input type="checkbox" value="' + opcao + '" class="oportunidade-check" />' +
+          '<span class="oportunidade-check-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3.5 3.5L10 3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' +
+          '<span class="oportunidade-text">' + opcao + '</span>';
+
+        item.addEventListener('click', function (e) { e.stopPropagation(); });
+
+        const checkbox = item.querySelector('input') as HTMLInputElement;
+        checkbox.addEventListener('change', function () {
+          const selecionados = getOportunidadesSelecionadas();
+          if (dropdownLabel) {
+            dropdownLabel.textContent =
+              selecionados.length === 0
+                ? 'Selecione…'
+                : selecionados.join(', ');
+            dropdownLabel.style.color = selecionados.length === 0 ? '#AEAEB8' : '#181818';
+          }
+        });
+
+        dropdownMenu.appendChild(item);
+      });
+    }
+
+    function getOportunidadesSelecionadas(): string[] {
+      const checks = document.querySelectorAll<HTMLInputElement>('.oportunidade-check:checked');
+      return Array.from(checks).map(c => c.value);
+    }
+    // ─────────────────────────────────────────────────────────────────────────
+
     // Upload imgbb
     async function uploadImgbb(base64: string): Promise<string> {
       const form = new FormData();
@@ -120,9 +184,9 @@ export default function IndicacaoTecnicosPage() {
     });
 
     // Submit
-    const form = document.getElementById('lead-form') as HTMLFormElement;
-    if (form) {
-      form.addEventListener('submit', async function (e) {
+    const formEl = document.getElementById('lead-form') as HTMLFormElement;
+    if (formEl) {
+      formEl.addEventListener('submit', async function (e) {
         e.preventDefault();
         if (!validate()) return;
 
@@ -138,6 +202,11 @@ export default function IndicacaoTecnicosPage() {
         }
 
         const tecnico = (document.getElementById('tecnico') as HTMLSelectElement).value;
+
+        // Coleta múltiplas oportunidades selecionadas
+        const oportunidadesSelecionadas = getOportunidadesSelecionadas();
+        const tipoOportunidade = oportunidadesSelecionadas.join(', ');
+
         const payload = {
           tecnico,
           data_visita:       (document.getElementById('data_visita') as HTMLInputElement).value,
@@ -146,7 +215,9 @@ export default function IndicacaoTecnicosPage() {
           cargo_contato:     (document.getElementById('cargo_contato') as HTMLInputElement).value,
           telefone:          (document.getElementById('telefone') as HTMLInputElement).value,
           email:             (document.getElementById('email') as HTMLInputElement).value,
-          tipo_oportunidade: (document.getElementById('tipo_oportunidade') as HTMLSelectElement).value,
+          tipo_oportunidade: tipoOportunidade,
+          // Array separado para sistemas que suportam múltiplos valores
+          tipos_oportunidade: oportunidadesSelecionadas,
           descricao:         (document.getElementById('descricao') as HTMLTextAreaElement).value,
           arquivo_url:       urls[0] || '',
           arquivos_urls:     urls.join(', '),
@@ -179,7 +250,7 @@ export default function IndicacaoTecnicosPage() {
       });
     }
 
-    // Expõe resetForm globalmente para o onclick inline do botão
+    // Expõe resetForm globalmente
     (window as Window & { resetForm?: () => void }).resetForm = function () {
       arquivos = [];
       renderArquivos();
@@ -199,6 +270,14 @@ export default function IndicacaoTecnicosPage() {
       if (ss) ss.classList.remove('visible');
       const sf = document.getElementById('screen-form');
       if (sf) sf.style.display = '';
+
+      // Reset checkboxes de oportunidade
+      document.querySelectorAll<HTMLInputElement>('.oportunidade-check').forEach(c => { c.checked = false; });
+      const lbl = document.getElementById('oportunidade-label');
+      if (lbl) { lbl.textContent = 'Selecione…'; lbl.style.color = '#AEAEB8'; }
+      const menu = document.getElementById('oportunidade-menu');
+      if (menu) menu.classList.remove('open');
+
       window.scrollTo(0, 0);
     };
 
@@ -280,6 +359,60 @@ export default function IndicacaoTecnicosPage() {
         .field-error { font-size:12px; color:#ED1C24; font-weight:600; display:none; }
         .field-error.visible { display:block; }
         .field input.error, .field select.error, .field textarea.error { border-color:#ED1C24; }
+
+        /* ── Dropdown multi-select ──────────────────────────────────────── */
+        .oportunidade-wrapper { position: relative; }
+
+        .oportunidade-btn {
+          width: 100%;
+          font-size: 15px; color: #AEAEB8; background: #F8F8F9;
+          border: 1.5px solid #E8E8EA; border-radius: 12px;
+          padding: 14px 15px; cursor: pointer;
+          display: flex; align-items: center; justify-content: space-between; gap: 8px;
+          text-align: left; transition: border-color .15s;
+        }
+        .oportunidade-btn:focus { outline: none; border-color: #ED1C24; }
+        .oportunidade-btn[aria-expanded="true"] { border-color: #ED1C24; }
+        .oportunidade-btn-arrow { flex-shrink: 0; transition: transform .2s; }
+        .oportunidade-btn[aria-expanded="true"] .oportunidade-btn-arrow { transform: rotate(180deg); }
+
+        .oportunidade-menu {
+          display: none;
+          position: absolute; z-index: 100; left: 0; right: 0; top: calc(100% + 6px);
+          background: #fff; border: 1.5px solid #E8E8EA; border-radius: 14px;
+          box-shadow: 0 10px 30px rgba(24,24,24,.13);
+          overflow: hidden;
+        }
+        .oportunidade-menu.open { display: block; }
+
+        .oportunidade-item {
+          display: flex; align-items: center; gap: 12px;
+          padding: 13px 16px; cursor: pointer;
+          font-size: 14.5px; color: #181818; font-family: 'Mulish', sans-serif;
+          transition: background .12s;
+          user-select: none;
+        }
+        .oportunidade-item:hover { background: #F8F8F9; }
+        .oportunidade-item + .oportunidade-item { border-top: 1px solid #F2F2F4; }
+
+        /* Esconde checkbox nativo */
+        .oportunidade-check { display: none; }
+
+        /* Checkbox customizado */
+        .oportunidade-check-box {
+          width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0;
+          border: 1.8px solid #D8D8DC; background: #fff;
+          display: flex; align-items: center; justify-content: center;
+          transition: background .15s, border-color .15s;
+        }
+        .oportunidade-check-box svg { opacity: 0; transition: opacity .15s; }
+        .oportunidade-check:checked + .oportunidade-check-box {
+          background: #ED1C24; border-color: #ED1C24;
+        }
+        .oportunidade-check:checked + .oportunidade-check-box svg { opacity: 1; }
+
+        .oportunidade-text { flex: 1; line-height: 1.3; }
+        /* ─────────────────────────────────────────────────────────────── */
 
         .upload-btn {
           display:flex; align-items:center; gap:14px;
@@ -525,19 +658,29 @@ export default function IndicacaoTecnicosPage() {
               <span className="section-label">A Oportunidade</span>
             </div>
 
+            {/* ── Dropdown multi-select ── */}
             <div className="field">
-              <label className="field-label" htmlFor="tipo_oportunidade">Tipo de Oportunidade</label>
-              <select id="tipo_oportunidade">
-                <option value="">Selecione…</option>
-                <option>Calibração</option>
-                <option>Manutenção preventiva</option>
-                <option>Manutenção corretiva</option>
-                <option>Venda de equipamento</option>
-                <option>Consultoria técnica</option>
-                <option>Treinamento</option>
-                <option>Outro</option>
-              </select>
+              <label className="field-label">Tipo de Oportunidade</label>
+              <div className="oportunidade-wrapper">
+                <button
+                  type="button"
+                  id="oportunidade-btn"
+                  className="oportunidade-btn"
+                  aria-haspopup="listbox"
+                  aria-expanded="false"
+                >
+                  <span id="oportunidade-label" style={{flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>Selecione…</span>
+                  <svg className="oportunidade-btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="#AEAEB8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+                <div id="oportunidade-menu" className="oportunidade-menu" role="listbox" aria-multiselectable="true">
+                  {/* Checkboxes injetados via JS no useEffect */}
+                </div>
+              </div>
             </div>
+            {/* ───────────────────────── */}
+
             <div className="field">
               <label className="field-label" htmlFor="descricao">Descrição da Oportunidade <span>*</span></label>
               <textarea id="descricao" rows={4} placeholder="O que você observou? Qual é a oportunidade de negócio?" required></textarea>
