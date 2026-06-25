@@ -406,31 +406,69 @@ export default function IndicacaoTecnicosPage() {
               <label className="field-label" htmlFor="tecnico">Técnico Responsável <span>*</span></label>
               <select id="tecnico" required>
                 <option value="">Selecione seu nome…</option>
-                <option>Caio Vinicius de Moura</option>
-                <option>Charly K. M. Rodrigues</option>
-                <option>Elenilson Lima de Freitas</option>
-                <option>João A. Fabiano Ferreira</option>
-                <option>Geyson Costa Cunha</option>
-                <option>Guilherme Lima Mendes</option>
-                <option>Henrique Pedroso de Souza</option>
-                <option>Samila Guimarães Vieira</option>
-                <option>Valério Alves</option>
-                <option>Júlio Cesar Reis</option>
+                <option>Alexandre Hyssao Hirose</option>
+                <option>Amir Hossein Nikdelaminab</option>
                 <option>Ana Paula Barboza de Lima</option>
-                <option>Bernardo F. M. Mendes</option>
+                <option>Arthur de Amorim Cunha</option>
+                <option>Bernardo Felipe Milano Mendes</option>
                 <option>Breno Euclides Sellmer</option>
-                <option>Elizandra C. S. de Castro</option>
+                <option>Bruna Carolina Rebello</option>
+                <option>Caio Vinicius de Moura</option>
+                <option>Charly Kennyd Mendanha Rodrigues</option>
+                <option>Cleomar Coelho</option>
+                <option>Daniel Berg Fernandes</option>
+                <option>Djéssica Alves Fugazza</option>
+                <option>Djonata Irineu Braun</option>
+                <option>Elenilson Lima de Freitas</option>
+                <option>Eliane Assing Rosa de Limas</option>
+                <option>Elis Regina Gomes</option>
+                <option>Elisa Regina Corrêa</option>
+                <option>Elizandra Christina Santana de Castro</option>
+                <option>Fabiane Marcia de Borba</option>
+                <option>Fernanda Aparecida Gomes Maria</option>
+                <option>Geyson Costa Cunha</option>
+                <option>Grasielle Cristiane Gonçalves</option>
+                <option>Guilherme Lima Mendes</option>
+                <option>Hellen Thiesen Andersen da Silva</option>
+                <option>Heloisa Hille de Lima</option>
+                <option>Henrique Pedroso de Souza</option>
+                <option>Humberto Leonardo Strohmeyer de Carvalho</option>
+                <option>Ian Paulo Gama Alves</option>
                 <option>Isabelle Bezerra Silveira</option>
+                <option>Jackson Miranda Silva</option>
+                <option>Jean Carlos da Silva Júnior</option>
+                <option>João Antonio Fabricio Ferreira</option>
                 <option>João Marcos Gabriel</option>
                 <option>João Roberto da Silva</option>
+                <option>José Augusto Borgmann</option>
+                <option>José Eulálio Cardozo Sobrinho Dias Machado</option>
+                <option>Julio Cesar Bosco</option>
+                <option>Júlio Cesar Reis</option>
+                <option>Larissa Yuri Hirose</option>
+                <option>Leandro Willian Rosa</option>
+                <option>Leonardo Rosa Junior</option>
+                <option>Lisline Extekoetter</option>
                 <option>Luana Sousa de Oliveira</option>
-                <option>Mateus M. de Azevedo</option>
-                <option>Mylena C. de Miranda</option>
-                <option>Nicolas G. de Borba</option>
-                <option>Raiane A. de S. Baron</option>
+                <option>Luiz Gustavo Habitzreuter</option>
+                <option>Marcelino de Souza Ferreira</option>
+                <option>Marilú da Silva Costa Pacheco</option>
+                <option>Maristela Silveira</option>
+                <option>Marlon Wendel Soares</option>
+                <option>Mateus Machado de Azevedo</option>
+                <option>Matheus Augusto Silveira Gamba</option>
+                <option>Mylena Cristina de Miranda</option>
+                <option>Nicolas Blasio Alves</option>
+                <option>Nicolas Gabriel de Borba</option>
+                <option>Patricia Garcia Bueno Peterson</option>
+                <option>Raiane Aparecida de Souza Baron</option>
+                <option>Regiane Sayuri Kushino</option>
+                <option>Rinaldo Okazaki</option>
+                <option>Samila Guimarães Vieira</option>
                 <option>Thales Antonio Kessler</option>
-                <option>Alexandre Hyssao Hirose</option>
-                <option>Jackson Miranda Silva</option>
+                <option>Valério Alves</option>
+                <option>Vanessa de Jesus Rodrigues Fraga</option>
+                <option>Victória Camille da Luz</option>
+                <option>Vitor Helio de Souza</option>
               </select>
               <div className="field-error" id="err-tecnico">Selecione seu nome</div>
             </div>
