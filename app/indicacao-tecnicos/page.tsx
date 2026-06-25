@@ -336,6 +336,15 @@ export default function IndicacaoTecnicosPage() {
           color:#fff; background:#ED1C24; border:none; border-radius:14px;
           padding:18px 32px; cursor:pointer; box-shadow:0 10px 26px rgba(237,28,36,.4);
         }
+
+        /* Esconder botão do WhatsApp */
+        [data-webhook],
+        .whatsredirect-widget,
+        .whatsapp-button,
+        .wa-button,
+        iframe[src*="whatsredirect"],
+        [class*="whatsapp"],
+        [id*="whatsapp"] { display: none !important; }
       `}</style>
 
       {/* ========== SUCESSO ========== */}
