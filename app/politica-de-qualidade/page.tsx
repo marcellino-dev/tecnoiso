@@ -52,8 +52,6 @@ const staggerFast: Variants = {
   show: { transition: { staggerChildren: 0.06 } },
 };
 
-/* Directional reveals used by the timeline cards — each card slides in
-   from the side it sits on, reinforcing the left/right rhythm of the path. */
 const slideFromLeft: Variants = {
   hidden: { opacity: 0, x: -36 },
   show: { opacity: 1, x: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
@@ -68,9 +66,6 @@ const fadeOnly: Variants = {
 };
 
 /* ─── Data ───────────────────────────────────────────────────────────── */
-/* Each policy line now carries its own icon — pulled from the existing
-   icon set already used across the page — so every step in the path reads
-   as distinct rather than a repeated checkmark. */
 type PoliticaItem = { icon: LucideIcon; text: string };
 
 const politicaItems: PoliticaItem[] = [
@@ -85,14 +80,6 @@ const politicaItems: PoliticaItem[] = [
   {
     icon: Heart,
     text: "Priorizar a satisfação de todos os clientes internos e externos com confiabilidade, agilidade e imparcialidade.",
-  },
-  {
-    icon: Scale,
-    text: "Assegurar a rastreabilidade das medições aos padrões nacionais e internacionais reconhecidos pelo INMETRO.",
-  },
-  {
-    icon: Award,
-    text: "Manter a infraestrutura e os recursos necessários para a prestação de serviços com excelência.",
   },
 ];
 
@@ -191,17 +178,8 @@ const HeroBanner = () => {
     </section>
   );
 };
-/* ─── Política da Qualidade — winding scroll-linked path ───────────────
- * Signature element of this page: the five commitments are laid out along
- * a single continuous line that "draws" itself in as the visitor scrolls,
- * snaking left/right — the same idea as the reference infographic, rebuilt
- * with the page's own red/black brand tokens instead of hardcoded colors.
- *
- * Geometry: node positions are defined once in an SVG-style coordinate
- * space (VB_W × totalH). The path and the HTML cards both read off the
- * same coordinates as percentages, so they stay perfectly aligned at any
- * viewport width.
- * ──────────────────────────────────────────────────────────────────── */
+
+/* ─── Política da Qualidade — winding scroll-linked path ───────────────── */
 const VB_W = 480;
 const NODE_GAP = 200;
 const NODE_TOP = 90;
@@ -242,8 +220,6 @@ const PoliticaTimelineSection = () => {
   });
   const drawProgress = useSpring(scrollYProgress, { stiffness: 90, damping: 22, mass: 0.4 });
 
-  // Traveling marker: approximates a dot riding along the path, interpolated
-  // linearly between node positions as the user scrolls.
   const yFractions = nodes.map((n) => n.y / totalH);
   const xPercents = nodes.map((n) => (n.x / VB_W) * 100);
   const yPercents = nodes.map((n) => (n.y / totalH) * 100);
@@ -252,7 +228,6 @@ const PoliticaTimelineSection = () => {
 
   return (
     <section className="relative bg-[hsl(var(--background))] py-20 px-8 md:px-16 lg:px-24 overflow-hidden">
-      {/* quiet dot-grid texture, echoes the world-map backdrop in the reference */}
       <div
         className="absolute inset-0 opacity-[0.04] pointer-events-none"
         style={{
@@ -269,10 +244,7 @@ const PoliticaTimelineSection = () => {
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
         >
-          <motion.div variants={fadeLeft} className="flex items-center gap-3 mb-5">
-           
-            
-          </motion.div>
+          <motion.div variants={fadeLeft} className="flex items-center gap-3 mb-5" />
 
           <motion.h2
             variants={fadeUp}
@@ -287,7 +259,6 @@ const PoliticaTimelineSection = () => {
           </motion.p>
         </motion.div>
 
-        {/* ── Desktop / tablet: winding scroll-linked path ── */}
         <div
           ref={containerRef}
           className="hidden md:block relative mt-14"
@@ -299,9 +270,7 @@ const PoliticaTimelineSection = () => {
             className="absolute inset-0 w-full h-full"
             fill="none"
           >
-            {/* static track */}
             <path d={pathD} stroke="hsl(var(--border))" strokeWidth={3} strokeLinecap="round" />
-            {/* drawn-in progress, tied to scroll */}
             <motion.path
               d={pathD}
               stroke="hsl(var(--brand-red))"
@@ -337,7 +306,6 @@ const PoliticaTimelineSection = () => {
 
             return (
               <div key={i} className="absolute inset-x-0" style={{ top: `${topPct}%` }}>
-                {/* number / icon node, pinned exactly on the path */}
                 <div
                   className="absolute z-10 w-14 h-14 rounded-full bg-[hsl(var(--brand-red))] text-white flex items-center justify-center shadow-lg ring-4 ring-[hsl(var(--background))]"
                   style={{ left: `${leftPct}%`, top: 0, transform: "translate(-50%, -50%)" }}
@@ -348,7 +316,6 @@ const PoliticaTimelineSection = () => {
                   </span>
                 </div>
 
-                {/* text card, growing away from the spine */}
                 <motion.div
                   initial="hidden"
                   whileInView="show"
@@ -382,7 +349,6 @@ const PoliticaTimelineSection = () => {
           })}
         </div>
 
-        {/* ── Mobile: simple numbered list, same icons ── */}
         <motion.div
           variants={staggerFast}
           initial="hidden"
@@ -553,7 +519,6 @@ const CtaSection = () => (
         </a>
       </motion.div>
     </motion.div>
-
   </section>
 );
 
@@ -561,7 +526,6 @@ const CtaSection = () => (
 export default function PoliticaQualidadePage() {
   return (
     <>
-    
       <HeroBanner />
       <PoliticaTimelineSection />
       <MissaoVisaoSection />
