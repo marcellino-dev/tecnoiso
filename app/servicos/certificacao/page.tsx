@@ -12,6 +12,7 @@ import {
 import Link from "next/link";
 import { toast } from "sonner";
 import DeveloperSignature from "@/components/DeveloperSignature";
+import { getUtmParams } from "@/lib/utm";
 /* ─── Constants ─────────────────────────────────────────────────────── */
 const WA_NUM  = "4734401719";
 const WA_BASE = `https://wa.me/${WA_NUM}`;
@@ -418,13 +419,13 @@ function FormSection({ formRef }: { formRef: React.RefObject<HTMLElement> }) {
   });
 
   useEffect(() => {
-    const p = new URLSearchParams(window.location.search);
+    const p = getUtmParams();
     setUtms({
-      utm_source:   p.get("utm_source")   || "",
-      utm_medium:   p.get("utm_medium")   || "",
-      utm_campaign: p.get("utm_campaign") || "",
-      utm_term:     p.get("utm_term")     || "",
-      utm_content:  p.get("utm_content")  || "",
+      utm_source:   p.utm_source,
+      utm_medium:   p.utm_medium,
+      utm_campaign: p.utm_campaign,
+      utm_term:     p.utm_term,
+      utm_content:  p.utm_content,
     });
   }, []);
 

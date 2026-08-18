@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import DeveloperSignature from "@/components/DeveloperSignature";
+import { getUtmParams } from "@/lib/utm";
 /* ─── Constants ─────────────────────────────────────────────────────── */
 const WA_NUM          = "4734401719";
 const WA_BASE         = `https://wa.me/${WA_NUM}`;
@@ -468,8 +469,7 @@ function FormSection({ formRef }: { formRef: React.RefObject<HTMLElement> }) {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Coleta UTMs da URL
-    const params = new URLSearchParams(window.location.search);
+    const utmPayload = getUtmParams();
 
     try {
       const res = await fetch("/api/send-quote", {
@@ -484,11 +484,11 @@ function FormSection({ formRef }: { formRef: React.RefObject<HTMLElement> }) {
           channels:     selectedChannels.join(", "),
           message:      formData.message,
           origem:       "nr13",
-          utm_source:   params.get("utm_source")   ?? "",
-          utm_medium:   params.get("utm_medium")   ?? "",
-          utm_campaign: params.get("utm_campaign") ?? "",
-          utm_term:     params.get("utm_term")     ?? "",
-          utm_content:  params.get("utm_content")  ?? "",
+          utm_source:   utmPayload.utm_source,
+          utm_medium:   utmPayload.utm_medium,
+          utm_campaign: utmPayload.utm_campaign,
+          utm_term:     utmPayload.utm_term,
+          utm_content:  utmPayload.utm_content,
         }),
       });
 

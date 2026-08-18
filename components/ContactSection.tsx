@@ -12,6 +12,7 @@ import {
   MessageCircle, Mic,
 } from "lucide-react";
 import { toast } from "sonner";
+import { getUtmParams } from "@/lib/utm";
 
 /* ─── Variants ───────────────────────────────────────────────────────── */
 const fadeUp: Variants = {
@@ -83,13 +84,13 @@ const ContactSection = () => {
   });
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
+    const params = getUtmParams();
     setUtms({
-      utm_source:   params.get("utm_source")   || "",
-      utm_medium:   params.get("utm_medium")   || "",
-      utm_campaign: params.get("utm_campaign") || "",
-      utm_term:     params.get("utm_term")     || "",
-      utm_content:  params.get("utm_content")  || "",
+      utm_source:   params.utm_source,
+      utm_medium:   params.utm_medium,
+      utm_campaign: params.utm_campaign,
+      utm_term:     params.utm_term,
+      utm_content:  params.utm_content,
     });
   }, []);
 
@@ -159,10 +160,11 @@ const ContactSection = () => {
 
     setIsSubmitting(true);
     try {
+      const utmPayload = getUtmParams();
       const response = await fetch("/api/send-quote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...trimmed, ...utms, origem: "home" }),
+        body: JSON.stringify({ ...trimmed, ...utmPayload, origem: "home" }),
       });
 
       const data = await response.json();
