@@ -11,7 +11,9 @@ interface QuoteRequestBody {
   channels?: string;
   message?: string;
   maintenanceType?: string;
+  service?: string;
   origem?: string;
+  source_page?: string;
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
@@ -76,7 +78,9 @@ export async function POST(req: NextRequest) {
       channels:        body.channels?.trim()        || "",
       message:         body.message?.trim()         || "",
       maintenanceType: body.maintenanceType?.trim() || "",
+      service:         body.service?.trim()         || "",
       origem:          body.origem?.trim()          || "site",
+      source_page:     body.source_page?.trim()     || "",
       utm_source:      body.utm_source?.trim()      || "",
       utm_medium:      body.utm_medium?.trim()      || "",
       utm_campaign:    body.utm_campaign?.trim()    || "",
@@ -101,7 +105,8 @@ export async function POST(req: NextRequest) {
 
     const channelsFormatted    = formatChannels(trimmed.channels);
     const maintenanceFormatted = formatMaintenance(trimmed.maintenanceType);
-    const serviceFormatted     = SERVICE_LABELS[trimmed.origem ?? ""] ?? trimmed.origem ?? "—";
+    const serviceFormatted     = trimmed.service || SERVICE_LABELS[trimmed.origem ?? ""] || trimmed.origem || "—";
+    const sourcePageFormatted  = trimmed.source_page || "—";
 
     // ── E-mail interno ──────────────────────────────────────────────────────
     const internalMailOptions = {
@@ -161,7 +166,14 @@ export async function POST(req: NextRequest) {
 
               <tr>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
-                  <strong style="color: #555;">📌 Serviço solicitado</strong>
+                  <strong style="color: #555;">� Página de origem</strong>
+                </td>
+                <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #222;">${sourcePageFormatted}</td>
+              </tr>
+
+              <tr>
+                <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
+                  <strong style="color: #555;">📌 Serviço de interesse</strong>
                 </td>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
                   <span style="background:#fdecea; color:#c0392b; font-weight:700; padding:3px 10px; border-radius:4px; font-size:13px;">
@@ -170,12 +182,13 @@ export async function POST(req: NextRequest) {
                 </td>
               </tr>
 
+              ${trimmed.maintenanceType ? `
               <tr>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
                   <strong style="color: #555;">🔧 Tipo de manutenção</strong>
                 </td>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee; color: #222;">${maintenanceFormatted}</td>
-              </tr>
+              </tr>` : ""}
 
               <tr>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eee;">
@@ -273,12 +286,13 @@ export async function POST(req: NextRequest) {
           tipo_manutencao: maintenanceFormatted,
           canal_preferido: channelsFormatted,
           mensagem:        trimmed.message,
+          pagina_origem:   trimmed.source_page || "",
+          origem:          trimmed.origem || "site",
           utm_source:      trimmed.utm_source,
           utm_medium:      trimmed.utm_medium,
           utm_campaign:    trimmed.utm_campaign,
           utm_term:        trimmed.utm_term,
           utm_content:     trimmed.utm_content,
-          origem:          trimmed.origem || "site",
         }),
       }),
     ]);

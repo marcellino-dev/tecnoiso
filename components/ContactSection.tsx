@@ -164,7 +164,12 @@ const ContactSection = () => {
       const response = await fetch("/api/send-quote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...trimmed, ...utmPayload, origem: "home" }),
+        body: JSON.stringify({
+          ...trimmed,
+          ...utmPayload,
+          origem: "home",
+          source_page: window.location.pathname,
+        }),
       });
 
       const data = await response.json();

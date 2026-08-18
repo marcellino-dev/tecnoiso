@@ -343,14 +343,16 @@ function FormSection({ formRef }: { formRef: React.RefObject<HTMLElement> }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name:    formData.name,
-          company: formData.company,
-          email:   formData.email,
-          phone:   formData.phone,
-          service: selectedCanal
-            ? `Locação de Instrumentos — Canal preferido: ${canalLabels[selectedCanal]}`
-            : "Locação de Instrumentos",
-          message: formData.message,
+          name:        formData.name,
+          company:     formData.company,
+          role:        formData.role,
+          email:       formData.email,
+          phone:       formData.phone,
+          service:     "Locação de Instrumentos",
+          channels:    selectedCanal ? canalLabels[selectedCanal] : "",
+          message:     formData.message,
+          origem:      "locacao",
+          source_page: window.location.pathname,
         }),
       });
       const data = await res.json();

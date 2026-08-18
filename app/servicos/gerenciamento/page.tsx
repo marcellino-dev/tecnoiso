@@ -529,7 +529,12 @@ function FormSection({ formRef }: { formRef: React.RefObject<HTMLElement> }) {
       const res = await fetch("/api/send-quote", {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({ ...t, ...utmPayload, origem: "gerenciamento" }),
+        body:    JSON.stringify({
+          ...t,
+          ...utmPayload,
+          origem:      "gerenciamento",
+          source_page: window.location.pathname,
+        }),
       });
       const data = await res.json();
       if (res.ok && data.success) {
