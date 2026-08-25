@@ -119,6 +119,19 @@ export default function IndicacaoTecnicosPage() {
       });
     });
 
+    const cnpjInput = document.getElementById('cnpj') as HTMLInputElement;
+    if (cnpjInput) {
+      cnpjInput.addEventListener('input', function () {
+        const digits = cnpjInput.value.replace(/\D/g, '').slice(0, 14);
+        let formatted = digits.slice(0, 2);
+        if (digits.length > 2) formatted += `.${digits.slice(2, 5)}`;
+        if (digits.length > 5) formatted += `.${digits.slice(5, 8)}`;
+        if (digits.length > 8) formatted += `/${digits.slice(8, 12)}`;
+        if (digits.length > 12) formatted += `-${digits.slice(12)}`;
+        cnpjInput.value = formatted;
+      });
+    }
+
     // Submit
     const form = document.getElementById('lead-form') as HTMLFormElement;
     if (form) {
@@ -142,6 +155,7 @@ export default function IndicacaoTecnicosPage() {
           tecnico,
           data_visita:       (document.getElementById('data_visita') as HTMLInputElement).value,
           empresa:           (document.getElementById('empresa') as HTMLInputElement).value,
+          cnpj:              (document.getElementById('cnpj') as HTMLInputElement).value,
           nome_contato:      (document.getElementById('nome_contato') as HTMLInputElement).value,
           cargo_contato:     (document.getElementById('cargo_contato') as HTMLInputElement).value,
           telefone:          (document.getElementById('telefone') as HTMLInputElement).value,
@@ -456,6 +470,10 @@ export default function IndicacaoTecnicosPage() {
               <label className="field-label" htmlFor="empresa">Empresa / Cliente <span>*</span></label>
               <input type="text" id="empresa" placeholder="Nome da empresa visitada" required />
               <div className="field-error" id="err-empresa">Informe a empresa</div>
+            </div>
+            <div className="field">
+              <label className="field-label" htmlFor="cnpj">CNPJ</label>
+              <input type="text" id="cnpj" inputMode="numeric" placeholder="00.000.000/0000-00" maxLength={18} />
             </div>
             <div className="field">
               <label className="field-label" htmlFor="nome_contato">Nome do Contato <span>*</span></label>
