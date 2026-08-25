@@ -111,7 +111,7 @@ export async function POST(req: NextRequest) {
     // ── E-mail interno ──────────────────────────────────────────────────────
     const internalMailOptions = {
       from:    `"Formulário do Site" <${process.env.SMTP_EMAIL}>`,
-      to:      `maristela@tecnoiso.com, mclsouza1613ad@gmail.com`,
+      to:      `contato@tecnoiso.com, mclsouza1613ad@gmail.com`,
       replyTo: trimmed.email,
       subject: `📋 Nova solicitação de ${serviceFormatted} – ${trimmed.name}`,
       html: `
