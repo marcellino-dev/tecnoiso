@@ -445,6 +445,11 @@ export default function IndicacaoTecnicosPage() {
                 <option>Thales Antonio Kessler</option>
                 <option>Alexandre Hyssao Hirose</option>
                 <option>Jackson Miranda Silva</option>
+                <option>Jean Carlos da Silva Júnior</option>
+                <option>Patricia Garcia Bueno Peterson</option>
+                
+
+
               </select>
               <div className="field-error" id="err-tecnico">Selecione seu nome</div>
             </div>
