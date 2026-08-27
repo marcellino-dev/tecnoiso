@@ -3,6 +3,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import WhatsAppScript from "@/components/WhatsAppScript";
 import CookieBanner from "@/components/CookieBanner";
+import Analytics from "@/components/Analytics";
 import { IntroProvider } from "@/lib/introContext";
 
 export const metadata: Metadata = {
@@ -94,6 +95,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </div>
 
+        <Analytics />
         <WhatsAppScript />
         <Toaster richColors position="top-right" />
 

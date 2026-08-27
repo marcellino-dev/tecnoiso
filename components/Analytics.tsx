@@ -10,9 +10,15 @@
  * 3. Rode `npm run build` e valide no Google Tag Assistant / Meta Pixel Helper
  *
  * ── Variáveis necessárias (.env.local) ──────────────────────────────────────
- * NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX          ← Google Analytics 4
- * NEXT_PUBLIC_GTM_ID=GTM-XXXXXX           ← Google Tag Manager (substitui GA se usar)
+ * NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX          ← Google Analytics 4 / Tag do Google (usar este)
+ * NEXT_PUBLIC_GTM_ID=GTM-XXXXXX           ← Google Tag Manager clássico (NÃO usar — esta conta usa Tag do Google)
  * NEXT_PUBLIC_META_PIXEL_ID=000000000     ← Meta (Facebook) Pixel
+ *
+ * ── Status Tecnoiso (27/08/2026) ────────────────────────────────────────────
+ * A conta da Tecnoiso no Google Tag Manager usa o modelo novo "Tag do Google"
+ * (gtag.js direto), ID G-JFS4SEHYXC — NÃO é um container clássico GTM-XXXXXX.
+ * Por isso: configurar apenas NEXT_PUBLIC_GA_ID e deixar NEXT_PUBLIC_GTM_ID
+ * sem definir no .env.local.
  */
 
 "use client";
@@ -27,10 +33,9 @@ const META_ID  = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 export default function Analytics() {
   return (
     <>
-      {/* ── Google Tag Manager ────────────────────────────────────────────────
+      {/* ── Google Tag Manager (container clássico) ─────────────────────────
           Usar GTM OU GA diretamente — não os dois ao mesmo tempo.
-          GTM é recomendado pois permite gerenciar todos os pixels pelo painel
-          sem precisar alterar código.
+          A conta da Tecnoiso NÃO usa este modelo — ver nota no topo do arquivo.
       ───────────────────────────────────────────────────────────────────────── */}
       {GTM_ID && (
         <>
@@ -60,8 +65,9 @@ export default function Analytics() {
         </>
       )}
 
-      {/* ── Google Analytics 4 (sem GTM) ─────────────────────────────────────
-          Use apenas se NÃO estiver usando GTM acima.
+      {/* ── Google Analytics 4 / Tag do Google (sem GTM) ─────────────────────
+          Este é o modelo usado pela Tecnoiso. Ativo quando NEXT_PUBLIC_GA_ID
+          está definido e NEXT_PUBLIC_GTM_ID NÃO está definido.
       ───────────────────────────────────────────────────────────────────────── */}
       {GA_ID && !GTM_ID && (
         <>
