@@ -1,6 +1,8 @@
 // app/api/send-quote/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { checkRateLimit, getClientIp } from "@/lib/rateLimit";
+import { checkIsBot, getHoneypotFieldName } from "@/lib/botDetection";
 
 interface QuoteRequestBody {
   name: string;
@@ -19,6 +21,7 @@ interface QuoteRequestBody {
   utm_campaign?: string;
   utm_term?: string;
   utm_content?: string;
+  honeypot?: string; // Campo invisível para detectar bots
 }
 
 function validateBody(body: QuoteRequestBody): string | null {
@@ -67,7 +70,64 @@ function formatMaintenance(raw: string | undefined): string {
 
 export async function POST(req: NextRequest) {
   try {
-    const body: QuoteRequestBody = await req.json();
+    // ────────────────────────────────────────────────────────────────────────
+    // 1️⃣ VERIFICAÇÃO DE RATE LIMITING
+    // ────────────────────────────────────────────────────────────────────────
+    const clientIp = getClientIp(req.headers);
+    const rateLimitResult = checkRateLimit(clientIp, {
+      maxRequests: 5, // 5 requisições máximo
+      windowMs: 60 * 60 * 1000, // por 1 hora
+    });
+
+    if (!rateLimitResult.allowed) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Limite de requisições excedido. Tente novamente em ${Math.ceil((rateLimitResult.resetAt.getTime() - Date.now()) / 60000)} minutos.`,
+          resetAt: rateLimitResult.resetAt.toISOString(),
+        },
+        { status: 429 } // Too Many Requests
+      );
+    }
+
+    // ────────────────────────────────────────────────────────────────────────
+    // 2️⃣ PARSE E VALIDAÇÃO BÁSICA DO CORPO
+    // ────────────────────────────────────────────────────────────────────────
+    let body: QuoteRequestBody;
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json(
+        { success: false, error: "Corpo da requisição inválido." },
+        { status: 400 }
+      );
+    }
+
+    // ────────────────────────────────────────────────────────────────────────
+    // 3️⃣ VERIFICAÇÃO DE BOT
+    // ────────────────────────────────────────────────────────────────────────
+    const botCheck = checkIsBot(req.headers, body);
+    if (botCheck.isBot) {
+      console.warn(
+        `🤖 Possível bot detectado de IP ${clientIp}:`,
+        botCheck.reasons
+      );
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Sua requisição foi bloqueada por suspeita de automação. Se você é um usuário real, verifique se está preenchendo o formulário corretamente.",
+        },
+        { status: 403 } // Forbidden
+      );
+    }
+
+    // Se suspicionScore > 40 (mas não definitivamente um bot), registrar mas permitir
+    if (botCheck.suspicionScore > 40 && botCheck.suspicionScore < 60) {
+      console.warn(
+        `⚠️ Requisição suspeita de IP ${clientIp} (score: ${botCheck.suspicionScore}):`,
+        botCheck.reasons
+      );
+    }
 
     const trimmed: QuoteRequestBody = {
       name:            body.name?.trim(),
