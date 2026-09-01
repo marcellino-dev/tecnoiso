@@ -14,8 +14,6 @@ export default function IndicacaoTecnicosPage() {
       dataInput.value = new Date().toISOString().split('T')[0];
     }
 
-    const WEBHOOK = 'https://flow.goalfy.com.br/automations/v1/95f28601-3567-4250-bb72-66b678d5857e/hooks/catch/';
-
     // Múltiplos arquivos
     let arquivos: { nome: string; base64: string; mime: string }[] = [];
 
@@ -86,12 +84,13 @@ export default function IndicacaoTecnicosPage() {
 
     // Validação
     const requiredFields = [
-      { id: 'tecnico',      err: 'err-tecnico'   },
-      { id: 'data_visita',  err: 'err-data'      },
-      { id: 'empresa',      err: 'err-empresa'   },
-      { id: 'nome_contato', err: 'err-nome'      },
-      { id: 'telefone',     err: 'err-telefone'  },
-      { id: 'descricao',    err: 'err-descricao' },
+      { id: 'tecnico',           err: 'err-tecnico'    },
+      { id: 'data_visita',       err: 'err-data'       },
+      { id: 'empresa',           err: 'err-empresa'    },
+      { id: 'nome_contato',      err: 'err-nome'       },
+      { id: 'telefone',          err: 'err-telefone'   },
+      { id: 'tipo_oportunidade', err: 'err-tipo'       },
+      { id: 'descricao',         err: 'err-descricao'  },
     ];
 
     function validate(): boolean {
@@ -113,6 +112,12 @@ export default function IndicacaoTecnicosPage() {
       const el = document.getElementById(f.id);
       if (!el) return;
       el.addEventListener('input', function () {
+        el.classList.remove('error');
+        const errEl = document.getElementById(f.err);
+        if (errEl) errEl.classList.remove('visible');
+      });
+      // <select> não dispara 'input' de forma consistente em todos os navegadores
+      el.addEventListener('change', function () {
         el.classList.remove('error');
         const errEl = document.getElementById(f.err);
         if (errEl) errEl.classList.remove('visible');
@@ -172,18 +177,26 @@ export default function IndicacaoTecnicosPage() {
         };
 
         try {
-          const resp = await fetch(WEBHOOK, {
+          const resp = await fetch('/api/indicacao-tecnicos', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
           });
-          if (resp.status < 500) {
+
+          // A rota pode responder 200 (sucesso), ou 400/403/429/5xx (falha).
+          // Checamos resp.ok + o campo success do JSON — nunca inferir sucesso
+          // apenas por status < 500, já que erros de validação/rate limit
+          // também caem abaixo de 500.
+          let json: { success?: boolean; error?: string } = {};
+          try { json = await resp.json(); } catch (_) {}
+
+          if (resp.ok && json.success) {
             const screenForm = document.getElementById('screen-form');
             const screenSuccess = document.getElementById('screen-success');
             if (screenForm) screenForm.style.display = 'none';
             if (screenSuccess) screenSuccess.classList.add('visible');
           } else {
-            throw new Error('Server error');
+            throw new Error(json.error || 'Falha no envio');
           }
         } catch (_) {
           if (errBanner) errBanner.classList.add('visible');
@@ -447,7 +460,7 @@ export default function IndicacaoTecnicosPage() {
                 <option>Jackson Miranda Silva</option>
                 <option>Jean Carlos da Silva Júnior</option>
                 <option>Patricia Garcia Bueno Peterson</option>
-                
+
 
 
               </select>
@@ -511,8 +524,8 @@ export default function IndicacaoTecnicosPage() {
             </div>
 
             <div className="field">
-              <label className="field-label" htmlFor="tipo_oportunidade">Tipo de Oportunidade</label>
-              <select id="tipo_oportunidade">
+              <label className="field-label" htmlFor="tipo_oportunidade">Tipo de Oportunidade <span>*</span></label>
+              <select id="tipo_oportunidade" required>
                 <option value="">Selecione…</option>
                 <option>Calibração</option>
                 <option>Manutenção preventiva</option>
@@ -522,6 +535,7 @@ export default function IndicacaoTecnicosPage() {
                 <option>Treinamento</option>
                 <option>Outro</option>
               </select>
+              <div className="field-error" id="err-tipo">Selecione o tipo de oportunidade</div>
             </div>
             <div className="field">
               <label className="field-label" htmlFor="descricao">Descrição da Oportunidade <span>*</span></label>
