@@ -170,7 +170,10 @@ export function validateFormDataAgainstBots(body: Record<string, any>): {
   }
 
   // Verificar honeypot field (se foi preenchido, é bot)
-  if (body.honeypot && body.honeypot.trim().length > 0) {
+  // CORRIGIDO: antes checava "body.honeypot", um campo que nunca existe.
+  // O campo real é dinâmico, vindo de getHoneypotFieldName() (= "website_url").
+  const honeypotField = getHoneypotFieldName();
+  if (body[honeypotField] && body[honeypotField].toString().trim().length > 0) {
     reasons.push("Honeypot field preenchido (padrão de bot)");
   }
 

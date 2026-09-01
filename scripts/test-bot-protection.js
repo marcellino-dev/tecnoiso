@@ -1,10 +1,13 @@
 // test-bot-protection.js
-// Testa em produção se a proteção anti-bot do /api/send-quote está funcionando de verdade.
+// Testa localmente (npm run dev rodando) se a proteção anti-bot do /api/send-quote funciona.
 // Rodar com: node test-bot-protection.js
 //
-// Ajuste BASE_URL se o domínio não for esse.
+// IMPORTANTE: com npm run dev rodando em outro terminal, use localhost.
+// Assim só a requisição "legítima" (item 1) deve realmente disparar e-mail —
+// todas as outras (honeypot, UA de bot, rate limit) devem ser bloqueadas ANTES
+// de chegar no envio de e-mail, se a proteção estiver funcionando.
 
-const BASE_URL = "https://tecnoiso.com";
+const BASE_URL = "http://localhost:3000";
 const ENDPOINT = `${BASE_URL}/api/send-quote`;
 
 // Ajuste os nomes dos campos conforme o schema real do formulário
