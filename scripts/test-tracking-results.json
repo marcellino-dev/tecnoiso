@@ -1,0 +1,1064 @@
+{
+  "dataLayerEvents": [
+    {
+      "time": "2026-09-02T13:50:31.184Z",
+      "payload": {
+        "gtm.start": 1788357031179,
+        "event": "gtm.js"
+      }
+    },
+    {
+      "time": "2026-09-02T13:50:31.614Z",
+      "payload": {
+        "event": "gtm.dom"
+      }
+    },
+    {
+      "time": "2026-09-02T13:50:31.615Z",
+      "payload": {
+        "event": "gtm.load"
+      }
+    },
+    {
+      "time": "2026-09-02T13:50:35.291Z",
+      "payload": {
+        "event": "gtm.linkClick",
+        "gtm.element": "ref: <Node>",
+        "gtm.elementClasses": "text-base font-bold text-foreground hover:text-[hsl(var(--brand-red))] transition-colors",
+        "gtm.elementId": "",
+        "gtm.elementTarget": "",
+        "gtm.triggers": "6,7",
+        "gtm.elementUrl": "tel:+554734383175",
+        "gtm.elementText": "(47) 3438-3175",
+        "gtm.willOpenInNewWindow": true,
+        "eventTimeout": 2000
+      }
+    },
+    {
+      "time": "2026-09-02T13:50:35.304Z",
+      "payload": {
+        "event": "gtm.scrollDepth",
+        "gtm.scrollThreshold": 90,
+        "gtm.scrollUnits": "percent",
+        "gtm.scrollDirection": "vertical",
+        "gtm.triggers": "9"
+      }
+    },
+    {
+      "time": "2026-09-02T13:50:37.063Z",
+      "payload": {
+        "gtm.start": 1788357037062,
+        "event": "gtm.js"
+      }
+    },
+    {
+      "time": "2026-09-02T13:50:37.106Z",
+      "payload": {
+        "event": "gtm.dom"
+      }
+    },
+    {
+      "time": "2026-09-02T13:50:37.108Z",
+      "payload": {
+        "event": "gtm.load"
+      }
+    },
+    {
+      "time": "2026-09-02T13:50:37.143Z",
+      "payload": {
+        "event": "gtm.scrollDepth",
+        "gtm.scrollThreshold": 90,
+        "gtm.scrollUnits": "percent",
+        "gtm.scrollDirection": "vertical",
+        "gtm.triggers": "9"
+      }
+    },
+    {
+      "time": "2026-09-02T13:50:39.958Z",
+      "payload": {
+        "gtm.start": 1788357039958,
+        "event": "gtm.js"
+      }
+    },
+    {
+      "time": "2026-09-02T13:50:40.003Z",
+      "payload": {
+        "event": "gtm.dom"
+      }
+    },
+    {
+      "time": "2026-09-02T13:50:40.004Z",
+      "payload": {
+        "event": "gtm.load"
+      }
+    },
+    {
+      "time": "2026-09-02T13:51:02.955Z",
+      "payload": {
+        "gtm.start": 1788357062954,
+        "event": "gtm.js"
+      }
+    },
+    {
+      "time": "2026-09-02T13:51:02.988Z",
+      "payload": {
+        "event": "gtm.dom"
+      }
+    },
+    {
+      "time": "2026-09-02T13:51:02.989Z",
+      "payload": {
+        "event": "gtm.load"
+      }
+    },
+    {
+      "time": "2026-09-02T13:51:03.017Z",
+      "payload": {
+        "event": "gtm.scrollDepth",
+        "gtm.scrollThreshold": 90,
+        "gtm.scrollUnits": "percent",
+        "gtm.scrollDirection": "vertical",
+        "gtm.triggers": "9"
+      }
+    },
+    {
+      "time": "2026-09-02T13:52:07.745Z",
+      "payload": {
+        "gtm.start": 1788357127745,
+        "event": "gtm.js"
+      }
+    },
+    {
+      "time": "2026-09-02T13:52:07.749Z",
+      "payload": {
+        "gtm.start": 1788357127747,
+        "event": "gtm.js"
+      }
+    },
+    {
+      "time": "2026-09-02T13:52:07.787Z",
+      "payload": {
+        "event": "gtm.dom"
+      }
+    },
+    {
+      "time": "2026-09-02T13:52:07.788Z",
+      "payload": {
+        "event": "gtm.load"
+      }
+    },
+    {
+      "time": "2026-09-02T13:52:51.215Z",
+      "payload": {
+        "event": "gtm.formInteract",
+        "gtm.element": "ref: <Node>",
+        "gtm.elementClasses": "space-y-5",
+        "gtm.elementId": "",
+        "gtm.elementTarget": "",
+        "gtm.triggers": "12",
+        "gtm.elementUrl": "http://localhost:3000/",
+        "gtm.interactedFormLength": 12,
+        "gtm.interactedFormField": "ref: <Node>",
+        "gtm.interactedFormFieldId": "",
+        "gtm.interactedFormFieldName": "name",
+        "gtm.interactedFormFieldPosition": 1,
+        "gtm.interactSequenceNumber": 0
+      }
+    },
+    {
+      "time": "2026-09-02T13:52:53.134Z",
+      "payload": {
+        "event": "gtm.formInteract",
+        "gtm.element": "ref: <Node>",
+        "gtm.elementClasses": "space-y-5",
+        "gtm.elementId": "",
+        "gtm.elementTarget": "",
+        "gtm.triggers": "12",
+        "gtm.elementUrl": "http://localhost:3000/",
+        "gtm.interactedFormLength": 12,
+        "gtm.interactedFormField": "ref: <Node>",
+        "gtm.interactedFormFieldId": "",
+        "gtm.interactedFormFieldName": "company",
+        "gtm.interactedFormFieldPosition": 2,
+        "gtm.interactSequenceNumber": 1
+      }
+    },
+    {
+      "time": "2026-09-02T13:52:56.695Z",
+      "payload": {
+        "event": "gtm.formInteract",
+        "gtm.element": "ref: <Node>",
+        "gtm.elementClasses": "space-y-5",
+        "gtm.elementId": "",
+        "gtm.elementTarget": "",
+        "gtm.triggers": "12",
+        "gtm.elementUrl": "http://localhost:3000/",
+        "gtm.interactedFormLength": 12,
+        "gtm.interactedFormField": "ref: <Node>",
+        "gtm.interactedFormFieldId": "",
+        "gtm.interactedFormFieldName": "role",
+        "gtm.interactedFormFieldPosition": 3,
+        "gtm.interactSequenceNumber": 2
+      }
+    },
+    {
+      "time": "2026-09-02T13:53:07.350Z",
+      "payload": {
+        "event": "gtm.formInteract",
+        "gtm.element": "ref: <Node>",
+        "gtm.elementClasses": "space-y-5",
+        "gtm.elementId": "",
+        "gtm.elementTarget": "",
+        "gtm.triggers": "12",
+        "gtm.elementUrl": "http://localhost:3000/",
+        "gtm.interactedFormLength": 12,
+        "gtm.interactedFormField": "ref: <Node>",
+        "gtm.interactedFormFieldId": "",
+        "gtm.interactedFormFieldName": "email",
+        "gtm.interactedFormFieldPosition": 4,
+        "gtm.interactedFormFieldType": "email",
+        "gtm.interactSequenceNumber": 3
+      }
+    },
+    {
+      "time": "2026-09-02T13:53:11.224Z",
+      "payload": {
+        "event": "gtm.formInteract",
+        "gtm.element": "ref: <Node>",
+        "gtm.elementClasses": "space-y-5",
+        "gtm.elementId": "",
+        "gtm.elementTarget": "",
+        "gtm.triggers": "12",
+        "gtm.elementUrl": "http://localhost:3000/",
+        "gtm.interactedFormLength": 12,
+        "gtm.interactedFormField": "ref: <Node>",
+        "gtm.interactedFormFieldId": "",
+        "gtm.interactedFormFieldName": "phone",
+        "gtm.interactedFormFieldPosition": 5,
+        "gtm.interactSequenceNumber": 4
+      }
+    },
+    {
+      "time": "2026-09-02T13:53:13.855Z",
+      "payload": {
+        "event": "gtm.formInteract",
+        "gtm.element": "ref: <Node>",
+        "gtm.elementClasses": "space-y-5",
+        "gtm.elementId": "",
+        "gtm.elementTarget": "",
+        "gtm.triggers": "12",
+        "gtm.elementUrl": "http://localhost:3000/",
+        "gtm.interactedFormLength": 12,
+        "gtm.interactedFormField": "ref: <Node>",
+        "gtm.interactedFormFieldId": "",
+        "gtm.interactedFormFieldName": "service",
+        "gtm.interactedFormFieldPosition": 6,
+        "gtm.interactSequenceNumber": 5
+      }
+    }
+  ],
+  "networkHits": [
+    {
+      "destino": "GA4",
+      "evento": "page_view",
+      "params": {
+        "v": "2",
+        "tid": "G-6J0482HPK4",
+        "gtm": "45je68v1v882470607z89245864124za20gzb9245864124zd9245864124",
+        "_p": "1788357031179",
+        "gcd": "13l3l3l3l1l1",
+        "npa": "0",
+        "dma": "0",
+        "are": "1",
+        "cid": "599766184.1788357032",
+        "frm": "0",
+        "ngs": "1",
+        "pscdl": "noapi",
+        "rcb": "11",
+        "sr": "1280x720",
+        "uaa": "x86",
+        "uab": "64",
+        "uafvl": "Chromium;151.0.7922.34|Not%3DA%3FBrand;99.0.0.0",
+        "uam": "",
+        "uamb": "0",
+        "uap": "Windows",
+        "uapv": "19.0.0",
+        "uaw": "0",
+        "ul": "pt-br",
+        "_s": "1",
+        "tag_exp": "115616986~115938465~115938468~118897920~118897930~119404699~120213116~120385423",
+        "sid": "1788357031",
+        "sct": "1",
+        "seg": "0",
+        "dl": "http://localhost/",
+        "dt": "Home- Tecnoiso",
+        "en": "page_view",
+        "_fv": "1",
+        "_nsi": "1",
+        "_ss": "1",
+        "tfd": "1380"
+      },
+      "time": "2026-09-02T13:50:31.903Z"
+    },
+    {
+      "destino": "GA4",
+      "evento": "page_view",
+      "params": {
+        "v": "2",
+        "tid": "G-HXPSFT7WGG",
+        "gtm": "45je68v1v882470607z89245864124za20gzb9245864124zd9245864124",
+        "_p": "1788357031179",
+        "_gaz": "1",
+        "gcd": "13l3l3l3l1l1",
+        "npa": "0",
+        "dma": "0",
+        "_eu": "AAAAAGA",
+        "are": "1",
+        "cid": "599766184.1788357032",
+        "frm": "0",
+        "pscdl": "noapi",
+        "rcb": "11",
+        "sr": "1280x720",
+        "uaa": "x86",
+        "uab": "64",
+        "uafvl": "Chromium;151.0.7922.34|Not%3DA%3FBrand;99.0.0.0",
+        "uam": "",
+        "uamb": "0",
+        "uap": "Windows",
+        "uapv": "19.0.0",
+        "uaw": "0",
+        "ul": "pt-br",
+        "gaf": "2",
+        "_s": "1",
+        "tag_exp": "115616986~115938465~115938468~118897920~118897930~119404699~120213116~120385423",
+        "sid": "1788357031",
+        "sct": "1",
+        "seg": "0",
+        "dl": "http://localhost/",
+        "dt": "Home- Tecnoiso",
+        "en": "page_view",
+        "_fv": "1",
+        "_ss": "1",
+        "tfd": "1384"
+      },
+      "time": "2026-09-02T13:50:31.905Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://googleads.g.doubleclick.net/pagead/viewthroughconversion/611689046/?random=1788357031884&cv=11&fst=1788357031884&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je68v1v882470607z89245864124za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938465~115938468~118131808~118897920~118897930~119404699~120213116~120385423&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2F&rcb=11&frm=0&tiba=Home-%20Tecnoiso&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dgtag.config&ept=9&rfmt=3&fmt=4"
+      },
+      "time": "2026-09-02T13:50:31.905Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://www.google.com/rmkt/collect/611689046/?random=1788357031884&cv=11&fst=1788357031884&fmt=8&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je68v1v882470607z89245864124za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938465~115938468~118131808~118897920~118897930~119404699~120213116~120385423&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2F&rcb=11&frm=0&tiba=Home-%20Tecnoiso&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dgtag.config&ept=68&gcp=5"
+      },
+      "time": "2026-09-02T13:50:31.906Z"
+    },
+    {
+      "destino": "Meta Pixel",
+      "evento": "(sem nome)",
+      "params": {},
+      "time": "2026-09-02T13:50:32.148Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://www.google.com/pagead/1p-user-list/611689046/?random=1788357031884&cv=11&fst=1788354000000&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je68v1v882470607z89245864124za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938465~115938468~118131808~118897920~118897930~119404699~120213116~120385423&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2F&rcb=11&frm=0&tiba=Home-%20Tecnoiso&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dgtag.config&ept=9&rfmt=3&fmt=3&is_vtc=1&cid=CAQS0wEAQM4h3NK2Iyec9BY7dctb149CSy2smR_DGN-qoiaSdPUWhowZK4YQjkT7fYnS7pf1XHV2iPwNVGsL5Ifsm7LpOHvEl87WPyg-E9hWB7T_qVxykAfpzuwy5qoweVAUyMn_q7l6NK_E3Vq5luNu5X7PU4HAf9wFSnLOVpdAix0uQ2AIdr-ixBX6V45tilsw5t4l2FAGW56WiZRdEIV-VnoJYY1LWOuxTAl_KMbvMZ9Nq5fGesUbw89_9BOX0Tkf3dn_J7EplhVbVYDRb5kbSVAzEE3X&random=2678782503&rmt_tld=0&ipr=y"
+      },
+      "time": "2026-09-02T13:50:32.150Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://www.google.com.br/pagead/1p-user-list/611689046/?random=1788357031884&cv=11&fst=1788354000000&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je68v1v882470607z89245864124za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938465~115938468~118131808~118897920~118897930~119404699~120213116~120385423&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2F&rcb=11&frm=0&tiba=Home-%20Tecnoiso&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dgtag.config&ept=9&rfmt=3&fmt=3&is_vtc=1&cid=CAQS0wEAQM4h3NK2Iyec9BY7dctb149CSy2smR_DGN-qoiaSdPUWhowZK4YQjkT7fYnS7pf1XHV2iPwNVGsL5Ifsm7LpOHvEl87WPyg-E9hWB7T_qVxykAfpzuwy5qoweVAUyMn_q7l6NK_E3Vq5luNu5X7PU4HAf9wFSnLOVpdAix0uQ2AIdr-ixBX6V45tilsw5t4l2FAGW56WiZRdEIV-VnoJYY1LWOuxTAl_KMbvMZ9Nq5fGesUbw89_9BOX0Tkf3dn_J7EplhVbVYDRb5kbSVAzEE3X&random=2678782503&rmt_tld=1&ipr=y"
+      },
+      "time": "2026-09-02T13:50:32.151Z"
+    },
+    {
+      "destino": "Meta Pixel",
+      "evento": "(sem nome)",
+      "params": {},
+      "time": "2026-09-02T13:50:35.353Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://googleads.g.doubleclick.net/pagead/viewthroughconversion/611689046/?random=1788357037123&cv=11&fst=1788357037123&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je68v1v882470607z89245864124za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938468~118131808~118897920~118897930~119259605~120213116~120385422&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2Fsend-quote&rcb=13&frm=0&tiba=Home-%20Tecnoiso&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dgtag.config&ept=9&rfmt=3&fmt=4"
+      },
+      "time": "2026-09-02T13:50:37.142Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://www.google.com/rmkt/collect/611689046/?random=1788357037123&cv=11&fst=1788357037123&fmt=8&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je68v1v882470607z89245864124za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938468~118131808~118897920~118897930~119259605~120213116~120385422&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2Fsend-quote&rcb=13&frm=0&tiba=Home-%20Tecnoiso&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dgtag.config&ept=68&gcp=5"
+      },
+      "time": "2026-09-02T13:50:37.142Z"
+    },
+    {
+      "destino": "GA4",
+      "evento": "page_view",
+      "params": {
+        "v": "2",
+        "tid": "G-6J0482HPK4",
+        "gtm": "45je68v1v882470607z89245864124za20gzb9245864124zd9245864124",
+        "_p": "1788357037062",
+        "gcd": "13l3l3l3l1l1",
+        "npa": "0",
+        "dma": "0",
+        "_eu": "AAAAAAQ",
+        "are": "1",
+        "cid": "599766184.1788357032",
+        "frm": "0",
+        "ngs": "1",
+        "pscdl": "noapi",
+        "rcb": "13",
+        "sr": "1280x720",
+        "uaa": "x86",
+        "uab": "64",
+        "uafvl": "Chromium;151.0.7922.34|Not%3DA%3FBrand;99.0.0.0",
+        "uam": "",
+        "uamb": "0",
+        "uap": "Windows",
+        "uapv": "19.0.0",
+        "uaw": "0",
+        "ul": "pt-br",
+        "_s": "1",
+        "tag_exp": "115938466~115938468~118897920~118897930~119259605~120213116~120385422",
+        "sid": "1788357031",
+        "sct": "1",
+        "seg": "1",
+        "dl": "http://localhost/send-quote",
+        "dt": "Home- Tecnoiso",
+        "en": "page_view",
+        "tfd": "267"
+      },
+      "time": "2026-09-02T13:50:37.154Z"
+    },
+    {
+      "destino": "GA4",
+      "evento": "page_view",
+      "params": {
+        "v": "2",
+        "tid": "G-HXPSFT7WGG",
+        "gtm": "45je68v1v882470607z89245864124za20gzb9245864124zd9245864124",
+        "_p": "1788357037062",
+        "gcd": "13l3l3l3l1l1",
+        "npa": "0",
+        "dma": "0",
+        "_eu": "AAAAAGQ",
+        "are": "1",
+        "cid": "599766184.1788357032",
+        "frm": "0",
+        "pscdl": "noapi",
+        "rcb": "13",
+        "sr": "1280x720",
+        "uaa": "x86",
+        "uab": "64",
+        "uafvl": "Chromium;151.0.7922.34|Not%3DA%3FBrand;99.0.0.0",
+        "uam": "",
+        "uamb": "0",
+        "uap": "Windows",
+        "uapv": "19.0.0",
+        "uaw": "0",
+        "ul": "pt-br",
+        "gaf": "2",
+        "_s": "1",
+        "tag_exp": "115938466~115938468~118897920~118897930~119259605~120213116~120385422",
+        "sid": "1788357031",
+        "sct": "1",
+        "seg": "1",
+        "dl": "http://localhost/send-quote",
+        "dt": "Home- Tecnoiso",
+        "en": "page_view",
+        "tfd": "270"
+      },
+      "time": "2026-09-02T13:50:37.156Z"
+    },
+    {
+      "destino": "Meta Pixel",
+      "evento": "(sem nome)",
+      "params": {},
+      "time": "2026-09-02T13:50:37.263Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://www.google.com/pagead/1p-user-list/611689046/?random=1788357037123&cv=11&fst=1788354000000&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je68v1v882470607z89245864124za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938468~118131808~118897920~118897930~119259605~120213116~120385422&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2Fsend-quote&rcb=13&frm=0&tiba=Home-%20Tecnoiso&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dgtag.config&ept=9&rfmt=3&fmt=3&is_vtc=1&cid=CAQS4QEAQM4h3GwdFouwHWND0B3MesZtATKcuYNumfamS5WuTSj00lFlO5IScIw6r3MFKxxQIERzyJ7gWDFNopAFkTPaSIbvE4KypyLoMLPLI6Vmk7z3UFNylqjCY6vHY2-PZap9lDEhkaZhgyefZ_tkR_qsYmmD9ToHk4OfIzi4WF0sEdgTJ0foR8f8OqW5826w9OvFhZmD6fXAXohelBHi78ZBUcdh-5lzmHqxsNm7QRaXA0VFDbj-J6UPBRm0uTsZk6h-LAzYAfMKtq2RtMxB4IQ-eKUzyaecJ1X3uWeNz9r6MFY&random=1339798442&rmt_tld=0&ipr=y"
+      },
+      "time": "2026-09-02T13:50:37.289Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://www.google.com.br/pagead/1p-user-list/611689046/?random=1788357037123&cv=11&fst=1788354000000&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je68v1v882470607z89245864124za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938468~118131808~118897920~118897930~119259605~120213116~120385422&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2Fsend-quote&rcb=13&frm=0&tiba=Home-%20Tecnoiso&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dgtag.config&ept=9&rfmt=3&fmt=3&is_vtc=1&cid=CAQS4QEAQM4h3GwdFouwHWND0B3MesZtATKcuYNumfamS5WuTSj00lFlO5IScIw6r3MFKxxQIERzyJ7gWDFNopAFkTPaSIbvE4KypyLoMLPLI6Vmk7z3UFNylqjCY6vHY2-PZap9lDEhkaZhgyefZ_tkR_qsYmmD9ToHk4OfIzi4WF0sEdgTJ0foR8f8OqW5826w9OvFhZmD6fXAXohelBHi78ZBUcdh-5lzmHqxsNm7QRaXA0VFDbj-J6UPBRm0uTsZk6h-LAzYAfMKtq2RtMxB4IQ-eKUzyaecJ1X3uWeNz9r6MFY&random=1339798442&rmt_tld=1&ipr=y"
+      },
+      "time": "2026-09-02T13:50:37.290Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://googleads.g.doubleclick.net/pagead/viewthroughconversion/611689046/?random=1788357040022&cv=11&fst=1788357040022&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je68v1v882470607z89245864124za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938465~115938469~118131808~118897920~118897930~120213116~120385423&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2Findicacao-tecnicos&rcb=18&frm=0&tiba=Home-%20Tecnoiso&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dgtag.config&ept=9&rfmt=3&fmt=4"
+      },
+      "time": "2026-09-02T13:50:40.036Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://www.google.com/rmkt/collect/611689046/?random=1788357040022&cv=11&fst=1788357040022&fmt=8&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je68v1v882470607z89245864124za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938465~115938469~118131808~118897920~118897930~120213116~120385423&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2Findicacao-tecnicos&rcb=18&frm=0&tiba=Home-%20Tecnoiso&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dgtag.config&ept=68&gcp=5"
+      },
+      "time": "2026-09-02T13:50:40.037Z"
+    },
+    {
+      "destino": "Meta Pixel",
+      "evento": "(sem nome)",
+      "params": {},
+      "time": "2026-09-02T13:50:40.115Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://www.google.com/pagead/1p-user-list/611689046/?random=1788357040022&cv=11&fst=1788354000000&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je68v1v882470607z89245864124za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938465~115938469~118131808~118897920~118897930~120213116~120385423&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2Findicacao-tecnicos&rcb=18&frm=0&tiba=Home-%20Tecnoiso&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dgtag.config&ept=9&rfmt=3&fmt=3&is_vtc=1&cid=CAQS4QEAQM4h3Ly4B-yN-onFrG5b3vf6dMbugDciFUyBA0_V5M3iTSi03lrES5cKgi1dxc_Yt-5DAwJ0iZstpgbGoBT0DQgA4TL3CWDRXL0SOu8aKQb2gRbsZFPtBp_hzvObo3BSNhSKGxs3F-ssROHyJsnIbqiTXcNp07Zh3TpNiOZA9ZUJFSEq_EyK5wB_mHoPmgOiIpBnHNpXX4-Bt5tWjTPwA5M_TsfExM1oETvehEhg4j2XXqnFAaMwEAgi7-8slnDXOFngNq2qV7WCJ73RjBcTfhcQnwv-D8PC24TvxA8PcCo&random=889047588&rmt_tld=0&ipr=y"
+      },
+      "time": "2026-09-02T13:50:40.169Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://www.google.com.br/pagead/1p-user-list/611689046/?random=1788357040022&cv=11&fst=1788354000000&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je68v1v882470607z89245864124za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938465~115938469~118131808~118897920~118897930~120213116~120385423&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2Findicacao-tecnicos&rcb=18&frm=0&tiba=Home-%20Tecnoiso&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dgtag.config&ept=9&rfmt=3&fmt=3&is_vtc=1&cid=CAQS4QEAQM4h3Ly4B-yN-onFrG5b3vf6dMbugDciFUyBA0_V5M3iTSi03lrES5cKgi1dxc_Yt-5DAwJ0iZstpgbGoBT0DQgA4TL3CWDRXL0SOu8aKQb2gRbsZFPtBp_hzvObo3BSNhSKGxs3F-ssROHyJsnIbqiTXcNp07Zh3TpNiOZA9ZUJFSEq_EyK5wB_mHoPmgOiIpBnHNpXX4-Bt5tWjTPwA5M_TsfExM1oETvehEhg4j2XXqnFAaMwEAgi7-8slnDXOFngNq2qV7WCJ73RjBcTfhcQnwv-D8PC24TvxA8PcCo&random=889047588&rmt_tld=1&ipr=y"
+      },
+      "time": "2026-09-02T13:50:40.170Z"
+    },
+    {
+      "destino": "GA4",
+      "evento": "page_view",
+      "params": {
+        "v": "2",
+        "tid": "G-6J0482HPK4",
+        "gtm": "45je68v1v882470607z89245864124za20gzb9245864124zd9245864124",
+        "_p": "1788357039958",
+        "gcd": "13l3l3l3l1l1",
+        "npa": "0",
+        "dma": "0",
+        "_eu": "AAAAAAQ",
+        "are": "1",
+        "cid": "599766184.1788357032",
+        "frm": "0",
+        "ngs": "1",
+        "pscdl": "noapi",
+        "rcb": "18",
+        "sr": "1280x720",
+        "uaa": "x86",
+        "uab": "64",
+        "uafvl": "Chromium;151.0.7922.34|Not%3DA%3FBrand;99.0.0.0",
+        "uam": "",
+        "uamb": "0",
+        "uap": "Windows",
+        "uapv": "19.0.0",
+        "uaw": "0",
+        "ul": "pt-br",
+        "_s": "1",
+        "tag_exp": "115938465~115938469~118897920~118897930~120213116~120385423",
+        "sid": "1788357031",
+        "sct": "1",
+        "seg": "1",
+        "dl": "http://localhost/indicacao-tecnicos",
+        "dt": "Home- Tecnoiso",
+        "en": "page_view",
+        "tfd": "5489"
+      },
+      "time": "2026-09-02T13:50:45.027Z"
+    },
+    {
+      "destino": "GA4",
+      "evento": "page_view",
+      "params": {
+        "v": "2",
+        "tid": "G-HXPSFT7WGG",
+        "gtm": "45je68v1v882470607z89245864124za20gzb9245864124zd9245864124",
+        "_p": "1788357039958",
+        "gcd": "13l3l3l3l1l1",
+        "npa": "0",
+        "dma": "0",
+        "_eu": "AAAAAGQ",
+        "are": "1",
+        "cid": "599766184.1788357032",
+        "frm": "0",
+        "pscdl": "noapi",
+        "rcb": "18",
+        "sr": "1280x720",
+        "uaa": "x86",
+        "uab": "64",
+        "uafvl": "Chromium;151.0.7922.34|Not%3DA%3FBrand;99.0.0.0",
+        "uam": "",
+        "uamb": "0",
+        "uap": "Windows",
+        "uapv": "19.0.0",
+        "uaw": "0",
+        "ul": "pt-br",
+        "gaf": "2",
+        "_s": "1",
+        "tag_exp": "115938465~115938469~118897920~118897930~120213116~120385423",
+        "sid": "1788357031",
+        "sct": "1",
+        "seg": "1",
+        "dl": "http://localhost/indicacao-tecnicos",
+        "dt": "Home- Tecnoiso",
+        "en": "page_view",
+        "tfd": "5491"
+      },
+      "time": "2026-09-02T13:50:45.029Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://googleads.g.doubleclick.net/pagead/viewthroughconversion/611689046/?random=1788357063003&cv=11&fst=1788357063003&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je68v1v882470607z89245864124za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938465~115938469~118131808~118897920~118897930~120213116~120385422&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2Fsend-quote&rcb=2&frm=0&tiba=Home-%20Tecnoiso&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dgtag.config&ept=9&rfmt=3&fmt=4"
+      },
+      "time": "2026-09-02T13:51:03.015Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://www.google.com/rmkt/collect/611689046/?random=1788357063003&cv=11&fst=1788357063003&fmt=8&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je68v1v882470607z89245864124za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938465~115938469~118131808~118897920~118897930~120213116~120385422&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2Fsend-quote&rcb=2&frm=0&tiba=Home-%20Tecnoiso&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dgtag.config&ept=68&gcp=5"
+      },
+      "time": "2026-09-02T13:51:03.016Z"
+    },
+    {
+      "destino": "GA4",
+      "evento": "page_view",
+      "params": {
+        "v": "2",
+        "tid": "G-6J0482HPK4",
+        "gtm": "45je68v1v882470607z89245864124za20gzb9245864124zd9245864124",
+        "_p": "1788357062954",
+        "gcd": "13l3l3l3l1l1",
+        "npa": "0",
+        "dma": "0",
+        "_eu": "AAAAAAQ",
+        "are": "1",
+        "cid": "599766184.1788357032",
+        "frm": "0",
+        "ngs": "1",
+        "pscdl": "noapi",
+        "rcb": "2",
+        "sr": "1280x720",
+        "uaa": "x86",
+        "uab": "64",
+        "uafvl": "Chromium;151.0.7922.34|Not%3DA%3FBrand;99.0.0.0",
+        "uam": "",
+        "uamb": "0",
+        "uap": "Windows",
+        "uapv": "19.0.0",
+        "uaw": "0",
+        "ul": "pt-br",
+        "_s": "1",
+        "tag_exp": "115938465~115938469~118897920~118897930~120213116~120385422",
+        "sid": "1788357031",
+        "sct": "1",
+        "seg": "1",
+        "dl": "http://localhost/send-quote",
+        "dt": "Home- Tecnoiso",
+        "en": "page_view",
+        "tfd": "233"
+      },
+      "time": "2026-09-02T13:51:03.029Z"
+    },
+    {
+      "destino": "GA4",
+      "evento": "page_view",
+      "params": {
+        "v": "2",
+        "tid": "G-HXPSFT7WGG",
+        "gtm": "45je68v1v882470607z89245864124za20gzb9245864124zd9245864124",
+        "_p": "1788357062954",
+        "gcd": "13l3l3l3l1l1",
+        "npa": "0",
+        "dma": "0",
+        "_eu": "AAAAAGQ",
+        "are": "1",
+        "cid": "599766184.1788357032",
+        "frm": "0",
+        "pscdl": "noapi",
+        "rcb": "2",
+        "sr": "1280x720",
+        "uaa": "x86",
+        "uab": "64",
+        "uafvl": "Chromium;151.0.7922.34|Not%3DA%3FBrand;99.0.0.0",
+        "uam": "",
+        "uamb": "0",
+        "uap": "Windows",
+        "uapv": "19.0.0",
+        "uaw": "0",
+        "ul": "pt-br",
+        "gaf": "2",
+        "_s": "1",
+        "tag_exp": "115938465~115938469~118897920~118897930~120213116~120385422",
+        "sid": "1788357031",
+        "sct": "1",
+        "seg": "1",
+        "dl": "http://localhost/send-quote",
+        "dt": "Home- Tecnoiso",
+        "en": "page_view",
+        "tfd": "235"
+      },
+      "time": "2026-09-02T13:51:03.030Z"
+    },
+    {
+      "destino": "Meta Pixel",
+      "evento": "(sem nome)",
+      "params": {},
+      "time": "2026-09-02T13:51:03.092Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://www.google.com/pagead/1p-user-list/611689046/?random=1788357063003&cv=11&fst=1788354000000&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je68v1v882470607z89245864124za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938465~115938469~118131808~118897920~118897930~120213116~120385422&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2Fsend-quote&rcb=2&frm=0&tiba=Home-%20Tecnoiso&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dgtag.config&ept=9&rfmt=3&fmt=3&is_vtc=1&cid=CAQS4QEAQM4h3IqPTLxWhfKZqPqeQF8YoXOwDIqgbQA_e33gzuIDX_OSXbolqC9-N-K8iKmOVysuNO304kwZcGqWht6mOETz9hk34PwlLt7j6klRAtYISTjUAVyyFFsz5lpQnF09ioSD41fg85EDNN_V2GDx3K-yR2S3lk9sWcoP4q7okd6U2e9_H3SWOl8tifz-q6h8fhmXD1insQNXEZL9-gN37OYIhjztauuYurdqiPmGKEsDxo2HsZd00JOawSo4h8w7m1WmMWTxfaA8UgxiC2kF2UOMSMjYWib_ArPg6WHOsOU&random=1716680765&rmt_tld=0&ipr=y"
+      },
+      "time": "2026-09-02T13:51:03.122Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://www.google.com.br/pagead/1p-user-list/611689046/?random=1788357063003&cv=11&fst=1788354000000&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je68v1v882470607z89245864124za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938465~115938469~118131808~118897920~118897930~120213116~120385422&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2Fsend-quote&rcb=2&frm=0&tiba=Home-%20Tecnoiso&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dgtag.config&ept=9&rfmt=3&fmt=3&is_vtc=1&cid=CAQS4QEAQM4h3IqPTLxWhfKZqPqeQF8YoXOwDIqgbQA_e33gzuIDX_OSXbolqC9-N-K8iKmOVysuNO304kwZcGqWht6mOETz9hk34PwlLt7j6klRAtYISTjUAVyyFFsz5lpQnF09ioSD41fg85EDNN_V2GDx3K-yR2S3lk9sWcoP4q7okd6U2e9_H3SWOl8tifz-q6h8fhmXD1insQNXEZL9-gN37OYIhjztauuYurdqiPmGKEsDxo2HsZd00JOawSo4h8w7m1WmMWTxfaA8UgxiC2kF2UOMSMjYWib_ArPg6WHOsOU&random=1716680765&rmt_tld=1&ipr=y"
+      },
+      "time": "2026-09-02T13:51:03.123Z"
+    },
+    {
+      "destino": "GA4",
+      "evento": "scroll",
+      "params": {
+        "v": "2",
+        "tid": "G-6J0482HPK4",
+        "gtm": "45je68v1v882470607za20gzb9245864124zd9245864124",
+        "_p": "1788357062954",
+        "gcd": "13l3l3l3l1l1",
+        "npa": "0",
+        "dma": "0",
+        "_eu": "AEAAAAQ",
+        "ae": "a",
+        "are": "1",
+        "cid": "599766184.1788357032",
+        "frm": "0",
+        "ngs": "1",
+        "pscdl": "noapi",
+        "rcb": "2",
+        "sr": "1280x720",
+        "uaa": "x86",
+        "uab": "64",
+        "uafvl": "Chromium;151.0.7922.34|Not%3DA%3FBrand;99.0.0.0",
+        "uam": "",
+        "uamb": "0",
+        "uap": "Windows",
+        "uapv": "19.0.0",
+        "uaw": "0",
+        "ul": "pt-br",
+        "_s": "2",
+        "tag_exp": "115938465~115938469~118131808~118897920~118897930~120213116~120385422",
+        "sid": "1788357031",
+        "sct": "1",
+        "seg": "1",
+        "dl": "http://localhost/send-quote",
+        "dt": "Home- Tecnoiso",
+        "en": "scroll",
+        "epn.percent_scrolled": "90",
+        "_et": "18",
+        "tfd": "5246"
+      },
+      "time": "2026-09-02T13:51:08.035Z"
+    },
+    {
+      "destino": "GA4",
+      "evento": "scroll",
+      "params": {
+        "v": "2",
+        "tid": "G-HXPSFT7WGG",
+        "gtm": "45je68v1v882470607za20gzb9245864124zd9245864124",
+        "_p": "1788357062954",
+        "gcd": "13l3l3l3l1l1",
+        "npa": "0",
+        "dma": "0",
+        "_eu": "AEAAAGQ",
+        "ae": "a",
+        "are": "1",
+        "cid": "599766184.1788357032",
+        "frm": "0",
+        "pscdl": "noapi",
+        "rcb": "2",
+        "sr": "1280x720",
+        "uaa": "x86",
+        "uab": "64",
+        "uafvl": "Chromium;151.0.7922.34|Not%3DA%3FBrand;99.0.0.0",
+        "uam": "",
+        "uamb": "0",
+        "uap": "Windows",
+        "uapv": "19.0.0",
+        "uaw": "0",
+        "ul": "pt-br",
+        "gaf": "2",
+        "_s": "2",
+        "tag_exp": "115938465~115938469~118131808~118897920~118897930~120213116~120385422",
+        "sid": "1788357031",
+        "sct": "1",
+        "seg": "1",
+        "dl": "http://localhost/send-quote",
+        "dt": "Home- Tecnoiso",
+        "en": "scroll",
+        "epn.percent_scrolled": "90",
+        "_et": "18",
+        "tfd": "5247"
+      },
+      "time": "2026-09-02T13:51:08.036Z"
+    },
+    {
+      "destino": "Meta Pixel",
+      "evento": "(sem nome)",
+      "params": {},
+      "time": "2026-09-02T13:51:39.271Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://googleads.g.doubleclick.net/pagead/viewthroughconversion/611689046/?random=1788357127809&cv=11&fst=1788357127809&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je68v1v882470607z89245864124za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938466~115938469~118131808~118897920~118897930~120213116~120385423&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2F&rcb=2&frm=0&tiba=Home-%20Tecnoiso&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dgtag.config&ept=9&rfmt=3&fmt=4"
+      },
+      "time": "2026-09-02T13:52:07.818Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://www.google.com/rmkt/collect/611689046/?random=1788357127809&cv=11&fst=1788357127809&fmt=8&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je68v1v882470607z89245864124za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938466~115938469~118131808~118897920~118897930~120213116~120385423&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2F&rcb=2&frm=0&tiba=Home-%20Tecnoiso&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dgtag.config&ept=68&gcp=5"
+      },
+      "time": "2026-09-02T13:52:07.819Z"
+    },
+    {
+      "destino": "Meta Pixel",
+      "evento": "PageView",
+      "params": {
+        "id": "939574945122245",
+        "ev": "PageView",
+        "dl": "http://localhost:3000/",
+        "rl": "",
+        "if": "false",
+        "ts": "1788357127869",
+        "iw": "false",
+        "sw": "1280",
+        "sh": "720",
+        "v": "2.9.390",
+        "r": "stable",
+        "a": "tmSimo-GTM-WebTemplate",
+        "ec": "0",
+        "o": "4126",
+        "aems": "0;0",
+        "fbp": "fb.0.1788357032114.529274132744453417",
+        "eid": "ob3_plugin-set_ebe081e721a0bfef357f31ce69f920fbbbf54b28c344a9df59627e1d6fffe71a",
+        "ler": "empty",
+        "cdl": "API_unavailable",
+        "pmd[title]": "Home- Tecnoiso",
+        "pmd[locale]": "pt_BR",
+        "pmd[description]": "Laboratório acreditado INMETRO em Joinville/SC. Calibração, certificação, manutenção e consultoria em metrologia industrial. Solicite um orçamento.",
+        "pmd[keywords]": "metrologia, calibração, certificação, INMETRO, qualidade, precisão, laboratório, Joinville, Santa Catarina",
+        "plt": "125.59999990463257",
+        "iss": "1",
+        "ss": "{\"page_title\":[{\"rid\":\"2251128782329671\",\"v\":[\"metrologia.\"]}]}",
+        "imft": "1",
+        "tz": "-180",
+        "it": "1788357127850",
+        "coo": "false",
+        "tm": "1",
+        "cf": "1",
+        "expv2[0]": "pl0",
+        "expv2[1]": "el3",
+        "expv2[2]": "bc1",
+        "expv2[3]": "ra2",
+        "expv2[4]": "rp2",
+        "expv2[5]": "ct3",
+        "expv2[6]": "hf0",
+        "expv2[7]": "sd1",
+        "expv2[8]": "sp1",
+        "expv2[9]": "ek1",
+        "expv2[10]": "pc1",
+        "expv2[11]": "gs1",
+        "expv2[12]": "zs1",
+        "expv2[13]": "cp1",
+        "expv2[14]": "es1",
+        "expv2[15]": "ac1",
+        "expv2[16]": "so1",
+        "expv2[17]": "wc1",
+        "expv2[18]": "la1",
+        "expv2[19]": "sf1",
+        "expv2[20]": "da1",
+        "expv2[21]": "io1",
+        "expv2[22]": "ae1",
+        "expv2[23]": "sx1",
+        "expv2[24]": "if1",
+        "expv2[25]": "fd1",
+        "expv2[26]": "bg1",
+        "expv2[27]": "mg1",
+        "expv2[28]": "kl1",
+        "expv2[29]": "sg1",
+        "expv2[30]": "mk1",
+        "expv2[31]": "sn1",
+        "expv2[32]": "ec1",
+        "expv2[33]": "mp1",
+        "expv2[34]": "ps1",
+        "expv2[35]": "fx1",
+        "expv2[36]": "vt1",
+        "rqm": "GET"
+      },
+      "time": "2026-09-02T13:52:07.875Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://www.google.com/pagead/1p-user-list/611689046/?random=1788357127809&cv=11&fst=1788354000000&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je68v1v882470607z89245864124za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938466~115938469~118131808~118897920~118897930~120213116~120385423&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2F&rcb=2&frm=0&tiba=Home-%20Tecnoiso&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dgtag.config&ept=9&rfmt=3&fmt=3&is_vtc=1&cid=CAQS4QEAQM4h3ML2yajFC-uLGRSJiK2_58GLaz4j-3GHQkjIyz-Ruu0kljY6BIbRjytr3P--xQsDBV84VPlOje1Ht--JCY1B2FbFM6BSmVeTCiqz3A0er4hQzPWjFYOPiv4e_4_cp2pH2GvImKrk0TNlyb1VhRv5UJ1I7S9_zgQ_G15zKMFy__-rFATl5RKpvMFgilaHE3LRlC7rOfZn5DOaIm5wbd02Kn19vCFcV3-6y6ozglZOZTAI1TmQ7M2W6NDSoihiCML84MpYOptYWwQNamw6Eso2uxmBPulIoQnn6QO4P54&random=2366480149&rmt_tld=0&ipr=y"
+      },
+      "time": "2026-09-02T13:52:07.918Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://www.google.com.br/pagead/1p-user-list/611689046/?random=1788357127809&cv=11&fst=1788354000000&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je68v1v882470607z89245864124za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938466~115938469~118131808~118897920~118897930~120213116~120385423&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2F&rcb=2&frm=0&tiba=Home-%20Tecnoiso&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dgtag.config&ept=9&rfmt=3&fmt=3&is_vtc=1&cid=CAQS4QEAQM4h3ML2yajFC-uLGRSJiK2_58GLaz4j-3GHQkjIyz-Ruu0kljY6BIbRjytr3P--xQsDBV84VPlOje1Ht--JCY1B2FbFM6BSmVeTCiqz3A0er4hQzPWjFYOPiv4e_4_cp2pH2GvImKrk0TNlyb1VhRv5UJ1I7S9_zgQ_G15zKMFy__-rFATl5RKpvMFgilaHE3LRlC7rOfZn5DOaIm5wbd02Kn19vCFcV3-6y6ozglZOZTAI1TmQ7M2W6NDSoihiCML84MpYOptYWwQNamw6Eso2uxmBPulIoQnn6QO4P54&random=2366480149&rmt_tld=1&ipr=y"
+      },
+      "time": "2026-09-02T13:52:07.918Z"
+    },
+    {
+      "destino": "GA4",
+      "evento": "page_view",
+      "params": {
+        "v": "2",
+        "tid": "G-6J0482HPK4",
+        "gtm": "45je68v1v882470607z89245864124za20gzb9245864124zd9245864124",
+        "_p": "1788357127745",
+        "gcd": "13l3l3l3l1l1",
+        "npa": "0",
+        "dma": "0",
+        "_eu": "AAAAAAQ",
+        "are": "1",
+        "cid": "599766184.1788357032",
+        "frm": "0",
+        "ngs": "1",
+        "pscdl": "noapi",
+        "rcb": "2",
+        "sr": "1280x720",
+        "uaa": "x86",
+        "uab": "64",
+        "uafvl": "Chromium;151.0.7922.34|Not%3DA%3FBrand;99.0.0.0",
+        "uam": "",
+        "uamb": "0",
+        "uap": "Windows",
+        "uapv": "19.0.0",
+        "uaw": "0",
+        "ul": "pt-br",
+        "_s": "1",
+        "tag_exp": "115616986~115938466~115938469~118897920~118897930~120213116~120385423",
+        "sid": "1788357031",
+        "sct": "1",
+        "seg": "1",
+        "dl": "http://localhost/",
+        "dt": "Home- Tecnoiso",
+        "en": "page_view",
+        "tfd": "5410"
+      },
+      "time": "2026-09-02T13:52:12.815Z"
+    },
+    {
+      "destino": "GA4",
+      "evento": "page_view",
+      "params": {
+        "v": "2",
+        "tid": "G-HXPSFT7WGG",
+        "gtm": "45je68v1v882470607z89245864124za20gzb9245864124zd9245864124",
+        "_p": "1788357127745",
+        "gcd": "13l3l3l3l1l1",
+        "npa": "0",
+        "dma": "0",
+        "_eu": "AAAAAGQ",
+        "are": "1",
+        "cid": "599766184.1788357032",
+        "frm": "0",
+        "pscdl": "noapi",
+        "rcb": "2",
+        "sr": "1280x720",
+        "uaa": "x86",
+        "uab": "64",
+        "uafvl": "Chromium;151.0.7922.34|Not%3DA%3FBrand;99.0.0.0",
+        "uam": "",
+        "uamb": "0",
+        "uap": "Windows",
+        "uapv": "19.0.0",
+        "uaw": "0",
+        "ul": "pt-br",
+        "gaf": "2",
+        "_s": "1",
+        "tag_exp": "115616986~115938466~115938469~118897920~118897930~120213116~120385423",
+        "sid": "1788357031",
+        "sct": "1",
+        "seg": "1",
+        "dl": "http://localhost/",
+        "dt": "Home- Tecnoiso",
+        "en": "page_view",
+        "tfd": "5411"
+      },
+      "time": "2026-09-02T13:52:12.816Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://googleads.g.doubleclick.net/pagead/viewthroughconversion/611689046/?random=1788357171216&cv=11&fst=1788357171216&bg=ffffff&guid=ON&async=1&en=form_start&gtm=45je68v1v882470607za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938466~115938469~118131808~118897920~118897930~120213116~120385423&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2F&rcb=2&frm=0&tiba=Home-%20Tecnoiso&ae=a&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dform_start&gap.fsrc=1&ept=9&rfmt=3&fmt=4"
+      },
+      "time": "2026-09-02T13:52:51.236Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://www.google.com/rmkt/collect/611689046/?random=1788357171216&cv=11&fst=1788357171216&fmt=8&bg=ffffff&guid=ON&async=1&en=form_start&gtm=45je68v1v882470607za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938466~115938469~118131808~118897920~118897930~120213116~120385423&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2F&rcb=2&frm=0&tiba=Home-%20Tecnoiso&ae=a&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dform_start&gap.fsrc=1&ept=68&gcp=5"
+      },
+      "time": "2026-09-02T13:52:51.236Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://www.google.com/pagead/1p-user-list/611689046/?random=1788357171216&cv=11&fst=1788354000000&bg=ffffff&guid=ON&async=1&en=form_start&gtm=45je68v1v882470607za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938466~115938469~118131808~118897920~118897930~120213116~120385423&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2F&rcb=2&frm=0&tiba=Home-%20Tecnoiso&ae=a&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dform_start&gap.fsrc=1&ept=9&rfmt=3&fmt=3&is_vtc=1&cid=CAQS4QEAQM4h3Kqw4q0JiQIH_jf9cU5-h1-Xb-fKIn9JDoHKGQ40l2XMmrqABhZFbKvptqFZgRSbL3RflU3pKcxVWLST_bmMHJIxJyynayju-TS-vS2Q19_fIB1Kc-srRGLdwWXWNKdOPrf52C0871232Uxug8FS7h4b7_Ol0svvlznWJmvDDGasSkwehUmEMURo-KG_2XYAJYggBaTMxt8kjWCjf1iQUqE368acRzbbbhsLaQb9ciZJvvxePMK0Lb1SoVTx0smXXXlpZVjRMU6ZLMTd8-LyWeZ9S0FR5-3yoKu5icM&random=1371355185&rmt_tld=0&ipr=y"
+      },
+      "time": "2026-09-02T13:52:51.312Z"
+    },
+    {
+      "destino": "Google Ads",
+      "evento": "(conversion ping)",
+      "params": {
+        "url": "https://www.google.com.br/pagead/1p-user-list/611689046/?random=1788357171216&cv=11&fst=1788354000000&bg=ffffff&guid=ON&async=1&en=form_start&gtm=45je68v1v882470607za20gzb9245864124zd9245864124xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938466~115938469~118131808~118897920~118897930~120213116~120385423&u_w=1280&u_h=720&url=http%3A%2F%2Flocalhost%3A3000%2F&rcb=2&frm=0&tiba=Home-%20Tecnoiso&ae=a&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=795796121.1788357032&uaa=x86&uab=64&uafvl=Chromium%3B151.0.7922.34%7CNot%253DA%253FBrand%3B99.0.0.0&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&data=event%3Dform_start&gap.fsrc=1&ept=9&rfmt=3&fmt=3&is_vtc=1&cid=CAQS4QEAQM4h3Kqw4q0JiQIH_jf9cU5-h1-Xb-fKIn9JDoHKGQ40l2XMmrqABhZFbKvptqFZgRSbL3RflU3pKcxVWLST_bmMHJIxJyynayju-TS-vS2Q19_fIB1Kc-srRGLdwWXWNKdOPrf52C0871232Uxug8FS7h4b7_Ol0svvlznWJmvDDGasSkwehUmEMURo-KG_2XYAJYggBaTMxt8kjWCjf1iQUqE368acRzbbbhsLaQb9ciZJvvxePMK0Lb1SoVTx0smXXXlpZVjRMU6ZLMTd8-LyWeZ9S0FR5-3yoKu5icM&random=1371355185&rmt_tld=1&ipr=y"
+      },
+      "time": "2026-09-02T13:52:51.312Z"
+    },
+    {
+      "destino": "Meta Pixel",
+      "evento": "(sem nome)",
+      "params": {},
+      "time": "2026-09-02T13:53:14.635Z"
+    }
+  ]
+}

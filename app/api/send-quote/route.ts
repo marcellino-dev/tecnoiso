@@ -109,7 +109,7 @@ export async function POST(req: NextRequest) {
     const botCheck = checkIsBot(req.headers, body);
     if (botCheck.isBot) {
       console.warn(
-        `🤖 Possível bot detectado de IP ${clientIp}:`,
+        ` Possível bot detectado de IP ${clientIp}:`,
         botCheck.reasons
       );
       return NextResponse.json(
