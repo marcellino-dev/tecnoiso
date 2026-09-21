@@ -64,14 +64,12 @@ function createAbortController(): AbortController {
 
 export async function POST(req: NextRequest) {
   try {
-    // ────────────────────────────────────────────────────────────────────────
-    // 1️⃣ RATE LIMITING
+
     // Formulário de USO INTERNO (equipe de ~27 técnicos), não público como o
     // de orçamento. Vários técnicos podem compartilhar o mesmo IP (Wi-Fi da
     // empresa, NAT de operadora), por isso o limite é bem mais alto que o do
     // send-quote — é só uma rede de segurança contra loops/erros, não uma
     // barreira anti-spam.
-    // ────────────────────────────────────────────────────────────────────────
     const clientIp = getClientIp(req.headers);
     const rateLimitResult = checkRateLimit(clientIp, {
       maxRequests: 40,
@@ -89,9 +87,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // 2️⃣ PARSE DO CORPO
-    // ────────────────────────────────────────────────────────────────────────
+    
+    
     let body: IndicacaoTecnicoBody;
     try {
       body = await req.json();
@@ -102,12 +99,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // 3️⃣ VERIFICAÇÃO DE BOT (apenas log — não bloqueia)
-    // Link usado internamente pela equipe, não pelo público — risco de bot é
-    // baixo. Mantemos a detecção só para observabilidade, sem barrar a
-    // requisição (evita falso-positivo travar um técnico real em campo).
-    // ────────────────────────────────────────────────────────────────────────
+   
     const botCheck = checkIsBot(req.headers, body);
     if (botCheck.isBot || botCheck.suspicionScore > 40) {
       console.warn(
@@ -116,9 +108,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // 4️⃣ NORMALIZAÇÃO E VALIDAÇÃO DE DADOS
-    // ────────────────────────────────────────────────────────────────────────
+    //  NORMALIZAÇÃO E VALIDAÇÃO DE DADOS
     const trimmed: IndicacaoTecnicoBody = {
       tecnico:           body.tecnico?.trim() || "",
       data_visita:       body.data_visita?.trim() || "",
@@ -144,9 +134,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: validationError }, { status: 400 });
     }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // 5️⃣ ENVIO PARA WEBHOOK GOALFY
-    // ────────────────────────────────────────────────────────────────────────
+    
+    // ENVIO PARA WEBHOOK GOALFY
+  
     const goalfyPayload = {
       tecnico:           trimmed.tecnico,
       data_visita:       trimmed.data_visita,
@@ -202,7 +192,7 @@ export async function POST(req: NextRequest) {
 
     if (!resp.ok) {
       console.warn(
-        `⚠️ Webhook Goalfy retornou ${resp.status}: lead ${trimmed.nome_contato} da ${trimmed.empresa}`
+        ` Webhook Goalfy retornou ${resp.status}: lead ${trimmed.nome_contato} da ${trimmed.empresa}`
       );
       return NextResponse.json(
         { success: false, error: "Não foi possível registrar a indicação. Tente novamente." },
@@ -211,7 +201,7 @@ export async function POST(req: NextRequest) {
     }
 
     console.info(
-      `✅ Lead recebido: ${trimmed.nome_contato} (${trimmed.empresa}) de ${trimmed.telefone}`
+      ` Lead recebido: ${trimmed.nome_contato} (${trimmed.empresa}) de ${trimmed.telefone}`
     );
 
     return NextResponse.json({ success: true });

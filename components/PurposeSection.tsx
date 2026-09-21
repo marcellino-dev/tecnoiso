@@ -137,7 +137,7 @@ const PurposeSection = () => {
 
               <motion.div variants={staggerFast} className="flex-1 space-y-3 w-full">
                 {[
-                  { icon: Users,     value: "3.654", label: "CLIENTES ATENDIDOS" },
+                  { icon: Users,     value: "6.398", label: "CLIENTES ATENDIDOS" },
                   { icon: Building2, value: "379",   label: "CIDADES" },
                   { icon: MapPin,    value: "24",     label: "ESTADOS" },
                 ].map(({ icon: Icon, value, label }) => (

@@ -16,12 +16,12 @@ import { toast } from "sonner";
 import { getUtmParams } from "@/lib/utm";
 import DeveloperSignature from "@/components/DeveloperSignature";
 
-/* ─── Constants ─────────────────────────────────────────────────────── */
+/*Constants*/
 const WA_NUM          = "4734401719";
 const WA_BASE         = `https://wa.me/${WA_NUM}`;
 const WA_ESPECIALISTA = `${WA_BASE}?text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20um%20especialista`;
 
-/* ─── Design Tokens ──────────────────────────────────────────────────── */
+/*Design Tokens*/
 const RED      = "#F22020";
 const RED_DARK = "#a01010";
 const BLUR_BG  = "rgba(255,255,255,0.05)";
@@ -57,7 +57,7 @@ const labelBase: React.CSSProperties = {
   marginBottom: 8,
 };
 
-/* ─── Data ───────────────────────────────────────────────────────────── */
+/*Data*/
 const heroBullets = [
   "Certificados conforme ABNT NBR ISO/IEC 17025:2017",
   "Rastreabilidade CGCRE/INMETRO garantida",
@@ -165,7 +165,7 @@ const socialLinks = [
 
 const services = ["Calibração", "Certificação", "Manutenção", "Treinamentos"];
 
-/* ─── Canal preferido ────────────────────────────────────────────────── */
+/*Canal preferido*/
 type Channel = "whatsapp_text" | "whatsapp_voice" | "email" | "phone_call";
 
 const CHANNELS: { id: Channel; label: string; Icon: React.ElementType }[] = [
@@ -175,11 +175,10 @@ const CHANNELS: { id: Channel; label: string; Icon: React.ElementType }[] = [
   { id: "phone_call",     label: "Ligação telefônica", Icon: Phone         },
 ];
 
-/* ═══════════════════════════════════════════════════════════════════════
-   SECTIONS
-   ═══════════════════════════════════════════════════════════════════════ */
+/*
+SECTIONS*/
 
-/* ─── Hero ───────────────────────────────────────────────────────────── */
+/* Hero */
 function HeroSection({
   onCtaClick,
   onGrandezasClick,
@@ -272,7 +271,7 @@ function HeroSection({
   );
 }
 
-/* ─── Riscos ─────────────────────────────────────────────────────────── */
+//Riscos
 function RiscosSection() {
   return (
     <section style={{ background: "#FDF5F5", padding: "64px 24px", borderBottom: "1px solid #EBEBEB" }}>
@@ -854,7 +853,7 @@ function FormSection({ formRef }: { formRef: React.RefObject<HTMLElement> }) {
   );
 }
 
-/* ─── Footer ─────────────────────────────────────────────────────────── */
+/*Footer*/
 function PageFooter() {
   return (
     <footer style={{ background: "#0D0D0D", color: "#fff", padding: "64px 24px 32px" }}>
@@ -946,9 +945,7 @@ function PageFooter() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   PAGE
-   ═══════════════════════════════════════════════════════════════════════ */
+/*PAGE*/
 export default function CalibracaoPage() {
   const formRef      = useRef<HTMLElement>(null);
   const grandezasRef = useRef<HTMLElement>(null);

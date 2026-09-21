@@ -70,9 +70,8 @@ function formatMaintenance(raw: string | undefined): string {
 
 export async function POST(req: NextRequest) {
   try {
-    // ────────────────────────────────────────────────────────────────────────
-    // 1️⃣ VERIFICAÇÃO DE RATE LIMITING
-    // ────────────────────────────────────────────────────────────────────────
+  
+    //  VERIFICAÇÃO DE RATE LIMITING
     const clientIp = getClientIp(req.headers);
     const rateLimitResult = checkRateLimit(clientIp, {
       maxRequests: 5, // 5 requisições máximo
@@ -90,9 +89,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // 2️⃣ PARSE E VALIDAÇÃO BÁSICA DO CORPO
-    // ────────────────────────────────────────────────────────────────────────
+    // PARSE E VALIDAÇÃO BÁSICA DO CORPO
     let body: QuoteRequestBody;
     try {
       body = await req.json();
@@ -103,9 +100,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // 3️⃣ VERIFICAÇÃO DE BOT
-    // ────────────────────────────────────────────────────────────────────────
+
+    // VERIFICAÇÃO DE BOT
+
     const botCheck = checkIsBot(req.headers, body);
     if (botCheck.isBot) {
       console.warn(
@@ -124,7 +121,7 @@ export async function POST(req: NextRequest) {
     // Se suspicionScore > 40 (mas não definitivamente um bot), registrar mas permitir
     if (botCheck.suspicionScore > 40 && botCheck.suspicionScore < 60) {
       console.warn(
-        `⚠️ Requisição suspeita de IP ${clientIp} (score: ${botCheck.suspicionScore}):`,
+        ` Requisição suspeita de IP ${clientIp} (score: ${botCheck.suspicionScore}):`,
         botCheck.reasons
       );
     }
