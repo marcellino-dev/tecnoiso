@@ -17,7 +17,7 @@ export default function WhatsAppScript() {
     // Atributos simples: dataset funciona corretamente (sem números no meio do nome)
     script.dataset.webhook =
       "https://flow.goalfy.com.br/automations/v1/f1dac498-eb2c-466e-9a6e-da0c59ce380b/hooks/catch/";
-    script.dataset.numero = "5547996644051";
+    script.dataset.numero = "5547974110269"; 
     script.dataset.mensagem =
       "Olá, vim do site e gostaria de falar com um consultor";
     script.dataset.campoIntegradoNome = "nome";
